@@ -31,8 +31,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: |
-      cd norbit-webapp
-      npm ci
+        cd norbit-webapp
+        npm ci
     - run: |
-      npm run build --if-present
-      #run: npm test
+        npm run build --if-present
+        #run: npm test
