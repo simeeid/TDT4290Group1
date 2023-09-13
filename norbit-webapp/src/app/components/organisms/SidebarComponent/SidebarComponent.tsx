@@ -1,25 +1,28 @@
 
-import {Device} from '@/app/DeviceManager';
+import {connect, Device} from '../../../DeviceManager';
 import {useState} from 'react';
 import './SidebarComponent.css'
 
 
 interface SidebarProps {
-    devices: Array<Device>
+    devices?: Array<Device>,
+    setDevices?: (newDevices: Array<Device>) => void
 }
 
-export const SidebarComponent: React.FC<SidebarProps> = ({ ...props }) => {
+export const SidebarComponent: React.FC<SidebarProps> = ({ devices, setDevices, ...props }) => {
     const [sidebarActive, setSidebarActive] = useState(false);
 
     const deviceHtml: Array<React.JSX.Element> = [];
 
-    //for (let i = 0; i < devices.length; ++i) {
-        //let device = devices[i];
+    if (devices != null && setDevices != null) {
+        for (let i = 0; i < devices.length; ++i) {
+            let device = devices[i];
 
-        //deviceHtml.push(<div className="device-list-item">
-            //<h3>Device name here</h3>
-        //</div>);
-    //}
+            deviceHtml.push(<div className="device-list-item">
+                <h3>Device {device.code}</h3>
+            </div>);
+        }
+    }
 
     // TODO: some of these elements probably need to be converted to atoms 
     return (
@@ -44,7 +47,14 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ ...props }) => {
 
                         let id = idField.value;
                         console.log(id);
-                        // TODO: handle device registration
+                        
+                        let device = connect(id);
+                        if (device == null || devices == null || setDevices == null) {
+                            // TODO: null error handling
+                        } else {
+                            let devicesCopy = devices.concat([device]);
+                            setDevices(devicesCopy);
+                        }
                     }}>
                         <label>Enter device ID</label>
                         <input id="device-id" name="device-id" placeholder="ABCD1234" />
