@@ -1,25 +1,27 @@
 
+import {Device} from '@/app/DeviceManager';
 import {useState} from 'react';
 import './SidebarComponent.css'
 
-interface SidebarProps {
 
+interface SidebarProps {
+    devices: Array<Device>
 }
 
 export const SidebarComponent: React.FC<SidebarProps> = ({ ...props }) => {
     const [sidebarActive, setSidebarActive] = useState(false);
-    const [devices, setDevices] = useState([] as Array<string>);
 
-    const deviceHtml = [];
+    const deviceHtml: Array<React.JSX.Element> = [];
 
-    for (let i = 0; i < devices.length; ++i) {
-        let device = devices[i];
+    //for (let i = 0; i < devices.length; ++i) {
+        //let device = devices[i];
 
-        deviceHtml.push(<div className="device-list-item">
-            <h3>Device name here</h3>
-        </div>);
-    }
+        //deviceHtml.push(<div className="device-list-item">
+            //<h3>Device name here</h3>
+        //</div>);
+    //}
 
+    // TODO: some of these elements probably need to be converted to atoms 
     return (
         <div>
             <button className="hamburger-button" onClick={() => {
@@ -53,7 +55,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ ...props }) => {
                     <hr />
                     <h2>Device list</h2>
 
-                    { devices.length == 0 ? <p>No devices connected :(</p> : deviceHtml }
+                    { deviceHtml.length == 0 ? <p>No devices connected :(</p> : deviceHtml }
                 </div>
 
             </div>

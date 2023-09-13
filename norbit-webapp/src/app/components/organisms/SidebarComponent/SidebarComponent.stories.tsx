@@ -3,7 +3,9 @@ import { SidebarComponent } from './SidebarComponent';
 export default {
     title: "organisms/SidebarComponent",
     component: SidebarComponent,
-    args: {}
+    args: {
+
+    }
 };
 
 export const Default = {};
