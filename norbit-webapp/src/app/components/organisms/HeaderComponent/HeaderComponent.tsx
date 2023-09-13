@@ -14,7 +14,7 @@ export const HeaderComponent: React.FC<HeaderProps> = ({ hasSidebar, ...props })
                 <p>Norbit</p>
             </div>
             <div className="sidebar-button">
-                { hasSidebar ? <SidebarComponent /> : ""}
+                { hasSidebar ? <SidebarComponent {...props} /> : ""}
             </div>
         </header>
     );
