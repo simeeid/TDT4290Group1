@@ -1,0 +1,25 @@
+header {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+header > * {
+    flex: 1 1 auto;
+}
+
+.logo {
+    font-size: 2rem;
+    width: auto;
+}
+
+.sidebar-button {
+    align-self: center;
+    display: flex;
+    justify-content: flex-end;
+}
