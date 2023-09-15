@@ -1,11 +1,13 @@
-import { SidebarComponent } from "../SidebarComponent/SidebarComponent";
+'use client';
+
+import { SidebarProps, SidebarComponent } from "../SidebarComponent/SidebarComponent";
 import './HeaderComponent.css'
 
 interface HeaderProps {
-    hasSidebar: boolean
+    useSidebar: boolean
 }
 
-export const HeaderComponent: React.FC<HeaderProps> = ({ hasSidebar, ...props }) => {
+export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSidebar, ...props }) => {
 
     return (
         <header>
@@ -14,7 +16,7 @@ export const HeaderComponent: React.FC<HeaderProps> = ({ hasSidebar, ...props })
                 <p>Norbit</p>
             </div>
             <div className="sidebar-button">
-                { hasSidebar ? <SidebarComponent {...props} /> : ""}
+                { useSidebar ? <SidebarComponent {...props} /> : ""}
             </div>
         </header>
     );

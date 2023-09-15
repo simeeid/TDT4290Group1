@@ -1,74 +1,93 @@
-
-import {connect, Device} from '../../../DeviceManager';
+'use client';
+import {Device} from '../../../DeviceManager';
 import {useState} from 'react';
 import './SidebarComponent.css'
 
 
-interface SidebarProps {
-    devices?: Array<Device>,
-    setDevices?: (newDevices: Array<Device>) => void
+export interface SidebarProps {
+  devices?: Array<Device>,
+  connectDevice?: (newDevice: Device) => Promise<boolean>,
 }
 
-export const SidebarComponent: React.FC<SidebarProps> = ({ devices, setDevices, ...props }) => {
-    const [sidebarActive, setSidebarActive] = useState(false);
+export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevice, ...props }) => {
+  const [sidebarActive, setSidebarActive] = useState(false);
 
-    const deviceHtml: Array<React.JSX.Element> = [];
+  const deviceHtml: Array<React.JSX.Element> = [];
 
-    if (devices != null && setDevices != null) {
-        for (let i = 0; i < devices.length; ++i) {
-            let device = devices[i];
+  if (devices != null) {
+    for (let i = 0; i < devices.length; ++i) {
+      let device = devices[i];
 
-            deviceHtml.push(<div className="device-list-item">
-                <h3>Device {device.code}</h3>
-            </div>);
-        }
+      // TODO: figure out what other data to display when the Device object has more relevant data,
+      // if any.
+      deviceHtml.push(<div className="device-list-item">
+        <h3>Device {device.code}</h3>
+      </div>);
     }
+  }
 
-    // TODO: some of these elements probably need to be converted to atoms 
-    return (
-        <div>
-            <button className="hamburger-button" onClick={() => {
-                setSidebarActive(true);
-            }}>≡</button>
+  // TODO: some of these elements probably need to be converted to atoms. At least the form, but that can be done later
+  // if more forms are used.
+  return (
+    <div>
+      <button className="hamburger-button" onClick={() => {
+        setSidebarActive(true);
+      }}>≡</button>
 
 
-            <div className={"sidebar " + (sidebarActive ? "" : "hidden")}>
-                <div className="right">
-                    <button className="close-button" onClick={() => {
-                        setSidebarActive(false);
-                    }}>x</button>
-                </div>
-                <div>
-                    <h2>Connect device</h2>
-                    <form onSubmit={(ev) => {
-                        ev.preventDefault();
-                        
-                        let idField = document.getElementById("device-id") as HTMLInputElement;
-
-                        let id = idField.value;
-                        console.log(id);
-                        
-                        let device = connect(id);
-                        if (device == null || devices == null || setDevices == null) {
-                            // TODO: null error handling
-                        } else {
-                            let devicesCopy = devices.concat([device]);
-                            setDevices(devicesCopy);
-                        }
-                    }}>
-                        <label>Enter device ID</label>
-                        <input id="device-id" name="device-id" placeholder="ABCD1234" />
-
-                        <button type="submit">Connect now!</button>
-                    </form>
-
-                    <hr />
-                    <h2>Device list</h2>
-
-                    { deviceHtml.length == 0 ? <p>No devices connected :(</p> : deviceHtml }
-                </div>
-
-            </div>
+      <div className={"sidebar " + (sidebarActive ? "" : "hidden")}>
+        <div className="right">
+          <button id="submit-device-id" className="close-button" onClick={() => {
+            setSidebarActive(false);
+          }}>x</button>
         </div>
-    );
+        <div>
+          <h2>Connect device</h2>
+          <form onSubmit={(ev) => {
+            ev.preventDefault();
+
+            let idField = document.getElementById("device-id") as HTMLInputElement;
+            let button = document.getElementById("submit-device-id") as HTMLButtonElement;
+
+            let id = idField.value;
+            if (id == null || id == "") {
+              alert("Please enter an ID");
+              return;
+            }
+
+
+            let device = {
+              code: id
+            } as Device;
+
+            if (devices == null || connectDevice == null) {
+              alert("Programmer error: devices is null and/or connectDevice is null");
+            } else {
+              button.disabled = true;
+              connectDevice(device)
+                .then(res => {
+                  button.disabled = false;
+                  if (!res) {
+                    alert("Failed to connect to device. Make sure the ID is valid, and that they device is connected");
+                  } else {
+                    idField.value = "";
+                  }
+                });
+            }
+          }}>
+            <label>Enter device ID</label>
+            <input id="device-id" name="device-id" placeholder="ABCD1234" />
+
+            <button type="submit">Connect now!</button>
+          </form>
+
+          <hr />
+          <h2>Device list</h2>
+
+          { deviceHtml.length == 0 ? <p>No devices connected :(</p> : deviceHtml }
+        </div>
+
+      </div>
+    </div>
+                                                              );
 };

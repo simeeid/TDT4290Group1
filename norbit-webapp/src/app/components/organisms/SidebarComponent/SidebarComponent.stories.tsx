@@ -4,7 +4,6 @@ export default {
     title: "organisms/SidebarComponent",
     component: SidebarComponent,
     args: {
-
     }
 };
 

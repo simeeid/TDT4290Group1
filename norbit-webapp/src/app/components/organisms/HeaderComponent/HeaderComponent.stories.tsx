@@ -3,7 +3,9 @@ import { HeaderComponent } from './HeaderComponent';
 export default {
     title: "organisms/HeaderComponent",
     component: HeaderComponent,
-    args: {}
+    args: {
+
+    }
 };
 
 export const Default = {}

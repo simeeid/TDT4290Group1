@@ -1,64 +1,68 @@
 :root {
 
-    /* TODO: figure out how to outsource variables to globals.css,
-     * and pick a better color
-     */
+  /* TODO: figure out how to outsource variables to globals.css,
+   * and pick a better color
+   */
   --color-active: #f1f1f1;
 }
 
 .hamburger-button {
-    font-size: 2rem;
-    background: none;
-    border: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
 
 }
 
 .hamburger-button:hover {
-    background: var(--color-active);
-    cursor: pointer;
+  background: var(--color-active);
+  cursor: pointer;
 }
 
 .close-button {
-    font-size: 2rem;
-    background: none;
-    border: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
 
-    color: white;
+  color: white;
 }
 
 .close-button:hover {
-    background: #13333F;
-    cursor: pointer;
+  background: #13333F;
+  cursor: pointer;
 }
 
 .sidebar {
-    z-index: 9001;
-    position: absolute;
-    width: 30%;
-    height: 100%;
-    top: 0;
-    left: calc(100% - 30%);
-    background: #02222F;
-    padding: 8px;
-    box-sizing: border-box;
+  z-index: 9001;
+  position: fixed;
+  width: 30%;
+  height: 100%;
+  top: 0;
+  left: calc(100% - 30%);
+  background: #02222F;
+  padding: 8px;
+  box-sizing: border-box;
 
-    transition: all 1s ease-in;
-    color: white;
+  transition: all 1s ease-in;
+  color: white;
+}
+
+input {
+  color: black;
 }
 
 
 .hidden {
-    /* Rather than using display: none, these are used
-     * to make the transition look like it's sliding in from the right.
-     */
-    width: 0%;
-    left: 100%;
+  /* Rather than using display: none, these are used
+   * to make the transition look like it's sliding in from the right.
+   */
+  width: 0%;
+  left: 100%;
 }
 /* TODO: figure out how to make this global*/
 
 .right {
-    display: flex;
-    justify-content: right;
+  display: flex;
+  justify-content: right;
 }
 
 /* For some reason, the close button displays even when it should be collapsed.
@@ -66,20 +70,20 @@
  * so not sure why this is necessary.
  */
 .hidden > .right {
-    display: none;
+  display: none;
 }
 
 form {
-    padding: 8px;
-    box-sizing: border-box;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 form > button, form > input {
-    padding: 5px;
+  padding: 5px;
 }
 
 form > * {
-    width: 100%;
-    margin: 2px;
-    box-sizing: border-box;
+  width: 100%;
+  margin: 2px;
+  box-sizing: border-box;
 }
