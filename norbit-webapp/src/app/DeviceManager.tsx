@@ -1,4 +1,4 @@
 export interface Device {
-    code: string
+  code: string
 }
 
