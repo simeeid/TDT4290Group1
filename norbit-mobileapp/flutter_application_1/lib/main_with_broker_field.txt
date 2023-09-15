@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// code for importing providers:
+
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'providers/aws_provider.dart';
+
+// final authService = useProvider(awsAuthProvider);
+// final dataService = useProvider(awsDataService);
+
 // Define your Bloc and Events here
 
 void main() {
