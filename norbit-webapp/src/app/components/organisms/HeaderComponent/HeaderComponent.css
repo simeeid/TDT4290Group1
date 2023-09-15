@@ -1,25 +1,25 @@
 header {
-    width: 100%;
-    margin: 0;
-    padding: 15px;
-    box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 15px;
+  box-sizing: border-box;
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 header > * {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .logo {
-    font-size: 2rem;
-    width: auto;
+  font-size: 2rem;
+  width: auto;
 }
 
 .sidebar-button {
-    align-self: center;
-    display: flex;
-    justify-content: flex-end;
+  align-self: center;
+  display: flex;
+  justify-content: flex-end;
 }
