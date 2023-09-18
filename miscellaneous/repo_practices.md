@@ -5,8 +5,8 @@
 - Javid Rezai <javid.rezai@ntnu.no>
 - Kasper Tyler Husefest <kasperth@stud.ntnu.no>
 - Julie Lundberg Suter <julie.l.suter@ntnu.no>
-- Erlend Storsve <erlestor@stud.ntnu.no>
-- ...
+- Olivia Foshaug Ingvaldsen <johain@stud.ntnu.no>
+- Anton Hannibal Sökjer-Petersen <antonhs@stud.ntnu.no>
 
 ---
 
