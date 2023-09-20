@@ -1,0 +1,21 @@
+/* Dashboard.module.css */
+.dashboardContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+
+.chartsContainer {
+  flex: 3;
+  padding: 20px;
+  width: 500px;
+  height: 350px;
+  
+}
+
+.configurationPanel {
+  flex: 1;
+  padding: 20px;
+  border-left: 1px solid #ddd;
+}
