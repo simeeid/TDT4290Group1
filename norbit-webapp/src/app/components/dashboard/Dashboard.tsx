@@ -1,8 +1,9 @@
 'use client'
 import React, { useState } from 'react';
 import AccelerometerChart from '../accelerometer/AccelerometerChart';
-import SensorConfigurationPanel, { SensorConfig } from '../senssorConfiguration/SensorConfigurationPanel';
-import dashboadStyles from './Dashboard.module.css'; //
+import SensorConfigurationPanel from '../sensorConfiguration/SensorConfigurationPanel';
+import dashboadStyles from './Dashboard.module.css';
+import { SensorConfig } from '../sensorConfiguration/types';
 const Dashboard: React.FC = () => {
   const [sensorConfig, setSensorConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true });
 

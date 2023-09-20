@@ -1,16 +1,9 @@
 'use client'
 import React, { useState } from 'react';
 import style from './SensorConfigurationPanel.module.css';
+import { SensorConfig,Props } from './types'; 
 
-interface Props {
-  onConfigurationChange: (config: SensorConfig) => void;
-}
 
-export interface SensorConfig {
-  accelerometer: boolean;
-  temperature: boolean;
-  // Other sensors can be added here, e.g., temperature: boolean;
-}
 
 const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) => {
   const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true });
