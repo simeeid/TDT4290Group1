@@ -1,10 +1,10 @@
 'use client';
-import {Device} from '../../DeviceManager';
+import {connectDevice, Device} from '../../DeviceManager';
 import {useState} from 'react';
 import './SidebarComponent.css'
 import {SidebarProps} from './types'
 
-export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevice }) => {
+export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
   const [sidebarActive, setSidebarActive] = useState(false);
 
   const deviceHtml: Array<React.JSX.Element> = [];
@@ -55,11 +55,11 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevic
               code: id
             } as Device;
 
-            if (devices == null || connectDevice == null) {
-              alert("Programmer error: devices is null and/or connectDevice is null");
+            if (devices == null) {
+              alert("Programmer error: devices is null");
             } else {
               button.disabled = true;
-              connectDevice(device)
+              connectDevice(devices, device)
                 .then(res => {
                   button.disabled = false;
                   if (!res) {
@@ -67,6 +67,10 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevic
                   } else {
                     idField.value = "";
                   }
+                  setSidebarActive(false);
+                  setTimeout(() => {
+                    setSidebarActive(true);
+                  }, 0);
                 });
             }
           }}>

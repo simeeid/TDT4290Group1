@@ -47,7 +47,7 @@
 }
 
 input {
-  color: black;
+  color: black !important;
 }
 
 

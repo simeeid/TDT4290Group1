@@ -1,6 +1,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import {HeaderComponent} from './components/HeaderComponent/HeaderComponent';
+import {Device} from './DeviceManager';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,9 +16,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  let devices = [] as Array<Device>;
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+
+      <body className={inter.className}>
+        <HeaderComponent useSidebar={true} devices={devices} />
+
+        {children}
+      </body>
     </html>
   )
 }
