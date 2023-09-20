@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +23,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isConnected = false;
   bool isRunning = false;
+  String accelerometerData = "Accelerometer Data:";
+  StreamSubscription<AccelerometerEvent>? accelerometerSubscription;
 
   void toggleConnect() {
     setState(() {
@@ -32,7 +36,26 @@ class _MyHomePageState extends State<MyHomePage> {
   void toggleStartStop() {
     setState(() {
       isRunning = !isRunning;
+      if (isRunning) {
+        // Start listening to accelerometer data
+        accelerometerSubscription =
+            accelerometerEvents.listen((AccelerometerEvent event) {
+          setState(() {
+            accelerometerData =
+                "Accelerometer Data:\nX: ${event.x.toStringAsFixed(2)}\nY: ${event.y.toStringAsFixed(2)}\nZ: ${event.z.toStringAsFixed(2)}";
+          });
+        });
+      } else {
+        // Stop listening to accelerometer data
+        accelerometerSubscription?.cancel();
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    accelerometerSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -75,6 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: isConnected ? toggleStartStop : null,
               backgroundColor: isRunning ? Colors.red : Colors.green,
               child: Icon(isRunning ? Icons.stop : Icons.play_arrow),
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              accelerometerData,
+              style: TextStyle(fontSize: 18),
             ),
           ],
         ),
