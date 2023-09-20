@@ -1,3 +1,3 @@
 export interface HeaderProps {
-  useSidebar: boolean
+  useSidebar: boolean;
 }
