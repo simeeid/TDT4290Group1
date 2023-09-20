@@ -1,14 +1,12 @@
 'use client';
 
-import { SidebarProps, SidebarComponent } from "../SidebarComponent/SidebarComponent";
-import './HeaderComponent.css'
+import { SidebarComponent } from "../SidebarComponent/SidebarComponent";
+import { SidebarProps } from '../SidebarComponent/types'
 
-interface HeaderProps {
-  useSidebar: boolean
-}
+import './HeaderComponent.css'
+import {HeaderProps} from "./types"
 
 export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSidebar, ...props }) => {
-
   return (
     <header>
       <div className="logo">

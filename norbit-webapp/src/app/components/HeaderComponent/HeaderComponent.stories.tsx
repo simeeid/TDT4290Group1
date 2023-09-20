@@ -1,7 +1,7 @@
 import { HeaderComponent } from './HeaderComponent';
 
 export default {
-  title: "organisms/HeaderComponent",
+  title: "HeaderComponent",
   component: HeaderComponent,
   args: {
 

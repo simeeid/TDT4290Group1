@@ -1,13 +1,8 @@
 'use client';
-import {Device} from '../../../DeviceManager';
+import {Device} from '../../DeviceManager';
 import {useState} from 'react';
 import './SidebarComponent.css'
-
-
-export interface SidebarProps {
-  devices?: Array<Device>,
-  connectDevice?: (newDevice: Device) => Promise<boolean>,
-}
+import {SidebarProps} from './types'
 
 export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevice, ...props }) => {
   const [sidebarActive, setSidebarActive] = useState(false);
@@ -89,5 +84,5 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevic
 
       </div>
     </div>
-                                                              );
+    );
 };

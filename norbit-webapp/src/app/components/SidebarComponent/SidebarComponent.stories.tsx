@@ -1,7 +1,7 @@
 import { SidebarComponent } from './SidebarComponent';
 
 export default {
-  title: "organisms/SidebarComponent",
+  title: "SidebarComponent",
   component: SidebarComponent,
   args: {
   }
