@@ -4,7 +4,7 @@ import {useState} from 'react';
 import './SidebarComponent.css'
 import {SidebarProps} from './types'
 
-export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevice, ...props }) => {
+export const SidebarComponent: React.FC<SidebarProps> = ({ devices, connectDevice }) => {
   const [sidebarActive, setSidebarActive] = useState(false);
 
   const deviceHtml: Array<React.JSX.Element> = [];
