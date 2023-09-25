@@ -12,6 +12,11 @@
 
 ### File and folder structure webApp convention
 - public/  -> Keep static assets here
+- redux/
+  - slices/
+  - hooks.tsx
+  - provider.tsx
+  - store.tsx
 - src/ -> code for our app
   - globall.css
   - layout.tsx
