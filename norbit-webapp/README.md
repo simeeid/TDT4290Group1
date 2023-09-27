@@ -62,12 +62,6 @@ There are three different types of  tests spread across two different libraries.
 ### Running all tests
 **Note:** This step requires bash. To run on Windows, you can use Git Bash, or optionally WSL with configuration this document won't cover. You can always run the tests separately manually, as outlined in the next two sections.
 
-There's a convenience script for running all the tests. With `norbit-webapp` as the working directory, run `./scripts/test.sh`. This will automatically run the unit and component tests, and then spin up a server and run the integration tests. You can also type `./scripts/test.sh dev` to use a dev environment instead of a production environment, or `./scripts/test.sh skip-server` to not start the server.
-
-The latter is particualrly useful if you have `npm run dev` running elsewhere for debugging.
-
-Note that `npm run dev`/`npm run start` must NOT be running elsewhere before 
-
 ### Running unit tests
 
 Run `npm run unit-test`
