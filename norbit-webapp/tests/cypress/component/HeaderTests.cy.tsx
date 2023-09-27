@@ -1,3 +1,4 @@
+import React = require('react');
 import { HeaderComponent } from '../../../src/app/components/HeaderComponent/HeaderComponent'
 
 describe('Header', () => {
