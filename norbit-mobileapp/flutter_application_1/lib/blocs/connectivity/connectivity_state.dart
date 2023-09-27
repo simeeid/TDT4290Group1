@@ -13,7 +13,8 @@ class DataStarted extends Connected {}
 class DataStopped extends Connected {}
 
 class DataUpdated extends DataStarted {
-  final AccelerometerEvent accelerometerEvent;
+  final AccelerometerEvent? accelerometerEvent;
+  final int? luxValue;
 
-  DataUpdated(this.accelerometerEvent);
+  DataUpdated({this.accelerometerEvent, this.luxValue});
 }
