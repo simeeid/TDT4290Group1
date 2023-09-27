@@ -70,9 +70,11 @@ It is not required to mention co-authors in the commit messages, but this signal
 When you make a new branch, it should be given a descriptive name containing why the branch was made, or what problems it's meant to solve. You do this by mentioning what changes have been made, in the format `change-type/description`. Some relevant change types include:
 
 * `feat`: feature; something new has been added
-* `ref`: refactor; chcange of an existing change
+* `ref`: refactor; change of an existing change
 * `fix`: fixes to the code
 * `chore`: extremely minor changes, such as grammatical corrections, or meta-changes, such as minor changes to the CI.
+
+You may use other types if deemed necessary, but make sure it's  both properly defined, and doesn't overlap with anything else on this list. If you do end up using an undocumented type, please add it to this list, along with a definition.
 
 The description should be short and concise, and should cover the primary objective of the branch. It doesn't need to be exhaustive; that's covered by commit messages and pull request messages.
 
