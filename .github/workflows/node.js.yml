@@ -41,5 +41,5 @@ jobs:
     - name: Run cypress tests
       uses: cypress-io/github-action@v6
       with:
-        start: npm start
+        start: npm run start
         browser: chrome
