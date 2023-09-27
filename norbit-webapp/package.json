@@ -10,7 +10,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "unit-test": "jest",
-    "integration-test": "cypress open"
+    "integration-test": "cypress run",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.0",
