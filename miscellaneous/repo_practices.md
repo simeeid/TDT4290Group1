@@ -10,7 +10,7 @@
 
 ---
 
-### File and folder structure webApp convention
+### File and folder structure webapp convention
 - public/  -> Keep static assets here
 - src/ -> code for our app
   - globall.css
@@ -26,17 +26,16 @@
       - component1/
         - component1.tsx
         - style.css
-        - types.tsx  
+        - types.tsx
     - page/
       - page.tsx
       - error.tsx
       - loading.tsx
       - layout.tsx
       - style.css 
-
-
-  
-
+- tests/ 
+  - cypress - contains cypress-based integration tests
+  - unit    - contains jest-based unit tests
 
 ### Commit-meldinger
 Commit-meldingene skal være korte og beskrivende, og skal skrives med passivt språk. Normalt ønsker man å dele denne i tre deler, tittel, hoveddel og footer. Tittelen skal gi en kort oversikt over endringen som commit-meldingen medfører. F.eks. hva som er endret eller hva som er gjort. Hoveddelen skal utdype dette. Man kan gjerne nevne hvilke filer eller komponenter som er endret og hva som ble endret i dem. Footeren er spesielt viktig for backlog. Her kan man tagge issues som endringene man har gjort hører til, og man kan tagge med-forfattere. Dette gjøres på følgende måte:
