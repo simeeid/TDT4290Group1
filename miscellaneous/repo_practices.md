@@ -39,8 +39,15 @@
       - layout.tsx
       - style.css 
 - tests/ 
-  - cypress - contains cypress-based integration tests
+  - cypress - contains cypress-based tests
+      - component/ - contains component tests
+          - TestName.cy.tsx
+      - integration/ - contains integration tests
+          - TestName.cy.tsx
+      - plugin/ - contains meta files
+      - support/ - contains meta files
   - unit    - contains jest-based unit tests
+      - TestName.test.tsx
 
 ### Commit-meldinger
 Commit-meldingene skal være korte og beskrivende, og skal skrives med passivt språk. Normalt ønsker man å dele denne i tre deler, tittel, hoveddel og footer. Tittelen skal gi en kort oversikt over endringen som commit-meldingen medfører. F.eks. hva som er endret eller hva som er gjort. Hoveddelen skal utdype dette. Man kan gjerne nevne hvilke filer eller komponenter som er endret og hva som ble endret i dem. Footeren er spesielt viktig for backlog. Her kan man tagge issues som endringene man har gjort hører til, og man kan tagge med-forfattere. Dette gjøres på følgende måte:

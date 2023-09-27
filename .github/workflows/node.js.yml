@@ -39,9 +39,17 @@ jobs:
       working-directory: norbit-webapp
       run: |
         npm run unit-test
-    - name: Run cypress tests
+    - name: Run cypress E2E tests
       uses: cypress-io/github-action@v6
       with:
+        start: npm run start
+        browser: chrome
+        working-directory: norbit-webapp
+    - name: Run cypress component tests
+      uses: cypress-io/github-action@v6
+      with:
+        install: false
+        component: true
         start: npm run start
         browser: chrome
         working-directory: norbit-webapp

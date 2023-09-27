@@ -10,7 +10,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "unit-test": "jest",
-    "integration-test": "cypress run",
+    "integration-test": "cypress run --e2e",
+    "component-test": "cypress run --component",
     "cypress": "cypress open"
   },
   "dependencies": {
