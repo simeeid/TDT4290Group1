@@ -39,8 +39,8 @@ jobs:
       run: |
         npm run unit-test
     - name: Run cypress tests
-      working-directory: norbit-webapp
       uses: cypress-io/github-action@v6
       with:
         start: npm run start
         browser: chrome
+        working-directory: norbit-webapp
