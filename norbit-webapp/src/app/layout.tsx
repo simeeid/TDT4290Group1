@@ -1,9 +1,11 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import {HeaderComponent} from './components/HeaderComponent/HeaderComponent';
-import {Device} from './DeviceManager';
+import { HeaderComponent } from './components/HeaderComponent/HeaderComponent';
+import { Device } from './DeviceManager';
 import { Providers } from '../../redux/provider';
+
+import React from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 

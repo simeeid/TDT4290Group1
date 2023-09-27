@@ -1,8 +1,8 @@
 'use client';
-import {connectDevice, Device} from '../../DeviceManager';
-import {useState} from 'react';
+import { connectDevice, Device } from '../../DeviceManager';
+import React, { useState } from 'react';
 import './SidebarComponent.css'
-import {SidebarProps} from './types'
+import { SidebarProps } from './types'
 
 export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
   const [sidebarActive, setSidebarActive] = useState(false);
