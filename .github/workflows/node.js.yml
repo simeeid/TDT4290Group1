@@ -50,6 +50,5 @@ jobs:
       with:
         install: false
         component: true
-        start: npm run start
         browser: chrome
         working-directory: norbit-webapp
