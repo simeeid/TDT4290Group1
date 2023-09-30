@@ -61,9 +61,20 @@ class HomeScreen extends StatelessWidget {
                   if (state is DataUpdated)
                     Column(
                       children: [
-                        Text('x: ${state.accelerometerEvent.x}'),
-                        Text('y: ${state.accelerometerEvent.y}'),
-                        Text('z: ${state.accelerometerEvent.z}'),
+                        if (state.accelerometerEvent != null)
+                          Column(
+                            children: [
+                              Text('x: ${state.accelerometerEvent!.x}'),
+                              Text('y: ${state.accelerometerEvent!.y}'),
+                              Text('z: ${state.accelerometerEvent!.z}'),
+                            ],
+                          ),
+                        if (state.luxValue != null)
+                          Column(
+                            children: [
+                              Text('Lux value: ${state.luxValue}'),
+                            ],
+                          ),
                       ],
                     ),
                 ],
