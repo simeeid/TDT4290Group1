@@ -32,6 +32,7 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
       yield Disconnected();
       _accelerometerSubscription?.cancel();
       _lightSubscription?.cancel();
+      _noiseSubscription?.cancel();
     } else if (event is StartStop) {
       if (state is DataStarted) {
         yield DataStopped();
