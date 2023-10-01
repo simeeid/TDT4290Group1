@@ -70,22 +70,25 @@ class HomeScreen extends StatelessWidget {
                         if (state.accelerometerEvent != null)
                           Column(
                             children: [
-                              Text('x: ${state.accelerometerEvent!.x}'),
-                              Text('y: ${state.accelerometerEvent!.y}'),
-                              Text('z: ${state.accelerometerEvent!.z}'),
+                              Text(
+                                  'x: ${state.accelerometerEvent!.x.toStringAsFixed(2)} m/s²'),
+                              Text(
+                                  'y: ${state.accelerometerEvent!.y.toStringAsFixed(2)} m/s²'),
+                              Text(
+                                  'z: ${state.accelerometerEvent!.z.toStringAsFixed(2)} m/s²'),
                             ],
                           ),
                         if (state.luxValue != null)
                           Column(
                             children: [
-                              Text('Lux value: ${state.luxValue}'),
+                              Text('Lux value: ${state.luxValue} lx'),
                             ],
                           ),
                         if (state.noiseReading != null)
                           Column(
                             children: [
                               Text(
-                                  'Noise level: ${state.noiseReading!.meanDecibel} dB'),
+                                  'Noise level: ${state.noiseReading!.meanDecibel.toStringAsFixed(2)} dB'),
                             ],
                           ),
                       ],
