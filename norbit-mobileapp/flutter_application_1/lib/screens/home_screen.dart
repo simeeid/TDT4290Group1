@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../blocs/connectivity/connectivity_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -49,8 +50,13 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: state is Connected
-                        ? () =>
-                            context.read<ConnectivityBloc>().add(StartStop())
+                        ? () async {
+                            if (await Permission.microphone
+                                .request()
+                                .isGranted) {
+                              context.read<ConnectivityBloc>().add(StartStop());
+                            }
+                          }
                         : null,
                     child: Text(state is DataStarted ? 'Stop' : 'Start'),
                     style: ElevatedButton.styleFrom(
@@ -73,6 +79,13 @@ class HomeScreen extends StatelessWidget {
                           Column(
                             children: [
                               Text('Lux value: ${state.luxValue}'),
+                            ],
+                          ),
+                        if (state.noiseReading != null)
+                          Column(
+                            children: [
+                              Text(
+                                  'Noise level: ${state.noiseReading!.meanDecibel} dB'),
                             ],
                           ),
                       ],
