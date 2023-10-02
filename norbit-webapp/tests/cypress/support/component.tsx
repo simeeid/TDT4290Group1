@@ -11,5 +11,7 @@ declare global {
 }
 
 Cypress.Commands.add('mount', (component, options) => {
+  // Wrapping all the components in <Providers> is required
+  // for react-redux to work in component tests.
   return mount(<Providers>{component}</Providers>, options);
 });
