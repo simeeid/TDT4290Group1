@@ -1,7 +1,8 @@
 describe('Header and navbar', () => {
-
-  it('Likes placeholders', () => {
-
+  it('Appears on the homepage', () => {
+    cy.visit("/");
+    cy.get("div.sidebar").should("exist");
+    cy.get("header").should("exist");
   });
 });
 

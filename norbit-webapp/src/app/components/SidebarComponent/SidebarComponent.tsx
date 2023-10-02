@@ -25,14 +25,14 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
   // if more forms are used.
   return (
     <div>
-      <button className="hamburger-button" onClick={() => {
+      <button id="expand-sidebar" className="hamburger-button" onClick={() => {
         setSidebarActive(true);
       }}>≡</button>
 
 
       <div className={"sidebar " + (sidebarActive ? "" : "hidden")}>
         <div className="right">
-          <button id="submit-device-id" className="close-button" onClick={() => {
+          <button id="close-sidebar" className="close-button" onClick={() => {
             setSidebarActive(false);
           }}>x</button>
         </div>
@@ -77,13 +77,13 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
             <label>Enter device ID</label>
             <input id="device-id" name="device-id" placeholder="ABCD1234" />
 
-            <button type="submit">Connect now!</button>
+            <button id="submit-device-id" type="submit">Connect now!</button>
           </form>
 
           <hr />
           <h2>Device list</h2>
 
-          { deviceHtml.length == 0 ? <p>No devices connected :(</p> : deviceHtml }
+          { deviceHtml.length == 0 ? <p>No devices connected :(</p> : <div className="device-list">{deviceHtml}</div> }
         </div>
 
       </div>
