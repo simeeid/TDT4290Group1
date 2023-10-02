@@ -22,12 +22,11 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
       // if any.
       deviceHtml.push(<div className="device-list-item">
         <h3>Device {device.code}</h3>
+        <p>Other useful info goes here</p>
       </div>);
     }
   }
 
-  // TODO: some of these elements probably need to be converted to atoms. At least the form, but that can be done later
-  // if more forms are used.
   return (
     <div>
       <button id="expand-sidebar" className="hamburger-button" onClick={() => {

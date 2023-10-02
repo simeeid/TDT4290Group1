@@ -1,6 +1,4 @@
-export interface Device {
-  code: string
-}
+import { Device } from '@redux/slices/DeviceList'
 
 export async function connectDevice(devices: Array<Device>, device: Device) {
   for (let _device of devices) {
