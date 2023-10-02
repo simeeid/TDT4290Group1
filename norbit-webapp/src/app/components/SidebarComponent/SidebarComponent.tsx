@@ -9,6 +9,11 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
 
   const deviceHtml: Array<React.JSX.Element> = [];
 
+  const setError = (message: string) => {
+    // TODO: pretty (inline) error messages
+    alert(message);
+  };
+
   if (devices != null) {
     for (let i = 0; i < devices.length; ++i) {
       let device = devices[i];
@@ -62,11 +67,13 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
               connectDevice(devices, device)
                 .then(res => {
                   button.disabled = false;
-                  if (!res) {
-                    alert("Failed to connect to device. Make sure the ID is valid, and that they device is connected");
-                  } else {
+                  if (res == "already_connected") {
+                    alert("You're already connected to that device");
+                  } else if (res == "ok") {
                     idField.value = "";
                   }
+              
+                  // This is a disgusting hack
                   setSidebarActive(false);
                   setTimeout(() => {
                     setSidebarActive(true);

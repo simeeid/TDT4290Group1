@@ -18,7 +18,7 @@
   - provider.tsx
   - store.tsx
 - src/ -> code for our app
-  - globall.css
+  - globals.css
   - layout.tsx
   - page.tsx 
   - app/
