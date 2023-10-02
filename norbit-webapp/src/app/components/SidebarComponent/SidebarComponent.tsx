@@ -3,8 +3,13 @@ import { connectDevice, Device } from '../../DeviceManager';
 import React, { useState } from 'react';
 import './SidebarComponent.css'
 import { SidebarProps } from './types'
+import {useAppDispatch, useAppSelector} from '@redux/hook';
+import { deviceList, push } from '@redux/slices/DeviceList';
 
-export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
+export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
+  let dispatch = useAppDispatch();
+  let devices = useAppSelector((state) => state.deviceList.devices);
+
   const [sidebarActive, setSidebarActive] = useState(false);
 
   const deviceHtml: Array<React.JSX.Element> = [];
@@ -50,7 +55,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
 
             let id = idField.value;
             if (id == null || id == "") {
-              alert("Please enter an ID");
+              setError("Please enter an ID");
               return;
             }
 
@@ -60,23 +65,23 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
             } as Device;
 
             if (devices == null) {
-              alert("Programmer error: devices is null");
+              setError("Programmer error: devices is null");
             } else {
               button.disabled = true;
-              connectDevice(devices, device)
+              connectDevice(devices, () => dispatch(push(device)), device)
                 .then(res => {
                   button.disabled = false;
                   if (res == "already_connected") {
-                    alert("You're already connected to that device");
+                    setError("You're already connected to that device");
                   } else if (res == "ok") {
                     idField.value = "";
                   }
               
                   // This is a disgusting hack
-                  setSidebarActive(false);
-                  setTimeout(() => {
-                    setSidebarActive(true);
-                  }, 0);
+                  //setSidebarActive(false);
+                  //setTimeout(() => {
+                    //setSidebarActive(true);
+                  //}, 0);
                 });
             }
           }}>

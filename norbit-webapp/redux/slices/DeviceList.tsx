@@ -33,4 +33,6 @@ export const deviceList = createSlice({
   }
 });
 
+export const { push, pop } = deviceList.actions;
+
 export default deviceList.reducer;

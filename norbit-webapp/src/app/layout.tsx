@@ -2,7 +2,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { HeaderComponent } from './components/HeaderComponent/HeaderComponent';
-import { Device } from './DeviceManager';
 import { Providers } from '../../redux/provider';
 
 import React from 'react';
@@ -19,14 +18,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  let devices = [] as Array<Device>;
 
   return (
     <html lang="en">
 
       <body className={inter.className}>
         <Providers>
-          <HeaderComponent devices={devices} useSidebar={true}/>
+          <HeaderComponent useSidebar={true}/>
           {children}
         </Providers>
       </body>

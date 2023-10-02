@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderComponent } from '../../../src/app/components/HeaderComponent/HeaderComponent'
+import { HeaderComponent } from '@/app/components/HeaderComponent/HeaderComponent'
 
 describe('Header', () => {
   it("Should render", () => {

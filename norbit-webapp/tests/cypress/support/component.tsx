@@ -1,4 +1,6 @@
 import { mount } from 'cypress/react18'
+import { Providers } from '@redux/provider'
+import React from 'react';
 
 declare global {
   namespace Cypress {
@@ -8,4 +10,6 @@ declare global {
   }
 }
 
-Cypress.Commands.add('mount', mount)
+Cypress.Commands.add('mount', (component, options) => {
+  return mount(<Providers>{component}</Providers>, options);
+});
