@@ -2,20 +2,26 @@
 .dashboardContainer {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
 }
 
 
 .chartsContainer {
   flex: 3;
-  padding: 20px;
   width: 500px;
   height: 350px;
-  
 }
+
+  .chartsContainer > div {
+    padding: 10px 20px;
+  }
+
+  .chartsContainer > div:nth-of-type(even) {
+    background-color: #F4F2F0;
+  }
 
 .configurationPanel {
   flex: 1;
   padding: 20px;
   border-left: 1px solid #ddd;
 }
+
