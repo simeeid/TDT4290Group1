@@ -2,11 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { AccelerometerData } from './types';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Label } from 'recharts';
+import {ChartComponent} from '../ChartComponent/ChartComponent';
 
 const AccelerometerChart: React.FC = () => {
   const [data, setData] = useState<AccelerometerData[]>([]);
   const [buffer, setBuffer] = useState<AccelerometerData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+
+  const onPauseStateChange = (newState: boolean) => {
+    setIsPaused(newState);
+  }
 
   useEffect(() => {
     const generateDummyData = (): AccelerometerData => ({
@@ -39,29 +44,14 @@ const AccelerometerChart: React.FC = () => {
     }, 10);
 
     return () => clearInterval(interval);
-  }, [isPaused, buffer]);
-
-  const minValue = Math.min(...data.map(item => item.acceleration), ...buffer.map(item => item.acceleration));
-  const maxValue = Math.max(...data.map(item => item.acceleration), ...buffer.map(item => item.acceleration));
+  }, [buffer, isPaused]);
 
   return (
-    <div>
-      <LineChart 
-        width={500} 
-        height={300} 
+    <div className="sensorContainer">
+      <h2>Acceleration</h2>
+      <ChartComponent
         data={data}
-        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-      >
-        <Line type="monotone" dataKey="acceleration" stroke="#8884d8" />
-        <XAxis dataKey="timestamp" />
-        <YAxis domain={[minValue - 1, maxValue + 1]}>
-          <Label angle={-90} value="Acceleration" position="insideLeft" style={{textAnchor: 'middle'}} />
-        </YAxis>
-        <Tooltip />
-      </LineChart>
-      <button onClick={() => setIsPaused(!isPaused)}>
-        {isPaused ? "Resume" : "Pause"}
-      </button>
+        onPauseStateChange={onPauseStateChange} />
     </div>
   );
 }
