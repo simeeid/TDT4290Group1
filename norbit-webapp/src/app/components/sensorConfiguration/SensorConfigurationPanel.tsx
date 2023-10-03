@@ -6,7 +6,7 @@ import { SensorConfig, Props } from './types';
 
 
 const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) => {
-  const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true });
+  const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
 
   const handleToggle = (sensor: keyof SensorConfig) => {
     const newConfig = {
@@ -44,6 +44,32 @@ const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) =>
               onChange={() => handleToggle('temperature')}
             />
             <label htmlFor="enable-temperature">Show Temperature Chart</label>
+          </div>
+        </div>
+
+        <div className={style.configGroup}>
+          <h4>Light intensity settings</h4>
+          <div className={style.optionGroup}>
+            <input 
+              id="enable-light"
+              type="checkbox"
+              checked={config.light}
+              onChange={() => handleToggle('light')}
+            />
+            <label htmlFor="enable-light">Show Light Chart</label>
+          </div>
+        </div>
+
+        <div className={style.configGroup}>
+          <h4>Sound level settings</h4>
+          <div className={style.optionGroup}>
+            <input 
+              id="enable-sound"
+              type="checkbox"
+              checked={config.sound}
+              onChange={() => handleToggle('sound')}
+            />
+            <label htmlFor="enable-sound">Show Sound Level Chart</label>
           </div>
         </div>
         {/* As more sensors are added, you can add more configuration options here */}
