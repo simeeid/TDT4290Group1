@@ -1,22 +1,37 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'package:light/light.dart';
 import 'package:noise_meter/noise_meter.dart';
-import '../lib/blocs/connectivity/connectivity_bloc.dart';
-import '../lib/blocs/connectivity/connectivity_state.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_application_1/mocks.dart';
+import 'package:flutter_application_1/blocs/connectivity/connectivity_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/connectivity_state.dart';
 
-class MockLight extends Mock implements Light {}
+/* In this file, we’re creating a ConnectivityBloc for testing purposes. 
+However, instead of passing real instances to its constructor, 
+we’re passing mock instances that we defined in our test setup. 
+These mock instances simulate the behavior of the real sensor APIs, 
+allowing us to test the logic of BLoC in isolation from external dependencies. */
 
-class MockNoiseMeter extends Mock implements NoiseMeter {}
+class MockLight extends Mock implements Light {
+  @override
+  Stream<int> get lightSensorStream => Stream.value(100);
+}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('ConnectivityBloc', () {
     late ConnectivityBloc connectivityBloc;
+    late MockLight light;
+    late NoiseMeter noiseMeter;
+    late SensorWrapper sensorWrapper;
 
     setUp(() {
-      connectivityBloc = ConnectivityBloc();
+      light = MockLight();
+      noiseMeter = MockNoiseMeter();
+      sensorWrapper = MockSensorWrapper();
+      connectivityBloc = ConnectivityBloc(
+          light: light, noiseMeter: noiseMeter, sensorWrapper: sensorWrapper);
     });
 
     tearDown(() {
@@ -41,6 +56,50 @@ void main() {
       expect: () => [Disconnected()],
     );
 
-    // Add more tests for StartStop and UpdateData events here.
+    blocTest<ConnectivityBloc, ConnectivityState>(
+      'emits [DataStarted] when StartStop event is added and current state is Connected',
+      build: () => connectivityBloc,
+      act: (bloc) => bloc
+        ..add(Connect())
+        ..add(StartStop()),
+      expect: () => [
+        Connected(),
+        DataStarted(),
+        isA<DataUpdated>(),
+        isA<DataUpdated>(),
+      ],
+    );
+
+    blocTest<ConnectivityBloc, ConnectivityState>(
+      'emits [DataStopped] when StartStop event is added and current state is DataStarted',
+      build: () => connectivityBloc,
+      act: (bloc) => bloc
+        ..add(Connect())
+        ..add(StartStop())
+        ..add(StartStop()),
+      expect: () => [
+        Connected(),
+        DataStarted(),
+        DataStopped(),
+        isA<DataUpdated>(),
+        isA<DataUpdated>(),
+      ],
+    );
+
+    blocTest<ConnectivityBloc, ConnectivityState>(
+      'emits [DataUpdated] when UpdateData event is added and current state is DataStarted',
+      build: () => connectivityBloc,
+      act: (bloc) => bloc
+        ..add(Connect())
+        ..add(StartStop())
+        ..add(UpdateData()),
+      expect: () => [
+        Connected(),
+        DataStarted(),
+        isA<DataUpdated>(),
+        isA<DataUpdated>(),
+        isA<DataUpdated>(),
+      ],
+    );
   });
 }
