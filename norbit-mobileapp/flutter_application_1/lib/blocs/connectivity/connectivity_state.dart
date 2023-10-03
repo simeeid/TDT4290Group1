@@ -1,8 +1,11 @@
-part of 'connectivity_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:noise_meter/noise_meter.dart';
 
-abstract class ConnectivityState {}
-
-class ConnectivityInitial extends ConnectivityState {}
+abstract class ConnectivityState extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 class Connected extends ConnectivityState {}
 
@@ -18,4 +21,9 @@ class DataUpdated extends DataStarted {
   final NoiseReading? noiseReading;
 
   DataUpdated({this.accelerometerEvent, this.luxValue, this.noiseReading});
+
+  @override
+  List<Object> get props => [accelerometerEvent, luxValue, noiseReading]
+      .map((e) => e ?? Object())
+      .toList();
 }

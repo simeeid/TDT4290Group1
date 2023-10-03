@@ -3,9 +3,12 @@ import 'package:bloc/bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:light/light.dart';
 import 'package:noise_meter/noise_meter.dart';
+import 'package:equatable/equatable.dart';
+
+import 'connectivity_state.dart';
 
 part 'connectivity_event.dart';
-part 'connectivity_state.dart';
+// part 'connectivity_state.dart';
 
 class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   StreamSubscription? _noiseSubscription;
