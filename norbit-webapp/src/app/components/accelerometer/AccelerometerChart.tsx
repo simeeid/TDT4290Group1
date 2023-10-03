@@ -1,12 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { AccelerometerData } from './types';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Label } from 'recharts';
-import {ChartComponent} from '../ChartComponent/ChartComponent';
+import { ChartComponent } from '../ChartComponent/ChartComponent';
+import { ChartData } from '../ChartComponent/types';
 
 const AccelerometerChart: React.FC = () => {
-  const [data, setData] = useState<AccelerometerData[]>([]);
-  const [buffer, setBuffer] = useState<AccelerometerData[]>([]);
+  const [data, setData] = useState<ChartData[]>([]);
+  const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
 
   const onPauseStateChange = (newState: boolean) => {
@@ -14,9 +13,9 @@ const AccelerometerChart: React.FC = () => {
   }
 
   useEffect(() => {
-    const generateDummyData = (): AccelerometerData => ({
+    const generateDummyData = (): ChartData => ({
       timestamp: new Date().toLocaleTimeString(),
-      acceleration: parseFloat((Math.random() * 10).toFixed(2))
+      datapoint: parseFloat((Math.random() * 10).toFixed(2))
     });
 
     const interval = setInterval(() => {
@@ -51,7 +50,9 @@ const AccelerometerChart: React.FC = () => {
       <h2>Acceleration</h2>
       <ChartComponent
         data={data}
-        onPauseStateChange={onPauseStateChange} />
+        onPauseStateChange={onPauseStateChange}
+        chartLabel="Acceleration"
+      />
     </div>
   );
 }

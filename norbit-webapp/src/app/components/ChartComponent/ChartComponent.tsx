@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ChartData, ChartProps } from './types';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Label } from 'recharts';
 
-export const ChartComponent: React.FC<ChartProps> = ({ data, paddingOffset, onPauseStateChange }) => {
+export const ChartComponent: React.FC<ChartProps> = ({ data, chartLabel, paddingOffset, onPauseStateChange }) => {
   const offset = paddingOffset == null ? 1 : paddingOffset;
 
   const [isPaused, setIsPaused] = useState(false);
@@ -15,8 +15,7 @@ export const ChartComponent: React.FC<ChartProps> = ({ data, paddingOffset, onPa
       onPauseStateChange(!isPaused);
     }
     setIsPaused(!isPaused);
-    console.log(isPaused);
-  }
+  };
 
   useEffect(() => {
     if (isPaused && pauseBuffer.length == 0) {
@@ -25,8 +24,8 @@ export const ChartComponent: React.FC<ChartProps> = ({ data, paddingOffset, onPa
       setPauseBuffer([]);
     }
   }, [isPaused]);
-  const minValue = Math.min(...(isPaused ? pauseBuffer.map(item => item.acceleration) : data.map(item => item.acceleration)));
-  const maxValue = Math.max(...(isPaused ? pauseBuffer.map(item => item.acceleration) : data.map(item => item.acceleration)));
+  const minValue = Math.min(...(isPaused ? pauseBuffer.map(item => item.datapoint) : data.map(item => item.datapoint)));
+  const maxValue = Math.max(...(isPaused ? pauseBuffer.map(item => item.datapoint) : data.map(item => item.datapoint)));
   return (
     <div className="chart-container">
       <LineChart 
@@ -35,10 +34,10 @@ export const ChartComponent: React.FC<ChartProps> = ({ data, paddingOffset, onPa
         data={isPaused ? pauseBuffer : data}
         margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
       >
-        <Line type="monotone" dataKey="acceleration" isAnimationActive={false} stroke="#8884d8" />
+        <Line type="monotone" dataKey="datapoint" isAnimationActive={false} stroke="#8884d8" />
         <XAxis dataKey="timestamp" />
         <YAxis domain={[minValue - offset, maxValue + offset]}>
-          <Label angle={-90} value="Acceleration" position="insideLeft" style={{textAnchor: 'middle'}} />
+          {chartLabel ? <Label angle={-90} value={chartLabel} position="insideLeft" style={{textAnchor: 'middle'}} /> : ""}
         </YAxis>
         <Tooltip />
       </LineChart>
