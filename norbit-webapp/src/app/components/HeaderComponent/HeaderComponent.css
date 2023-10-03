@@ -23,3 +23,7 @@ header > * {
   display: flex;
   justify-content: flex-end;
 }
+
+header p {
+    margin: 0 !important;
+}
