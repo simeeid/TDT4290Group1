@@ -20,6 +20,47 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   ConnectivityBloc() : super(Disconnected()) {
     _light = Light();
     _noiseMeter = NoiseMeter();
+
+    on<Connect>((event, emit) async {
+      emit(Connected());
+    });
+
+    on<Disconnect>((event, emit) async {
+      emit(Disconnected());
+      _accelerometerSubscription?.cancel();
+      _lightSubscription?.cancel();
+      _noiseSubscription?.cancel();
+    });
+
+    on<StartStop>((event, emit) async {
+      if (state is DataStarted) {
+        emit(DataStopped());
+        _accelerometerSubscription?.cancel();
+        _lightSubscription?.cancel();
+        _noiseSubscription?.cancel();
+      } else {
+        emit(DataStarted());
+        _accelerometerSubscription = accelerometerEvents.listen((event) {
+          _lastAccelerometerEvent = event;
+          add(UpdateData());
+        });
+        _lightSubscription = _light?.lightSensorStream.listen((luxValue) {
+          _lastLuxValue = luxValue;
+          add(UpdateData());
+        });
+        _noiseSubscription = _noiseMeter?.noise.listen((noiseReading) {
+          _lastNoiseReading = noiseReading;
+          add(UpdateData());
+        });
+      }
+    });
+
+    on<UpdateData>((event, emit) async {
+      emit(DataUpdated(
+          accelerometerEvent: _lastAccelerometerEvent,
+          luxValue: _lastLuxValue,
+          noiseReading: _lastNoiseReading));
+    });
   }
 
   @override
