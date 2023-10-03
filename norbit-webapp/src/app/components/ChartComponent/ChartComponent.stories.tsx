@@ -1,4 +1,4 @@
-import {ChartComponent} from "./ChartComponent";
+import { ChartComponent } from "./ChartComponent";
 
 export default {
   title: "ChartComponent",

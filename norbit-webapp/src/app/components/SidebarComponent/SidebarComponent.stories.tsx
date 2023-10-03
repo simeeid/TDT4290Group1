@@ -11,6 +11,7 @@ export default {
 
 export const Default = {
   decorators: [
+    // Not sure if there's a better return type here, but this works, so I guess it's fine?
     (story: () => React.ReactNode) => <Providers>{story()}</Providers>,
   ]
 };
