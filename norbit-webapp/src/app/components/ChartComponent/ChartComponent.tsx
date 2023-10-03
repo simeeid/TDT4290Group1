@@ -23,7 +23,7 @@ export const ChartComponent: React.FC<ChartProps> = ({ data, chartLabel, padding
     } else if (!isPaused && pauseBuffer.length > 0) {
       setPauseBuffer([]);
     }
-  }, [isPaused]);
+  }, [isPaused, data, pauseBuffer]);
   const minValue = Math.min(...(isPaused ? pauseBuffer.map(item => item.datapoint) : data.map(item => item.datapoint)));
   const maxValue = Math.max(...(isPaused ? pauseBuffer.map(item => item.datapoint) : data.map(item => item.datapoint)));
   return (
