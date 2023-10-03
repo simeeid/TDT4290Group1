@@ -1,3 +1,5 @@
+import {Providers} from '@redux/provider';
+import React from 'react';
 import { SidebarComponent } from './SidebarComponent';
 
 export default {
@@ -7,4 +9,8 @@ export default {
   }
 };
 
-export const Default = {};
+export const Default = {
+  decorators: [
+    (story: () => React.ReactNode) => <Providers>{story()}</Providers>,
+  ]
+};
