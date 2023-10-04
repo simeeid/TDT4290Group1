@@ -4,14 +4,20 @@ import AccelerometerChart from '../accelerometer/AccelerometerChart';
 import SensorConfigurationPanel from '../sensorConfiguration/SensorConfigurationPanel';
 import dashboardStyles from './Dashboard.module.css';
 import { SensorConfig } from '../sensorConfiguration/types';
+import {TemperatureComponent} from '../TemperatureComponent/TemperatureComponent';
+import {SoundLevelComponent} from '../SoundLevelComponent/SoundLevelComponent';
+import {LightIntensityComponent} from '../LightIntensityComponent/LightIntensityComponent';
+
 const Dashboard: React.FC = () => {
-  const [sensorConfig, setSensorConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true });
+  const [sensorConfig, setSensorConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, light: true, sound: true });
 
   return (
     <div className={dashboardStyles.dashboardContainer}>
       <div className={dashboardStyles.chartsContainer}>
         {sensorConfig.accelerometer && <AccelerometerChart />}
-        {sensorConfig.temperature && <div>Tempreture</div>}
+        {sensorConfig.temperature && <TemperatureComponent />}
+        {sensorConfig.light && <LightIntensityComponent />}
+        {sensorConfig.sound && <SoundLevelComponent />}
       </div>
       <div className={dashboardStyles.configurationPanel}>
         <SensorConfigurationPanel onConfigurationChange={setSensorConfig} />

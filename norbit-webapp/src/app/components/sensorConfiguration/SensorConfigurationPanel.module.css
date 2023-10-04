@@ -1,8 +1,21 @@
-.labelBlock>div {
+.labelBlock {
+  padding: 5px;
+}
+
+.labelBlock > div {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin-bottom: '2px';
   height: 40%;
 }
+
+.configRoot {
+  display: inline-block;
+}
+
+.configGroup {
+  border-bottom: 2px solid #F4F2F0;
+  width: 100%;
+  padding: 4px;
+}
+

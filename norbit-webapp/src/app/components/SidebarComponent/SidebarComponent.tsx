@@ -1,13 +1,23 @@
 'use client';
-import {connectDevice, Device} from '../../DeviceManager';
-import {useState} from 'react';
+import { connectDevice, Device } from '../../DeviceManager';
+import React, { useState } from 'react';
 import './SidebarComponent.css'
-import {SidebarProps} from './types'
+import { SidebarProps } from './types'
+import {useAppDispatch, useAppSelector} from '@redux/hook';
+import { deviceList, push } from '@redux/slices/DeviceList';
 
-export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
+export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
+  let dispatch = useAppDispatch();
+  let devices = useAppSelector((state) => state.deviceList.devices);
+
   const [sidebarActive, setSidebarActive] = useState(false);
 
   const deviceHtml: Array<React.JSX.Element> = [];
+
+  const setError = (message: string) => {
+    // TODO: pretty (inline) error messages
+    alert(message);
+  };
 
   if (devices != null) {
     for (let i = 0; i < devices.length; ++i) {
@@ -17,22 +27,21 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
       // if any.
       deviceHtml.push(<div className="device-list-item">
         <h3>Device {device.code}</h3>
+        <p>Other useful info goes here</p>
       </div>);
     }
   }
 
-  // TODO: some of these elements probably need to be converted to atoms. At least the form, but that can be done later
-  // if more forms are used.
   return (
     <div>
-      <button className="hamburger-button" onClick={() => {
+      <button id="expand-sidebar" className="hamburger-button" onClick={() => {
         setSidebarActive(true);
       }}>≡</button>
 
 
       <div className={"sidebar " + (sidebarActive ? "" : "hidden")}>
         <div className="right">
-          <button id="submit-device-id" className="close-button" onClick={() => {
+          <button id="close-sidebar" className="close-button" onClick={() => {
             setSidebarActive(false);
           }}>x</button>
         </div>
@@ -46,7 +55,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
 
             let id = idField.value;
             if (id == null || id == "") {
-              alert("Please enter an ID");
+              setError("Please enter an ID");
               return;
             }
 
@@ -56,34 +65,36 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ devices }) => {
             } as Device;
 
             if (devices == null) {
-              alert("Programmer error: devices is null");
+              setError("Programmer error: devices is null");
             } else {
               button.disabled = true;
-              connectDevice(devices, device)
+              connectDevice(devices, () => dispatch(push(device)), device)
                 .then(res => {
                   button.disabled = false;
-                  if (!res) {
-                    alert("Failed to connect to device. Make sure the ID is valid, and that they device is connected");
-                  } else {
+                  if (res == "already_connected") {
+                    setError("You're already connected to that device");
+                  } else if (res == "ok") {
                     idField.value = "";
                   }
-                  setSidebarActive(false);
-                  setTimeout(() => {
-                    setSidebarActive(true);
-                  }, 0);
+              
+                  // This is a disgusting hack
+                  //setSidebarActive(false);
+                  //setTimeout(() => {
+                    //setSidebarActive(true);
+                  //}, 0);
                 });
             }
           }}>
             <label>Enter device ID</label>
             <input id="device-id" name="device-id" placeholder="ABCD1234" />
 
-            <button type="submit">Connect now!</button>
+            <button id="submit-device-id" type="submit">Connect now!</button>
           </form>
 
           <hr />
           <h2>Device list</h2>
 
-          { deviceHtml.length == 0 ? <p>No devices connected :(</p> : deviceHtml }
+          { deviceHtml.length == 0 ? <p>No devices connected :(</p> : <div className="device-list">{deviceHtml}</div> }
         </div>
 
       </div>

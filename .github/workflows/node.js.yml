@@ -12,10 +12,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         node-version: [18.x, 20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
@@ -35,4 +35,20 @@ jobs:
       working-directory: norbit-webapp
       run: |
         npm run build --if-present
-        #run: npm test
+    - name: Run Jest
+      working-directory: norbit-webapp
+      run: |
+        npm run unit-test
+    - name: Run cypress E2E tests
+      uses: cypress-io/github-action@v6
+      with:
+        start: npm run start
+        browser: chrome
+        working-directory: norbit-webapp
+    - name: Run cypress component tests
+      uses: cypress-io/github-action@v6
+      with:
+        install: false
+        component: true
+        browser: chrome
+        working-directory: norbit-webapp

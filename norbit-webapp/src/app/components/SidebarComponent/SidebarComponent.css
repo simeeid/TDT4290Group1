@@ -6,6 +6,7 @@
   --color-active: #f1f1f1;
 }
 
+
 .hamburger-button {
   font-size: 2rem;
   background: none;
@@ -46,6 +47,19 @@
   color: white;
 }
 
+@media only screen and (max-width: 1000px) {
+  .sidebar {
+    width: 40%;
+    left: 60%;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    left: 0;
+  }
+}
+
 input {
   color: black !important;
 }
@@ -55,7 +69,6 @@ input {
   /* Rather than using display: none, these are used
    * to make the transition look like it's sliding in from the right.
    */
-  width: 0%;
   left: 100%;
 }
 /* TODO: figure out how to make this global*/

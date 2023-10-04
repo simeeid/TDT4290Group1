@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
 
-const AccelerometerChart: React.FC = () => {
+export const TemperatureComponent: React.FC = () => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -25,7 +25,7 @@ const AccelerometerChart: React.FC = () => {
         setBuffer(prevBuffer => [...prevBuffer, newData]);
       } else {
         setData(prevData => {
-          let updatedData = [...prevData, ...buffer, newData]; // Add buffer data and new data
+          let updatedData = [...prevData, ...buffer, newData]; 
 
           // Limit the number of data points displayed
           const maxDataPoints = 100;
@@ -47,18 +47,12 @@ const AccelerometerChart: React.FC = () => {
 
   return (
     <div className="sensorContainer">
-      <h2>Acceleration</h2>
+      <h2>Temperature</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration"
+        chartLabel="Temperature"
       />
     </div>
   );
 }
-
-export default AccelerometerChart;
-
-
-
-
