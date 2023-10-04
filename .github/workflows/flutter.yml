@@ -23,7 +23,19 @@ jobs:
         distribution: 'adopt'
         java-version: "12.x"
         cache: 'gradle'
+    - name: Flutter information
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter doctor
+    - name: Install flutter deps
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter pub get
     - name: Build flutter app
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter build apk
+    - name: Run tests
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter test
