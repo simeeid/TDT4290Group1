@@ -71,6 +71,10 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter doctor && flutter devices
+    - name: Build
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter build ios --no-codesign
     - name: Run tests
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
