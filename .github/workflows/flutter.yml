@@ -20,6 +20,7 @@ jobs:
     - name: Install Java
       uses: actions/setup-java@v3
       with:
+        distribution: 'adopt'
         java-version: "12.x"
         cache: 'gradle'
     - name: Build flutter app
