@@ -26,7 +26,7 @@ jobs:
         cache: 'gradle'
     - name: Accept Android SDK licenses
       run: |
-        yes | flutter doctor --android-licenses
+        yes | flutter doctor --android-licenses > /dev/null
     - name: Install flutter deps
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
