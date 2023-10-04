@@ -57,6 +57,7 @@ jobs:
     - name: Build flutter app
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
+        export CODE_SIGNING_ALLOWED="NO"
         flutter build ios --release
     - name: Run tests
       working-directory: norbit-mobileapp/flutter_application_1
