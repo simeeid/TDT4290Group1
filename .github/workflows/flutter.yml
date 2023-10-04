@@ -23,7 +23,14 @@ jobs:
         distribution: 'adopt'
         java-version: "12.x"
         cache: 'gradle'
-    - name: run tests
+    - name: Accept Android SDK licenses
+      run: |
+        yes | flutter doctor --android-licenses
+    - name: Install flutter deps
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter pub get
+    - name: Run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
@@ -32,18 +39,7 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter doctor
-    - name: Install flutter deps
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter pub get
-    - name: Build flutter app
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter build apk
-    - name: Run tests
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter test
+
 
   build-ios:
     runs-on: macos-latest
