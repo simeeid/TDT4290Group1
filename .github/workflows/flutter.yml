@@ -39,7 +39,7 @@ jobs:
         script: |
           /Users/runner/Library/Android/sdk/tools/bin/avdmanager list
           sleep 20
-          flutter test
+          flutter test -d test
         working-directory: norbit-mobileapp/flutter_application_1
     - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
