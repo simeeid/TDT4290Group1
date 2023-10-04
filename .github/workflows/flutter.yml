@@ -65,4 +65,4 @@ jobs:
     - name: Run tests
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
-        flutter test
+        flutter test -d iPhone 13
