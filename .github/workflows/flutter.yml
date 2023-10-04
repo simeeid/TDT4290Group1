@@ -30,16 +30,19 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter pub get
+    - name: Install Vulkan
+      run: |
+        sudo apt install mesa-vulkan-drivers
     - name: Run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
-        script: ./gradlew connectedCheck
+        api-level: 31
+        profile: Google Pixel
+        script: ./gradlew connectedCheck --stacktrace
     - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter doctor
-
 
   build-ios:
     runs-on: macos-latest
