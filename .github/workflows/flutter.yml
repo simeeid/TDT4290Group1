@@ -35,7 +35,12 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
-        script: ./gradlew connectedCheck --stacktrace
+        profile: pixel_xl
+        script: |
+          /Users/runner/Library/Android/sdk/tools/bin/avdmanager list
+          sleep 20
+          flutter test
+        working-directory: norbit-mobileapp/flutter_application_1
     - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
