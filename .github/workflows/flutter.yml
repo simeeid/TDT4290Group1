@@ -39,3 +39,26 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter test
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Install flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        cache: true
+    - name: Install flutter deps
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter pub get
+    - name: Build flutter app
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter build ipa
+    - name: Run tests
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter test
