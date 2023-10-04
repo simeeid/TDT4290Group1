@@ -39,7 +39,7 @@ jobs:
     - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
-        flutter doctor
+        flutter doctor && flutter devices
 
   build-ios:
     runs-on: macos-latest
@@ -61,7 +61,7 @@ jobs:
     - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
-        flutter doctor
+        flutter doctor && flutter devices
     - name: Run tests
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
