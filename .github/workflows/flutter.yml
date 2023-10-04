@@ -23,6 +23,11 @@ jobs:
         distribution: 'adopt'
         java-version: "12.x"
         cache: 'gradle'
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        script: ./gradlew connectedCheck
     - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
@@ -54,14 +59,13 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter pub get
-    - name: Build flutter app
+    - uses: futureware-tech/simulator-action@v2
+      with:
+        model: 'iPhone 13'
+    - name: Flutter information
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
-        export CODE_SIGN_IDENTITY=""
-        export CODE_SIGNING_REQUIRED="NO"
-        export CODE_SIGN_ENTITLEMENTS=""
-        export CODE_SIGNING_ALLOWED="NO"
-        flutter build ios --release
+        flutter doctor
     - name: Run tests
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
