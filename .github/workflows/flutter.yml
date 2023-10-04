@@ -57,7 +57,7 @@ jobs:
     - name: Build flutter app
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
-        flutter build ipa
+        flutter build ios --release
     - name: Run tests
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
