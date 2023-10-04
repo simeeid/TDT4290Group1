@@ -24,7 +24,6 @@ jobs:
         distribution: 'liberica'
         java-version: "17.x"
         cache: 'gradle'
-
     - name: Accept Android SDK licenses
       run: |
         yes | flutter doctor --android-licenses > /dev/null
@@ -36,6 +35,11 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter build apk
+    - name: Run nasty, dumb sdkmanager hack
+      run: |
+        mkdir /tmp/bin
+        ln -sf /Users/runner/Library/Android/sdk/cmdline-tools/latest/bin/sdkmanager /tmp/bin/sdkmanager
+        echo "PATH=/tmp/bin/skdmanager:$PATH" >> $GITHUB_ENV
     - name: Run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
