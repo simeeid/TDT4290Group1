@@ -21,15 +21,10 @@ jobs:
     - name: Install Java
       uses: actions/setup-java@v3
       with:
-        distribution: 'adopt'
-        java-version: "8.x"
+        distribution: 'liberica'
+        java-version: "19.x"
         cache: 'gradle'
-    - name: Install Java 12
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'adopt'
-        java-version: "12.x"
-        cache: 'gradle'
+
     - name: Accept Android SDK licenses
       run: |
         yes | flutter doctor --android-licenses > /dev/null
