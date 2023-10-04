@@ -12,7 +12,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../src/*"],
+      "@redux/*": ["../../redux/*"]
+    }
   },
   "include": ["**/*.tsx"]
 }

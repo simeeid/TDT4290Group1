@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { deviceList } from "./slices/DeviceList";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    deviceList: deviceList.reducer,
+  },
   devTools: process.env.NODE_ENV !== "production",
 });
 

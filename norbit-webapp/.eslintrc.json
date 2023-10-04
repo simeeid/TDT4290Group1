@@ -4,6 +4,6 @@
     "plugin:storybook/recommended"
   ],
   "rules": {
-      "no-undef": true
+      "no-undef": 2
   }
 }
