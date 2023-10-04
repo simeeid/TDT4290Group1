@@ -31,6 +31,10 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter pub get
+    - name: Build APK
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter build apk
     - name: Run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
