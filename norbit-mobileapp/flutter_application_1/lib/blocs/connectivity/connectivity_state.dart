@@ -13,7 +13,9 @@ class DataStarted extends Connected {}
 class DataStopped extends Connected {}
 
 class DataUpdated extends DataStarted {
-  final AccelerometerEvent accelerometerEvent;
+  final AccelerometerEvent? accelerometerEvent;
+  final int? luxValue;
+  final NoiseReading? noiseReading;
 
-  DataUpdated(this.accelerometerEvent);
+  DataUpdated({this.accelerometerEvent, this.luxValue, this.noiseReading});
 }

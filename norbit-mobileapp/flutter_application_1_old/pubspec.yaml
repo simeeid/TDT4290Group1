@@ -33,6 +33,8 @@ dependencies:
   sensors_plus: ^3.0.3
   flutter_bloc: ^8.1.3
   bloc: ^8.1.2
+  noise_meter: ^5.0.2
+  permission_handler: ^11.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

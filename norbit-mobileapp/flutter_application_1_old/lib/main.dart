@@ -1,112 +1,95 @@
 import 'dart:async';
+
+import 'package:noise_meter/noise_meter.dart';
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(NoiseMeterApp());
 
-class MyApp extends StatelessWidget {
+class NoiseMeterApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-    );
-  }
+  _NoiseMeterAppState createState() => _NoiseMeterAppState();
 }
 
-class MyHomePage extends StatefulWidget {
+class _NoiseMeterAppState extends State<NoiseMeterApp> {
+  bool _isRecording = false;
+  NoiseReading? _latestReading;
+  StreamSubscription<NoiseReading>? _noiseSubscription;
+  NoiseMeter? noiseMeter;
+  double _maxNoiseLevel = double.negativeInfinity;
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  bool isConnected = false;
-  bool isRunning = false;
-  String accelerometerData = "Accelerometer Data:";
-  StreamSubscription<AccelerometerEvent>? accelerometerSubscription;
-
-  void toggleConnect() {
-    setState(() {
-      isConnected = !isConnected;
-      isRunning = false;
-    });
+  void dispose() {
+    _noiseSubscription?.cancel();
+    super.dispose();
   }
 
-  void toggleStartStop() {
+  void onData(NoiseReading noiseReading) {
     setState(() {
-      isRunning = !isRunning;
-      if (isRunning) {
-        // Start listening to accelerometer data
-        accelerometerSubscription =
-            accelerometerEvents.listen((AccelerometerEvent event) {
-          setState(() {
-            accelerometerData =
-                "Accelerometer Data:\nX: ${event.x.toStringAsFixed(2)}\nY: ${event.y.toStringAsFixed(2)}\nZ: ${event.z.toStringAsFixed(2)}";
-          });
-        });
-      } else {
-        // Stop listening to accelerometer data
-        accelerometerSubscription?.cancel();
+      _latestReading = noiseReading;
+      if (noiseReading.maxDecibel > _maxNoiseLevel) {
+        _maxNoiseLevel = noiseReading.maxDecibel;
       }
     });
   }
 
-  @override
-  void dispose() {
-    accelerometerSubscription?.cancel();
-    super.dispose();
+  void onError(Object error) {
+    print(error);
+    stop();
+  }
+
+  Future<bool> checkPermission() async => await Permission.microphone.isGranted;
+
+  Future<void> requestPermission() async =>
+      await Permission.microphone.request();
+
+  Future<void> start() async {
+    noiseMeter ??= NoiseMeter();
+
+    if (!(await checkPermission())) await requestPermission();
+
+    _noiseSubscription = noiseMeter?.noise.listen(onData, onError: onError);
+    setState(() => _isRecording = true);
+  }
+
+  void stop() {
+    _noiseSubscription?.cancel();
+    setState(() => _isRecording = false);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('MQTT App'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-                // MQTT Broker input field
-                // Add your logic here
-                ),
-            SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: isConnected ? null : toggleConnect,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                  ),
-                  child: Text('Connect'),
-                ),
-                ElevatedButton(
-                  onPressed: isConnected ? toggleConnect : null,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                  ),
-                  child: Text('Disconnect'),
-                ),
-              ],
-            ),
-            SizedBox(height: 20.0),
-            FloatingActionButton(
-              onPressed: isConnected ? toggleStartStop : null,
-              backgroundColor: isRunning ? Colors.red : Colors.green,
-              child: Icon(isRunning ? Icons.stop : Icons.play_arrow),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              accelerometerData,
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
+  Widget build(BuildContext context) => MaterialApp(
+        home: Scaffold(
+          body: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                Container(
+                    margin: EdgeInsets.all(25),
+                    child: Column(children: [
+                      Container(
+                        child: Text(_isRecording ? "Mic: ON" : "Mic: OFF",
+                            style: TextStyle(fontSize: 25, color: Colors.blue)),
+                        margin: EdgeInsets.only(top: 20),
+                      ),
+                      Container(
+                        child: Text(
+                          'Noise: ${_latestReading?.meanDecibel.toStringAsFixed(2)} dB',
+                        ),
+                        margin: EdgeInsets.only(top: 20),
+                      ),
+                      Container(
+                        child: Text(
+                          'Max: ${_maxNoiseLevel.toStringAsFixed(2)} dB',
+                        ),
+                      )
+                    ])),
+              ])),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: _isRecording ? Colors.red : Colors.green,
+            child: _isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
+            onPressed: _isRecording ? stop : start,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
