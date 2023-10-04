@@ -35,18 +35,6 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter build apk
-    - name: Run nasty, dumb sdkmanager hack
-      run: |
-        # TL;DR: android-emulator-runner uses the wrong sdkmanager, and since there's no way to override it, I
-        # get to write this nasty code. Otherwise, javafx errors occur, because java 9 and later dropped javafx,
-        # and we can't revert to Java 8 because Flutter requires 11 or later.
-        #
-        # Make a temp file for binaries:
-        mkdir /tmp/bin
-        # Link the good sdkmanager to sdkmanager:
-        ln -sf /Users/runner/Library/Android/sdk/cmdline-tools/latest/bin/sdkmanager /tmp/bin/sdkmanager
-        # Add the link to the PATH with priority
-        echo "PATH=/tmp/bin/:$PATH" >> $GITHUB_ENV
     - name: Run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
