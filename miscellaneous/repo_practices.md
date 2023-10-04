@@ -1,4 +1,4 @@
-# Merge-request- og commit-meldingspraksis
+# Pull request og commit message practices
 
 **Epostoversikt:**
 - Simen Eidal <simeeid@stud.ntnu.no>
@@ -10,7 +10,7 @@
 
 ---
 
-### File and folder structure webApp convention
+### File and folder structure webapp convention
 - public/  -> Keep static assets here
 - redux/
   - slices/
@@ -31,53 +31,67 @@
       - component1/
         - component1.tsx
         - style.css
-        - types.tsx  
+        - types.tsx
     - page/
       - page.tsx
       - error.tsx
       - loading.tsx
       - layout.tsx
       - style.css 
+- tests/ 
+  - cypress - contains cypress-based tests
+      - component/ - contains component tests
+          - TestName.cy.tsx
+      - integration/ - contains integration tests
+          - TestName.cy.tsx
+      - plugin/ - contains meta files
+      - support/ - contains meta files
+  - unit    - contains jest-based unit tests
+      - TestName.test.tsx
 
+### Commit messages
+Commit messages are short and descriptive, and must be written with passive language. Normally, it's divided in three parts: the title, the body, and the footer. The title is a short overview of the changes the commit includes. For example, what changes have been made, or what has been done. The body elaborates on the details. One can mention what files or components have been changed, and what was changed in them. However, the body is not required in all circumstances. It's especially important if problems are encountered, and especially if the problems have influenced the solution in the commit. Essentially, if the reader benefits from more information to determine if a commit is good or not, the body should be used. It's also an opportunity to justify your changes before anyone asks, particularly if the solution isn't obviously intuitive.
 
-  
-
-
-### Commit-meldinger
-Commit-meldingene skal være korte og beskrivende, og skal skrives med passivt språk. Normalt ønsker man å dele denne i tre deler, tittel, hoveddel og footer. Tittelen skal gi en kort oversikt over endringen som commit-meldingen medfører. F.eks. hva som er endret eller hva som er gjort. Hoveddelen skal utdype dette. Man kan gjerne nevne hvilke filer eller komponenter som er endret og hva som ble endret i dem. Footeren er spesielt viktig for backlog. Her kan man tagge issues som endringene man har gjort hører til, og man kan tagge med-forfattere. Dette gjøres på følgende måte:
-
-*Issue: #issue-nummer*
-*Co-Authored-By: Navn <epostadresse>*
-
-**Eksempel**
+The footer is especially important for backlog purposes. Here, you can  tag issues the changes belong to, and tag with co-authors. This is done like this:
+```
+Issue: #issue-nummer
+Co-Authored-By: Name <email address>
+```
+See the list at the top of this page for an email list for the main people involved.
+**Example**
+```
 Issue: #17
 Co-Authored-By: Simen <simeeid@stud.ntnu.no>
+```
 
-Det er ikke nødvendigvis viktig å nevne med-forfattere i commit-meldingene, men dette markerer at vi har parprogrammert eller gjennomført review.
+It is not required to mention co-authors in the commit messages, but this signals that we have pair programmed or completed reviews.
+
+### Branch names
+When you make a new branch, it should be given a descriptive name containing why the branch was made, or what problems it's meant to solve. You do this by mentioning what changes have been made, in the format `change-type/description`. Some relevant change types include:
+
+* `feat`: feature; something new has been added
+* `ref`: refactor; change of an existing change
+* `fix`: fixes to the code
+* `chore`: extremely minor changes, such as grammatical corrections, or meta-changes, such as minor changes to the CI.
+
+You may use other types if deemed necessary, but make sure it's  both properly defined, and doesn't overlap with anything else on this list. If you do end up using an undocumented type, please add it to this list, along with a definition.
+
+The description should be short and concise, and should cover the primary objective of the branch. It doesn't need to be exhaustive; that's covered by commit messages and pull request messages.
+
+**Example:** `feat/add-component-NavBar`
 
 ---
 
-### Branch-navn
-Når man lager en ny branch kan det være greit å gi et beskrivende navn for hvorfor branchen ble opprettet eller hvilke problemer den er ment å løse. Dette gjør man ved å nevne hva slags endringer som skal gjøres [**feat** (‘feature’; en ny ting), **ref** (‘refactor’; endring av eksisterende, øke lesbarhet), **fix** (fikse feil)], og hvilke deler av prosjektet som skal endres. Navnet skrives på følgende måte: 
+### Pull request
 
-*Endringstype/endringen som gjøres*
+Similarly to commit messages, pull requests need a short and descriptive title, a body, and a footer.
 
-**Eksempel**
-feat/add component NavBar
+Unlike commit messages, except for extremely short commits that don't require any more information than the title (such as fixing typos in documentation, or other changes that can be accurately described and understood from just the title), a descriptive body is always required. The body should include details about the fix, and any relevant problems or limitations encountered. This helps in future development by sharing potentially important information with other developers that may not have been directly involved in the development of any given PR.
 
----
+And once again similarly to commit messages, the footer contains applicable issue links, and optionally a Co-Authored-By header. However, it's strongly recommended to use Co-Authored-By on a per-commit basis rather than including it in the PR, as PR messages are not part of the merge commit. This means the co-author information isn't directly part of the git history, meaning it isn't easy to get an overview of co-authors without manually sifting through PRs.
 
-### Merge request
-For å få en god oversikt over mergene som er gjort med main, er det viktig at merge request-en opprettes på en god måte. En merge request består av tittel, hoveddel, og en rekke innfyllingsfelter. Tittelen skal utformes på lignende måte som for branch-navnet. Forskjellen er bare måten man noterer på; ‘endringstype(hvor i prosjektet): endringen som er gjort’. Endringstypene er de samme som for branch-navn, og sted i prosjektet er enten **frontend**, **backend** eller **docs**. 
-
-**Eksempel**
-feat(frontend): added sidepanelbutton
-
-I hoveddelen kan man skrive en mer utfyllende beskrivelse av endringen som er gjort. Her er det også viktig at man noterer issuet som er arbeidet med, gjerne med notasjonen ‘closes’, slik at issuet lukkes automatisk ved merging. Her er det også greit å nevne med-forfatterne på endringene som er utført, dette kan være flere. 
-
-**Eksempel**
-Created atom component NavBar, and implemented it in existing code
-
-Issue: #17
-Closes: #17
+**Example:**
+```
+Closes #17
 Co-Authored-By: Simen <simeeid@stud.ntnu.no>
+```

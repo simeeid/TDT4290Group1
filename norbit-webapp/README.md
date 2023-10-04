@@ -54,3 +54,36 @@ docker run -p 3000:3000 --rm -ti norbit
 Note that in neither case does it sync the source tree into the docker container. Due to limitations of how volumes are mounted, filesystem update information [is discarded][docker-volume-info-discard], meaning `npm run dev` doesn't pick up file changes. Using the dockerfile for development therefore requires a rebuild of the dockerfile for all changes. It's recommended to create a copyable command for reuse for development instead, or running locally.
 
 [docker-volume-info-discard]: https://forums.docker.com/t/docker-compose-not-synchronising-file-changes-in-volume/79177/4
+
+## Running tests
+
+There are three different types of  tests spread across two different libraries. Unit tests are managed by jest, while component and integration tests are handled by cypress.
+
+### Running all tests
+**Note:** This step requires bash. To run on Windows, you can use Git Bash, or optionally WSL with configuration this document won't cover. You can always run the tests separately manually, as outlined in the next two sections.
+
+### Running unit tests
+
+Run `npm run unit-test`
+
+### Running Cypress
+
+The Cypress tests can be run interactively with `npm run cypress`. 
+
+Cypress doesn't let you run two the two types of tests at once with any command. However, this isn't as obvious when running interactively, as the two are separated in the UI in a way that's logical for UX as well.
+
+Consequently, running the tests manually requires running two commands. These are covered in the subsections.
+
+#### Component tests
+
+To run component tests, use `npm run component-test`. 
+
+Component tests are comparatively self-contained; Cypress spawns a dummy server it renders the components in, and does whatever test stuff on it there. No further outside intervention is needed to get the tests to cooperate.
+
+#### Integration tests
+
+Note: the integration tests require the server to run separately. You can run it with `npm run build && npm run start`, or `npm run dev` in a separate terminal tab prior to running the tests. As long as the server is on port `:3000`, Cypress will connect and run.
+
+When the server is up, you can use `npm run integration-test` to run the tests.
+
+As long as the server is running, to run all tests at once, you can use `npm run unit-test && npm run component-test && npm run integration-test` to run all the tests in a single command.

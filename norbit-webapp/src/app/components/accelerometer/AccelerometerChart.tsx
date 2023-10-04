@@ -1,8 +1,7 @@
-
 'use client'
 import React, { useEffect, useState } from 'react';
 import { AccelerometerData } from './types';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Label } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Label } from 'recharts';
 
 const AccelerometerChart: React.FC = () => {
   const [data, setData] = useState<AccelerometerData[]>([]);

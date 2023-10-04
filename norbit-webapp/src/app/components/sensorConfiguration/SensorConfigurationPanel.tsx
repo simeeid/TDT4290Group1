@@ -1,8 +1,8 @@
 'use client'
+
 import React, { useState } from 'react';
 import style from './SensorConfigurationPanel.module.css';
-import { SensorConfig,Props } from './types'; 
-
+import { SensorConfig, Props } from './types'; 
 
 
 const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) => {
