@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/widgets/connect_button_widget.dart';
 import 'package:flutter_application_1/widgets/connectivity_textfield_widget.dart';
 import 'package:flutter_application_1/widgets/disconnect_button_widget.dart';
@@ -9,12 +10,21 @@ import 'package:flutter_application_1/widgets/start_stop_button_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/connectivity/connectivity_bloc.dart';
 import '../blocs/connectivity/connectivity_state.dart';
+import 'package:provider/provider.dart';
+import '../blocs/connectivity/noise_bloc.dart';
+import '../blocs/connectivity/lux_bloc.dart';
+import '../blocs/connectivity/accelerometer_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final noiseBloc = Provider.of<NoiseBloc>(context);
+    final luxBloc = Provider.of<LuxBloc>(context);
+    final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
+    final noiseService = Provider.of<NoiseService>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Norbit mobile app'),
@@ -42,13 +52,13 @@ class HomeScreen extends StatelessWidget {
                   if (state is DataUpdated)
                     Column(
                       children: [
-                        if (state.accelerometerEvent != null)
-                          AccelerometerWidget(
-                              accelerometerEvent: state.accelerometerEvent),
-                        if (state.luxValue != null)
-                          LuxWidget(luxValue: state.luxValue?.toDouble()),
-                        if (state.noiseReading != null)
-                          NoiseWidget(noiseReading: state.noiseReading),
+                        //if (state.accelerometerEvent != null)
+                        AccelerometerWidget(
+                            accelerometerEvent: state.accelerometerEvent),
+                        //if (state.luxValue != null)
+
+                        LuxWidget(luxValue: state.luxValue?.toDouble()),
+                        NoiseWidget(noiseBloc: noiseBloc),
                       ],
                     ),
                 ],

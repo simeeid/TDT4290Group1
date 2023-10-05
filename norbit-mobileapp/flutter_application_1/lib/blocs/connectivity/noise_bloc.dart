@@ -2,15 +2,21 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class NoiseBloc {
-  final _noiseController = BehaviorSubject<double>();
-  Stream<double> get noiseStream => _noiseController.stream;
-  Sink<double> get noiseSink => _noiseController.sink;
+  final noiseController = BehaviorSubject<double>();
+
+  /* NoiseBloc() {
+    _noiseController.add(10.0); // Add a static number to the stream
+  } */
+
+  Stream<double> get noiseStream => noiseController.stream;
+  Sink<double> get noiseSink => noiseController.sink;
 
   void addNoise(double noise) {
+    print("this is nooooise" + noise.toString());
     noiseSink.add(noise);
   }
 
   void dispose() {
-    _noiseController.close();
+    noiseController.close();
   }
 }

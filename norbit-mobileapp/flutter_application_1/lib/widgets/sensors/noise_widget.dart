@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:noise_meter/noise_meter.dart';
+import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
 
 class NoiseWidget extends StatelessWidget {
-  final NoiseReading? noiseReading;
+  final NoiseBloc noiseBloc;
 
-  const NoiseWidget({super.key, required this.noiseReading});
+  const NoiseWidget({Key? key, required this.noiseBloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('Noise level: ${noiseReading!.meanDecibel.toStringAsFixed(2)} dB'),
-      ],
+    return StreamBuilder<double>(
+      stream: noiseBloc.noiseController,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              Text('Noise level: ${snapshot.data!.toStringAsFixed(2)} dB'),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        // By default, show a loading spinner.
+        return const CircularProgressIndicator();
+      },
     );
   }
 }
