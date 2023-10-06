@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         //if (state.accelerometerEvent != null)
                         AccelerometerWidget(
-                            accelerometerEvent: state.accelerometerEvent),
+                            accelerometerBloc: accelerometerBloc),
                         //if (state.luxValue != null)
                         LuxWidget(luxBloc: luxBloc),
                         NoiseWidget(noiseBloc: noiseBloc),
