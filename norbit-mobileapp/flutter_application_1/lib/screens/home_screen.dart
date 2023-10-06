@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/widgets/connect_button_widget.dart';
 import 'package:flutter_application_1/widgets/connectivity_textfield_widget.dart';
 import 'package:flutter_application_1/widgets/disconnect_button_widget.dart';
@@ -23,7 +22,6 @@ class HomeScreen extends StatelessWidget {
     final noiseBloc = Provider.of<NoiseBloc>(context);
     final luxBloc = Provider.of<LuxBloc>(context);
     final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
-    final noiseService = Provider.of<NoiseService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -56,8 +54,7 @@ class HomeScreen extends StatelessWidget {
                         AccelerometerWidget(
                             accelerometerEvent: state.accelerometerEvent),
                         //if (state.luxValue != null)
-
-                        LuxWidget(luxValue: state.luxValue?.toDouble()),
+                        LuxWidget(luxBloc: luxBloc),
                         NoiseWidget(noiseBloc: noiseBloc),
                       ],
                     ),

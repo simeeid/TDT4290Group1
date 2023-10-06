@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
+import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'package:light/light.dart';
@@ -42,6 +43,13 @@ class MyApp extends StatelessWidget {
             print("NoiseService created");
             return NoiseService(
               noiseBloc: Provider.of<NoiseBloc>(context, listen: false),
+            );
+          },
+        ),
+        Provider<LuxService>(
+          create: (context) {
+            return LuxService(
+              luxBloc: Provider.of<LuxBloc>(context, listen: false),
             );
           },
         ),

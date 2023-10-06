@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/blocs/connectivity/lux_bloc.dart';
 
 class LuxWidget extends StatelessWidget {
-  final double? luxValue;
+  final LuxBloc luxBloc;
 
-  const LuxWidget({super.key, required this.luxValue});
+  const LuxWidget({Key? key, required this.luxBloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('Lux value: $luxValue lx'),
-      ],
+    return StreamBuilder<double>(
+      stream: luxBloc.luxController,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              Text('Lux level: ${snapshot.data!.toStringAsFixed(2)} lx'),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        return const CircularProgressIndicator();
+      },
     );
   }
 }
