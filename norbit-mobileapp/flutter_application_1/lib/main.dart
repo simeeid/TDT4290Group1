@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noise_meter/noise_meter.dart';
-import 'package:light/light.dart';
-import 'blocs/connectivity/connectivity_bloc.dart';
 import 'screens/home_screen.dart';
 import 'mocks.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
+import '../blocs/start_stop_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -37,6 +34,10 @@ class MyApp extends StatelessWidget {
         ),
         Provider<AccelerometerBloc>(
           create: (_) => AccelerometerBloc(),
+          dispose: (_, bloc) => bloc.dispose(),
+        ),
+        Provider<StartStopBloc>(
+          create: (_) => StartStopBloc(),
           dispose: (_, bloc) => bloc.dispose(),
         ),
         Provider<NoiseService>(
@@ -69,13 +70,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: BlocProvider(
-          create: (context) => ConnectivityBloc(
-              light: Light(),
-              noiseMeter: NoiseMeter(),
-              sensorWrapper: SensorWrapper()),
-          child: HomeScreen(),
-        ),
+        home: const HomeScreen(),
       ),
     );
   }
