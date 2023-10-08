@@ -5,4 +5,7 @@ class LuxService {
   LuxService({required LuxBloc luxBloc}) {
     luxBloc.addLux(8);
   }
+  void TestService() {
+    print("service is connected");
+  }
 }

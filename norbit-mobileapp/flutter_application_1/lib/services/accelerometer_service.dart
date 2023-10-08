@@ -6,6 +6,6 @@ class AccelerometerService {
   AccelerometerService({required AccelerometerBloc accelerometerBloc}) {
 
     final exampleEvent = AccelerometerEvent(0.5, -0.3, 0.7,);
-    accelerometerBloc.addAccelerometerEvent(exampleEvent);
+    accelerometerBloc.addAccelerometer(exampleEvent);
   }
 }

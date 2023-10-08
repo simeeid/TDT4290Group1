@@ -5,14 +5,11 @@ import 'package:sensors_plus/sensors_plus.dart';
 class AccelerometerBloc {
   final accelerometerController = BehaviorSubject<AccelerometerEvent>();
 
-  Stream<AccelerometerEvent> get accelerometerStream =>
-      accelerometerController.stream;
+  Stream<AccelerometerEvent> get accelerometerStream => accelerometerController.stream;
+  Sink<AccelerometerEvent> get accelerometerSink => accelerometerController.sink;
 
-  Sink<AccelerometerEvent> get accelerometerSink =>
-      accelerometerController.sink;
-
-  void addAccelerometerEvent(AccelerometerEvent event) {
-    accelerometerSink.add(event);
+  void addAccelerometer(AccelerometerEvent acc) {
+    accelerometerSink.add(acc);
   }
 
   void dispose() {

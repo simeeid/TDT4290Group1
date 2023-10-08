@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/noise_service.dart';
+import 'package:flutter_application_1/services/lux_service.dart';
+import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'package:flutter_application_1/widgets/connect_button_widget.dart';
 import 'package:flutter_application_1/widgets/connectivity_textfield_widget.dart';
 import 'package:flutter_application_1/widgets/disconnect_button_widget.dart';
@@ -22,6 +25,9 @@ class HomeScreen extends StatelessWidget {
     final noiseBloc = Provider.of<NoiseBloc>(context);
     final luxBloc = Provider.of<LuxBloc>(context);
     final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
+    final noiseService = Provider.of<NoiseService>(context, listen: false);
+    final luxService = Provider.of<LuxService>(context, listen: false);
+    final accelerometerService = Provider.of<AccelerometerService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,10 +56,7 @@ class HomeScreen extends StatelessWidget {
                   if (state is DataUpdated)
                     Column(
                       children: [
-                        //if (state.accelerometerEvent != null)
-                        AccelerometerWidget(
-                            accelerometerBloc: accelerometerBloc),
-                        //if (state.luxValue != null)
+                        AccelerometerWidget(accelerometerBloc: accelerometerBloc),
                         LuxWidget(luxBloc: luxBloc),
                         NoiseWidget(noiseBloc: noiseBloc),
                       ],

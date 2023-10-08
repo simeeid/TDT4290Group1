@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
-// import '../../blocs/connectivity/connectivity_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class AccelerometerWidget extends StatelessWidget {
   final AccelerometerBloc accelerometerBloc;
@@ -30,4 +28,3 @@ class AccelerometerWidget extends StatelessWidget {
     );
   }
 }
-
