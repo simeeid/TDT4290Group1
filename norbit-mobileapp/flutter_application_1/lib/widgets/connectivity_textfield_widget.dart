@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../blocs/connectivity/connectivity_state.dart';
 
 class ConnectivityTextField extends StatelessWidget {
 
