@@ -1,26 +1,31 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+/*@tailwind base;*/
+/*@tailwind components;*/
+/*@tailwind utilities;*/
+
+/* Not sure where these are overridden, but they make the sidebar headers
+ * tiny for no good reason. I'm not aware of any cases where setting the font size
+ * of headers to inherit makes any sense.
+ */
+ h1, h2, h3, h4, h5, h6 {
+  font-size: revert;
+  font-weight: revert;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+:root {
+--foreground-rgb: 0, 0, 0;
+--background-start-rgb: 214, 219, 220;
+--background-end-rgb: 255, 255, 255;
 
-* {
-  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+}
+
+.center-text {
+  text-align: center;
 }
