@@ -1,9 +1,13 @@
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
+import { Providers } from 'redux/provider';
+import RootLayout from 'components/RootLayout/RootLayout';
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   
-  return <Component {...pageProps} />
+  return <Providers> <RootLayout><Component {...pageProps} /> </RootLayout></Providers>
 }
 
 export default MyApp;
