@@ -25,6 +25,7 @@ class StartStopButton extends StatelessWidget {
           context.read<ConnectivityBloc>().add(StartStop());
         }
         luxService.start();
+        accelerometerService.start();
         await noiseService.start();
       }
           : null,

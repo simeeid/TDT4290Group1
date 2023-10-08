@@ -3,9 +3,24 @@ import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart
 import 'package:sensors_plus/sensors_plus.dart';
 
 class AccelerometerService {
-  AccelerometerService({required AccelerometerBloc accelerometerBloc}) {
+  StreamSubscription<AccelerometerEvent>? _subscription;
+  final AccelerometerBloc accelerometerBloc;
 
-    final exampleEvent = AccelerometerEvent(0.5, -0.3, 0.7,);
-    accelerometerBloc.addAccelerometer(exampleEvent);
+  AccelerometerService({required this.accelerometerBloc});
+
+  void onData(AccelerometerEvent event) {
+    accelerometerBloc.addAccelerometer(event);
+  }
+
+  void stop() {
+    _subscription?.cancel();
+  }
+
+  Future<void> start() async {
+    try {
+      _subscription = accelerometerEvents.listen(onData);
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 }
