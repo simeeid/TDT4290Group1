@@ -24,6 +24,7 @@ class StartStopButton extends StatelessWidget {
         if (await Permission.microphone.request().isGranted) {
           context.read<ConnectivityBloc>().add(StartStop());
         }
+        luxService.start();
         await noiseService.start();
       }
           : null,
