@@ -19,7 +19,6 @@ class NoiseService {
 
   void onData(NoiseReading noiseReading) {
     latestReading = noiseReading;
-    print("THIIIIS ISSSS $noiseReading !!!!!!!!!!!!!!!!!!!!!");
     noiseBloc.addNoise(noiseReading.meanDecibel.toDouble());
   }
 
@@ -28,8 +27,7 @@ class NoiseService {
     stop();
   }
 
-  Future<bool> checkPermission() async =>
-      await Permission.microphone.isGranted;
+  Future<bool> checkPermission() async => await Permission.microphone.isGranted;
 
   Future<void> requestPermission() async =>
       await Permission.microphone.request();

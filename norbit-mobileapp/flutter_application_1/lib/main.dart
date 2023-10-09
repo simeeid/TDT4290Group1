@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<NoiseBloc>(
           create: (_) {
-            print("NoiseBloc created");
             return NoiseBloc();
           },
           dispose: (_, bloc) => bloc.dispose(),
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
         ),
         Provider<NoiseService>(
           create: (context) {
-            print("NoiseService created");
             return NoiseService(
               noiseBloc: Provider.of<NoiseBloc>(context, listen: false),
             );
@@ -50,7 +48,6 @@ class MyApp extends StatelessWidget {
         ),
         Provider<LuxService>(
           create: (context) {
-            print("LuxService created");
             return LuxService(
               luxBloc: Provider.of<LuxBloc>(context, listen: false),
             );
@@ -58,9 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         Provider<AccelerometerService>(
           create: (context) {
-            print("LuxService created");
             return AccelerometerService(
-              accelerometerBloc: Provider.of<AccelerometerBloc>(context, listen: false),
+              accelerometerBloc:
+                  Provider.of<AccelerometerBloc>(context, listen: false),
             );
           },
         ),

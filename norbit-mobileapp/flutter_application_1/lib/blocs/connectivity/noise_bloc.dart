@@ -12,7 +12,6 @@ class NoiseBloc {
   Sink<double> get noiseSink => noiseController.sink;
 
   void addNoise(double noise) {
-    print("this is nooooise" + noise.toString());
     noiseSink.add(noise);
   }
 
