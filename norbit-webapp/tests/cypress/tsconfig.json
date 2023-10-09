@@ -15,8 +15,13 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["../../src/*"],
-      "@redux/*": ["../../redux/*"]
+      "@/*": [
+          "../../components/*",
+          "../../logic/*",
+          "../../pages/*"
+      ],
+      "@redux/*": ["../../redux/*"],
+      "@styles/*": ["../../styles/*"]
     }
   },
   "include": ["**/*.tsx"]

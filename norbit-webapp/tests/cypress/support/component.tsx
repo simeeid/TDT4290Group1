@@ -2,6 +2,10 @@ import { mount } from 'cypress/react18'
 import { Providers } from '@redux/provider'
 import React from 'react';
 
+import '@styles/globals.css';
+import '@styles/HeaderComponent.css';
+import '@styles/SidebarComponent.css';
+
 declare global {
   namespace Cypress {
     interface Chainable {

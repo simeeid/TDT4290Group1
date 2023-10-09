@@ -1,5 +1,5 @@
 'use client';
-import { connectDevice, Device } from '../../DeviceManager';
+import { connectDevice, Device } from '@/DeviceManager';
 import React, { useState } from 'react';
 
 import { SidebarProps } from './types'

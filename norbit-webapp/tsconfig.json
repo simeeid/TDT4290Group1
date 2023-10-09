@@ -25,10 +25,15 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./pages/*"
+        "./pages/*",
+        "./components/*",
+        "./logic/*"
       ],
       "@redux/*": [
         "./redux/*"
+      ],
+      "@styles/*": [
+        "./styles/*"
       ]
     },
     "forceConsistentCasingInFileNames": true
