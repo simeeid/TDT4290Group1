@@ -1,0 +1,79 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    # GitHub Actions doesn't have hardware acceleration in the ubuntu runner, because reasons
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        cache: true
+    - name: Install Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'liberica'
+        java-version: "17.x"
+        cache: 'gradle'
+    - name: Accept Android SDK licenses
+      run: |
+        yes | flutter doctor --android-licenses > /dev/null
+    - name: Install flutter deps
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter pub get
+    - name: Build APK
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter build apk
+    - name: Run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        profile: pixel_xl
+        script: |
+          flutter test -d test
+        working-directory: norbit-mobileapp/flutter_application_1
+    - name: Flutter information
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter doctor && flutter devices
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Install flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        cache: true
+    - name: Install flutter deps
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter pub get
+    - uses: futureware-tech/simulator-action@v2
+      with:
+        model: 'iPhone 13'
+    - name: Flutter information
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter doctor && flutter devices
+    - name: Build
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter build ios --no-codesign
+    - name: Run tests
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        flutter test -d "iPhone 13"
