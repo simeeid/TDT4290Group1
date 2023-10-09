@@ -12,7 +12,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Dashboard/>
+        <Dashboard />
 
       </main>
 
