@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
-import '../blocs/start_stop_bloc.dart';
+import '../blocs/start_stop_button_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
     final accelerometerService =
-    Provider.of<AccelerometerService>(context, listen: false);
+        Provider.of<AccelerometerService>(context, listen: false);
     final startStopBloc = Provider.of<StartStopBloc>(context);
 
     return StreamBuilder<bool>(
@@ -36,7 +36,8 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Norbit mobile app'),
             ),
             body: Padding(
-              padding: const EdgeInsets.all(16.0), // Add padding for all elements
+              padding:
+                  const EdgeInsets.all(16.0), // Add padding for all elements
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -44,7 +45,8 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 16.0),
                   const Center(
                     child: SizedBox(
-                      width: 200.0, // Set the desired width for the StartStopButton
+                      width:
+                          200.0, // Set the desired width for the StartStopButton
                       child: StartStopButton(),
                     ),
                   ),
@@ -52,7 +54,8 @@ class HomeScreen extends StatelessWidget {
                   if (snapshot.data == true)
                     Column(
                       children: [
-                        AccelerometerWidget(accelerometerBloc: accelerometerBloc),
+                        AccelerometerWidget(
+                            accelerometerBloc: accelerometerBloc),
                         const SizedBox(height: 16.0),
                         LuxWidget(luxBloc: luxBloc),
                         const SizedBox(height: 16.0),

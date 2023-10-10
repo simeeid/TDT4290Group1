@@ -7,7 +7,7 @@ import 'mocks.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
-import '../blocs/start_stop_bloc.dart';
+import 'blocs/start_stop_button_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() {
