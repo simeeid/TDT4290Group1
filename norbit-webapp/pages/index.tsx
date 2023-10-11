@@ -25,10 +25,10 @@ export default function Home() {
 
   useEffect(() => {
     // Start subscription
-    const subscription = Amplify.PubSub.subscribe('real-time-weather').subscribe({
+    const subscription = Amplify.PubSub.subscribe('main/topic').subscribe({
       next: (data: any) => {
         console.log('Message received', data.value.message);
-        setReceivedMessage(data.value.message); // Assuming the message is in data.value
+        setReceivedMessage(data.value.message);
       },
       error: (error: { message: string | string[] }) => {
         console.error('Subscription error:', error);
