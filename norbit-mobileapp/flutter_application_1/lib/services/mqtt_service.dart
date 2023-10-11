@@ -3,6 +3,7 @@ import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import 'dart:async';
+import 'dart:convert';
 
 
 import 'package:flutter/services.dart';
@@ -93,7 +94,13 @@ class MqttService {
     const topic = 'lux/topic'; // Change this to your desired topic
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-      builder.addString('$luxData');
+      builder.addString(jsonEncode({
+        'sensorName': 'Lux Sensor',
+        'timestamp': DateTime.now().toIso8601String(),
+        'payload': {
+          'lux':luxData,
+        }
+      })); // Encode the data as a JSON string
       client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
@@ -102,7 +109,13 @@ class MqttService {
     const noiseTopic = 'noise/topic'; // Change this to your desired topic
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-      builder.addString('$noiseData');
+      builder.addString(jsonEncode({
+        'sensorName': 'Noise Sensor',
+        'timestamp': DateTime.now().toIso8601String(),
+        'payload': {
+          'volume': noiseData,
+        }
+      })); // Encode the data as a JSON string
       client.subscribe(noiseTopic, MqttQos.atMostOnce);
       client.publishMessage(noiseTopic, MqttQos.atLeastOnce, builder.payload!);
     });
@@ -116,7 +129,15 @@ class MqttService {
       accelerometerList.add(accelerometerData.x.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.y.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.z.toStringAsFixed(2));
-      builder.addString(accelerometerList.toString());
+      builder.addString(jsonEncode({
+        'sensorName': 'Accelerometer Sensor',
+        'timestamp': DateTime.now().toIso8601String(),
+        'payload': {
+          'x':accelerometerData.x,
+          'y':accelerometerData.y,
+          'z':accelerometerData.z,
+        }
+      })); // Encode the data as a JSON string
       client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
       client.publishMessage(accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
