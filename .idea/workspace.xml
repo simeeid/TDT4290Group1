@@ -5,10 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f5398b2-1a45-4c0c-b317-89ec7d91df38" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/assets/certificates/DeviceCertificate.crt" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/assets/certificates/DeviceCertificate.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/assets/certificates/Private.key" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/assets/certificates/Private.key" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/start_stop_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/start_stop_button_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,19 +36,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/anton/Desktop/informatikk/kundestyrt/TDT4290Group1&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/Users/anton/Desktop/informatikk/kundestyrt/TDT4290Group1",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "dart.settings"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Unnamed" type="AndroidRunConfigurationType" factoryName="Android App" nameIsGenerated="true">
       <option name="DEPLOY" value="true" />

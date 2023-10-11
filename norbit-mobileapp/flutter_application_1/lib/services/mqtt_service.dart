@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
+import 'dart:async';
+
 
 import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -17,10 +19,13 @@ class MqttService {
   final AccelerometerBloc accelerometerBloc;
   String statusText = "Status Text";
   bool isConnected = false;
+  StreamSubscription? luxSubscription;
+  StreamSubscription? noiseSubscription;
+  StreamSubscription? accelerometerSubscription;
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
-      MqttServerClient('a7gqnhnopcwff-ats.iot.eu-north-1.amazonaws.com', '');
+      MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
   MqttService({required this.noiseBloc, required this.luxBloc, required this.accelerometerBloc});
 
@@ -31,6 +36,7 @@ class MqttService {
 
   //Disconnects from mqtt broker.
   disconnect() {
+    luxSubscription?.cancel();
     client.disconnect();
   }
 
@@ -81,6 +87,37 @@ class MqttService {
       statusText = content;
       print(statusText);
       // Notify your listeners here
+  }
+
+  void publishLuxData() {
+    const topic = 'lux/topic'; // Change this to your desired topic
+    luxSubscription = luxBloc.luxController.stream.listen((luxData) {
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      builder.addString('$luxData');
+      client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
+    });
+  }
+
+  void publishNoiseData() {
+    const noiseTopic = 'noise/topic'; // Change this to your desired topic
+    noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      builder.addString('$noiseData');
+      client.subscribe(noiseTopic, MqttQos.atMostOnce);
+      client.publishMessage(noiseTopic, MqttQos.atLeastOnce, builder.payload!);
+    });
+  }
+
+  void publishAccelerometerData() {
+    const acceloremeterTopic = 'acceloremeter/topic'; // Change this to your desired topic
+    accelerometerSubscription = accelerometerBloc.accelerometerController.stream.listen((acceloremeterData)) {
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      builder.addString(acceloremeterData.X.toStringAsFixed(2));
+      builder.addString(acceloremeterData.Y.toStringAsFixed(2));
+      builder.addString(acceloremeterData.Z.toStringAsFixed(2));
+      client.subscribe(acceloremeterTopic, MqttQos.atMostOnce);
+      client.publishMessage(acceloremeterTopic, MqttQos.atLeastOnce, builder.payload!);
+    });
   }
 
   void onConnected() {
