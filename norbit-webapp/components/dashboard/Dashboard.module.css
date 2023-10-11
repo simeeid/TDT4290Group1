@@ -17,6 +17,7 @@
 
   .chartsContainer > div:nth-of-type(even) {
     background-color: #F4F2F0;
+    border-radius: 5px;
   }
 
 .configurationPanel {

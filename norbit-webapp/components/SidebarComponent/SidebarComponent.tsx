@@ -85,10 +85,10 @@ export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
                 });
             }
           }}>
-            <label>Enter device ID</label>
-            <input id="device-id" name="device-id" placeholder="ABCD1234" />
+            <label htmlFor="device-id">Enter device ID</label>
+            <input id="device-id" name="device-id" placeholder="ABCD1234"  />
 
-            <button id="submit-device-id" type="submit">Connect now!</button>
+            <button id="submit-device-id" className="dark" type="submit">Connect now!</button>
           </form>
 
           <hr />
