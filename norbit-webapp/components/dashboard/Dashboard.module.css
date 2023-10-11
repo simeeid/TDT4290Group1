@@ -2,12 +2,12 @@
 .dashboardContainer {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 
 .chartsContainer {
-  flex: 3;
-  width: 500px;
+  flex: 2;
   margin-right: 5px;
 }
 

@@ -26,6 +26,18 @@
 }
 }
 
+html {
+  font-family:
+    -apple-system,BlinkMacSystemFont,
+    Ubuntu,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    /*Fallback*/
+    sans-serif;
+}
+
 .center-text {
   text-align: center;
 }
