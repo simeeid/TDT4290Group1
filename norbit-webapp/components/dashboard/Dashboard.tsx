@@ -12,8 +12,8 @@ const Dashboard: React.FC = () => {
   const [sensorConfig, setSensorConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, light: true, sound: true });
 
   return (
-    <div className={dashboardStyles.dashboardContainer}>
-      <div className={dashboardStyles.chartsContainer}>
+    <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
+      <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
         {sensorConfig.accelerometer && <AccelerometerChart />}
         {sensorConfig.temperature && <TemperatureComponent />}
         {sensorConfig.light && <LightIntensityComponent />}
