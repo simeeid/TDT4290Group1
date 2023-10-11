@@ -24,10 +24,11 @@ class LocationService {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permissions are permanently denied, we cannot request permissions.');
+        throw Exception(
+            'Location permissions are permanently denied, we cannot request permissions.');
       }
-
-      locationBloc.addLocation(Geolocator.getCurrentPosition() as Position);
+      Position currentLocation = await Geolocator.getCurrentPosition();
+      locationBloc.addLocation(currentLocation);
 
     } catch (e) {
       throw Exception('Error in determining position: $e');
