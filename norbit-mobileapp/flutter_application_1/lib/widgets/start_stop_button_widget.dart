@@ -28,11 +28,13 @@ class StartStopButton extends StatelessWidget {
                 accelerometerService.start();
                 await noiseService.start();
                 await locationService.determinePosition();
+                locationService.start();
                 startStopBloc.switchState(true);
               } else if (snapshot.data == true) {
                 luxService.stop();
                 accelerometerService.stop();
                 noiseService.stop();
+                locationService.stop();
                 startStopBloc.switchState(false);
               }
             },

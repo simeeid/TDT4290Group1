@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
 import '../blocs/connectivity/location_bloc.dart';
 
 class LocationService {
   final LocationBloc locationBloc;
+  late StreamSubscription<Position> positionStream;
 
   LocationService({required this.locationBloc});
 
@@ -33,5 +36,23 @@ class LocationService {
     } catch (e) {
       throw Exception('Error in determining position: $e');
     }
+  }
+
+  void start() {
+    const LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 5, // Set your desired distance filter
+    );
+    positionStream = Geolocator.getPositionStream(
+      locationSettings: locationSettings,
+    ).listen((Position? position) {
+      if (position != null) {
+        locationBloc.addLocation(position);
+      }
+    });
+  }
+
+  void stop() {
+    positionStream.cancel();
   }
 }
