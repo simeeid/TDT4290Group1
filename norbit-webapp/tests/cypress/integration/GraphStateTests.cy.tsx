@@ -8,6 +8,9 @@ describe("Graph config", () => {
       "enable-sound",
     ];
 
+    // Contains an array of arrays of bools corresponding to checkbox states.
+    // This just generates an array of permutations of checkbox states, and 
+    // generates enough to cover all the IDs.
     let states = [];
     for (let i = 0; i < ids.length * ids.length; ++i) {
       let substate = [] as Array<boolean>;
@@ -32,12 +35,8 @@ describe("Graph config", () => {
         }
       }
 
-
       cy.get("#dashboard-chart-container").children().should("have.length", active);
     }
-    
-
-
   });
 });
 
