@@ -109,14 +109,14 @@ class MqttService {
   }
 
   void publishAccelerometerData() {
-    const acceloremeterTopic = 'acceloremeter/topic'; // Change this to your desired topic
-    accelerometerSubscription = accelerometerBloc.accelerometerController.stream.listen((acceloremeterData)) {
+    const accelerometerTopic = 'accelerometer/topic'; // Change this to your desired topic
+    accelerometerSubscription = accelerometerBloc.accelerometerController.stream.listen((accelerometerData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-      builder.addString(acceloremeterData.X.toStringAsFixed(2));
-      builder.addString(acceloremeterData.Y.toStringAsFixed(2));
-      builder.addString(acceloremeterData.Z.toStringAsFixed(2));
-      client.subscribe(acceloremeterTopic, MqttQos.atMostOnce);
-      client.publishMessage(acceloremeterTopic, MqttQos.atLeastOnce, builder.payload!);
+      builder.addString(accelerometerData.x.toStringAsFixed(2));
+      builder.addString(accelerometerData.y.toStringAsFixed(2));
+      builder.addString(accelerometerData.z.toStringAsFixed(2));
+      client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
+      client.publishMessage(accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
 
