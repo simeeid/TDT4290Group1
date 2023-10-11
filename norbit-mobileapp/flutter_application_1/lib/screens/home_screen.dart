@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/services/noise_service.dart';
-import 'package:flutter_application_1/services/lux_service.dart';
-import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'package:flutter_application_1/widgets/connectivity_textfield_widget.dart';
 import 'package:flutter_application_1/widgets/sensors/accelerometer_widget.dart';
 import 'package:flutter_application_1/widgets/sensors/lux_widget.dart';
@@ -21,10 +18,6 @@ class HomeScreen extends StatelessWidget {
     final noiseBloc = Provider.of<NoiseBloc>(context);
     final luxBloc = Provider.of<LuxBloc>(context);
     final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
-    final noiseService = Provider.of<NoiseService>(context, listen: false);
-    final luxService = Provider.of<LuxService>(context, listen: false);
-    final accelerometerService =
-    Provider.of<AccelerometerService>(context, listen: false);
     final startStopBloc = Provider.of<StartStopBloc>(context);
 
     return StreamBuilder<bool>(
@@ -36,7 +29,8 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Norbit mobile app'),
             ),
             body: Padding(
-              padding: const EdgeInsets.all(16.0), // Add padding for all elements
+              padding:
+                  const EdgeInsets.all(16.0), // Add padding for all elements
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -44,7 +38,8 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 16.0),
                   const Center(
                     child: SizedBox(
-                      width: 200.0, // Set the desired width for the StartStopButton
+                      width:
+                          200.0, // Set the desired width for the StartStopButton
                       child: StartStopButton(),
                     ),
                   ),
@@ -52,7 +47,8 @@ class HomeScreen extends StatelessWidget {
                   if (snapshot.data == true)
                     Column(
                       children: [
-                        AccelerometerWidget(accelerometerBloc: accelerometerBloc),
+                        AccelerometerWidget(
+                            accelerometerBloc: accelerometerBloc),
                         const SizedBox(height: 16.0),
                         LuxWidget(luxBloc: luxBloc),
                         const SizedBox(height: 16.0),

@@ -4,7 +4,6 @@ import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'screens/home_screen.dart';
-import 'mocks.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
@@ -65,12 +64,10 @@ class MyApp extends StatelessWidget {
         Provider<MqttService>(
           create: (context) {
             return MqttService(
-              noiseBloc:
-              Provider.of<NoiseBloc>(context, listen: false),
-              luxBloc:
-              Provider.of<LuxBloc>(context, listen: false),
+              noiseBloc: Provider.of<NoiseBloc>(context, listen: false),
+              luxBloc: Provider.of<LuxBloc>(context, listen: false),
               accelerometerBloc:
-              Provider.of<AccelerometerBloc>(context, listen: false),
+                  Provider.of<AccelerometerBloc>(context, listen: false),
             );
           },
         ),
