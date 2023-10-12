@@ -4,6 +4,10 @@
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to capture audio for noise meter plugin</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location for this feature</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need your location for this feature</string>
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
