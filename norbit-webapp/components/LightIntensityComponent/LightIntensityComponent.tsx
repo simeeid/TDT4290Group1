@@ -2,16 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
+import { TamplifyInstance } from '@/dashboard/Dashboard';
+import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 
-export const LightIntensityComponent: React.FC = () => {
+export const LightIntensityComponent: React.FC<{amplifyInstance: TamplifyInstance }> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  // TODO Handle light intensity data and proper type declaration
+  const [lightIntensityData, setLightIntensityData] = useState<any>(0);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
   }
-
   useEffect(() => {
     const generateDummyData = (): ChartData => ({
       timestamp: new Date().toLocaleTimeString(),
@@ -44,6 +47,8 @@ export const LightIntensityComponent: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [buffer, isPaused]);
+
+  useSubscribeToTopics('lux/topic', amplifyInstance, setLightIntensityData);
 
   return (
     <div className="sensorContainer">
