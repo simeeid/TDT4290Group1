@@ -10,34 +10,17 @@
 
 ---
 
-### File and folder structure webapp convention
-- public/  -> Keep static assets here
+## File and folder structure for the webapp
+- public/  - Keep static assets here
 - redux/
-  - slices/
+  - slices/ - Redux data definitions go here
   - hooks.tsx
   - provider.tsx
   - store.tsx
-- src/ -> code for our app
-  - globals.css
-  - layout.tsx
-  - page.tsx 
-  - app/
-    - api/
-      - cloud/
-        - route.ts
-        - error.tsx
-        - loading.tsx
-    - components/
-      - component1/
-        - component1.tsx
-        - style.css
-        - types.tsx
-    - page/
-      - page.tsx
-      - error.tsx
-      - loading.tsx
-      - layout.tsx
-      - style.css 
+- pages/ - contains page definitions
+- components/  - contains the definitions for the components used by pages and/or other components
+- styles/ - contains the application's styles. Can be imported with `import '@styles/filename.css'`
+- logic/ - contains general logic detached from any one specific component, as well as other non-component files
 - tests/ 
   - cypress - contains cypress-based tests
       - component/ - contains component tests
@@ -49,7 +32,7 @@
   - unit    - contains jest-based unit tests
       - TestName.test.tsx
 
-### Commit messages
+## Commit messages
 Commit messages are short and descriptive, and must be written with passive language. Normally, it's divided in three parts: the title, the body, and the footer. The title is a short overview of the changes the commit includes. For example, what changes have been made, or what has been done. The body elaborates on the details. One can mention what files or components have been changed, and what was changed in them. However, the body is not required in all circumstances. It's especially important if problems are encountered, and especially if the problems have influenced the solution in the commit. Essentially, if the reader benefits from more information to determine if a commit is good or not, the body should be used. It's also an opportunity to justify your changes before anyone asks, particularly if the solution isn't obviously intuitive.
 
 The footer is especially important for backlog purposes. Here, you can  tag issues the changes belong to, and tag with co-authors. This is done like this:
@@ -66,7 +49,7 @@ Co-Authored-By: Simen <simeeid@stud.ntnu.no>
 
 It is not required to mention co-authors in the commit messages, but this signals that we have pair programmed or completed reviews.
 
-### Branch names
+## Branch names
 When you make a new branch, it should be given a descriptive name containing why the branch was made, or what problems it's meant to solve. You do this by mentioning what changes have been made, in the format `change-type/description`. Some relevant change types include:
 
 * `feat`: feature; something new has been added
@@ -82,7 +65,7 @@ The description should be short and concise, and should cover the primary object
 
 ---
 
-### Pull request
+## Pull request
 
 Similarly to commit messages, pull requests need a short and descriptive title, a body, and a footer.
 
