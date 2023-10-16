@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
+import 'blocs/connectivity/location_bloc.dart';
 import 'screens/home_screen.dart';
 import 'mocks.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
-import 'blocs/start_stop_button_bloc.dart';
+import 'blocs/start_stop_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -35,6 +37,10 @@ class MyApp extends StatelessWidget {
           create: (_) => AccelerometerBloc(),
           dispose: (_, bloc) => bloc.dispose(),
         ),
+        Provider<LocationBloc>(
+          create: (_) => LocationBloc(),
+          dispose: (_, bloc) => bloc.dispose(),
+        ),
         Provider<StartStopBloc>(
           create: (_) => StartStopBloc(),
           dispose: (_, bloc) => bloc.dispose(),
@@ -58,6 +64,13 @@ class MyApp extends StatelessWidget {
             return AccelerometerService(
               accelerometerBloc:
                   Provider.of<AccelerometerBloc>(context, listen: false),
+            );
+          },
+        ),
+        Provider<LocationService>(
+          create: (context) {
+            return LocationService(
+              locationBloc: Provider.of<LocationBloc>(context, listen: false),
             );
           },
         ),

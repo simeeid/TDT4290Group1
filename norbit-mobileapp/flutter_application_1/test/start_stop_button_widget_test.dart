@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/lux_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
+import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/widgets/start_stop_button_widget.dart';
-import 'package:flutter_application_1/blocs/start_stop_button_bloc.dart';
+import 'package:flutter_application_1/blocs/start_stop_bloc.dart';
 
 void main() {
   late StartStopBloc startStopBloc;
@@ -30,6 +32,8 @@ void main() {
     final luxService = LuxService(luxBloc: LuxBloc());
     final accelerometerService =
         AccelerometerService(accelerometerBloc: AccelerometerBloc());
+    final LocationService locationService =
+        LocationService(locationBloc: LocationBloc());
 
     await tester.pumpWidget(
       MultiProvider(
@@ -38,6 +42,7 @@ void main() {
           Provider<NoiseService>.value(value: noiseService),
           Provider<LuxService>.value(value: luxService),
           Provider<AccelerometerService>.value(value: accelerometerService),
+          Provider<LocationService>.value(value: locationService),
         ],
         child: const MaterialApp(
           home: Scaffold(
@@ -62,6 +67,8 @@ void main() {
     final luxService = LuxService(luxBloc: LuxBloc());
     final accelerometerService =
         AccelerometerService(accelerometerBloc: AccelerometerBloc());
+    final LocationService locationService =
+        LocationService(locationBloc: LocationBloc());
 
     await tester.pumpWidget(
       MultiProvider(
@@ -70,6 +77,7 @@ void main() {
           Provider<NoiseService>.value(value: noiseService),
           Provider<LuxService>.value(value: luxService),
           Provider<AccelerometerService>.value(value: accelerometerService),
+          Provider<LocationService>.value(value: locationService),
         ],
         child: const MaterialApp(
           home: Scaffold(
