@@ -24,6 +24,7 @@ const Dashboard: React.FC = () => {
     userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID,
     userPoolWebClientId: process.env.NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID,
   };
+  console.log(config.userPoolId);
 
   Amplify.configure(config);
   Amplify.addPluggable(
