@@ -23,6 +23,30 @@ void main() {
     startStopBloc.dispose();
   });
 
+/*
+ * When adding a new sensor to the application, there are a few steps that need 
+ * to be taken in order for the tests to function correctly:
+ *
+ * 1. Import the new sensor's service and bloc in the test file.
+ *    Example: 
+ *    import 'package:flutter_application_1/blocs/connectivity/new_sensor_bloc.dart';
+ *    import 'package:flutter_application_1/services/new_sensor_service.dart';
+ *
+ * 2. Create instances of the new sensor's service and bloc in each test case.
+ *    Example: 
+ *    final newSensorService = NewSensorService(newSensorBloc: NewSensorBloc());
+ *
+ * 3. Add the new sensor's service to the list of providers in the MultiProvider widget.
+ *    Example: 
+ *    Provider<NewSensorService>.value(value: newSensorService),
+ *
+ * The reason for this structure is that each widget in the application that depends 
+ * on a sensor needs to have access to that sensor's data. This is achieved through 
+ * Flutter's provider package, which allows widgets to listen for changes in the sensor 
+ * data and rebuild when new data is available. In order for the tests to simulate 
+ * this behavior, they need to provide mock instances of each sensor's service.
+ */
+
   testWidgets(
       'StartStopButton should display "Start" when startStopStream emits false',
       (WidgetTester tester) async {
@@ -38,6 +62,7 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
+          // Add the new sensor's service to the list of providers
           Provider<StartStopBloc>.value(value: startStopBloc),
           Provider<NoiseService>.value(value: noiseService),
           Provider<LuxService>.value(value: luxService),
@@ -63,6 +88,7 @@ void main() {
       (WidgetTester tester) async {
     startStopBloc.switchState(true); // Ensure that StartStopBloc emits true
 
+    // Create instances of the new sensor's service and bloc in each test case
     final noiseService = NoiseService(noiseBloc: NoiseBloc());
     final luxService = LuxService(luxBloc: LuxBloc());
     final accelerometerService =
@@ -73,6 +99,7 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
+          // Add the new sensor's service to the list of providers
           Provider<StartStopBloc>.value(value: startStopBloc),
           Provider<NoiseService>.value(value: noiseService),
           Provider<LuxService>.value(value: luxService),
