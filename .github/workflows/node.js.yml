@@ -35,6 +35,9 @@ jobs:
       working-directory: norbit-webapp
       run: |
         npm run build --if-present
+    - name: Export env variables
+      run: |
+        echo "NEXT_PUBLIC_MOCK_AMPLIY=yes" >> $GITHUB_ENV
     - name: Run Jest
       working-directory: norbit-webapp
       run: |

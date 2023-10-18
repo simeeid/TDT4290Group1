@@ -22,7 +22,6 @@ describe("Graph config", () => {
       states.push(substate);
     }
 
-    cy.wait(4000);
 
     for (const state of states) {
       let active = 0;
@@ -35,7 +34,6 @@ describe("Graph config", () => {
         } else {
           cy.get("#" + ids[i]).uncheck();
         }
-        cy.wait(1000);
       }
 
       cy.get("#dashboard-chart-container").children().should("have.length", active);
