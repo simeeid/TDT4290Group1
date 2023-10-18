@@ -27,12 +27,12 @@ describe("Graph config", () => {
       for (let i = 0; i < state.length; ++i) {
         let bool = state[i];
 
-        let cb = cy.get("#" + ids[i]);
+        cy.get("#" + ids[i]).as("cb");
         if (bool) {
           ++active;
-          cb.check();
+          cy.get("@cb").check();
         } else {
-          cb.uncheck();
+          cy.get("@cb").uncheck();
         }
       }
 
