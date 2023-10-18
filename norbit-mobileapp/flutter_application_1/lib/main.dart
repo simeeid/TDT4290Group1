@@ -9,7 +9,7 @@ import 'screens/home_screen.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
-import '../blocs/start_stop_bloc.dart';
+import 'blocs/start_stop_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
               luxBloc: Provider.of<LuxBloc>(context, listen: false),
               accelerometerBloc:
                   Provider.of<AccelerometerBloc>(context, listen: false),
+              locationBloc: Provider.of<LocationBloc>(context, listen: false),
             );
           },
         ),
