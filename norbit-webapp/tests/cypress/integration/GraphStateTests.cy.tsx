@@ -37,6 +37,7 @@ describe("Graph config", () => {
       }
 
       cy.get("#dashboard-chart-container").children().should("have.length", active);
+      cy.wait(1500);
     }
   });
 });
