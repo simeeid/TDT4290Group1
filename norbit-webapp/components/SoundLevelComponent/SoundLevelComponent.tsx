@@ -2,11 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
+import { TamplifyInstance } from '@/dashboard/Dashboard';
+import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 
-const AccelerometerChart: React.FC = () => {
+export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  // TODO Handle sound volume data and proper type declaration
+  const [soundLevelData, setSoundLevelData] = useState<any>(0);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
@@ -25,7 +29,7 @@ const AccelerometerChart: React.FC = () => {
         setBuffer(prevBuffer => [...prevBuffer, newData]);
       } else {
         setData(prevData => {
-          let updatedData = [...prevData, ...buffer, newData]; // Add buffer data and new data
+          let updatedData = [...prevData, ...buffer, newData]; 
 
           // Limit the number of data points displayed
           const maxDataPoints = 100;
@@ -45,20 +49,16 @@ const AccelerometerChart: React.FC = () => {
     return () => clearInterval(interval);
   }, [buffer, isPaused]);
 
+  useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
+
   return (
     <div className="sensorContainer">
-      <h2>Acceleration</h2>
+      <h2>Sound Level</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration"
+        chartLabel="Sound Level (dB)"
       />
     </div>
   );
 }
-
-export default AccelerometerChart;
-
-
-
-

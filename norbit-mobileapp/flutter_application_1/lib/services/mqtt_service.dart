@@ -4,11 +4,7 @@ import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import 'dart:async';
 import 'dart:convert';
-
-
 import 'package:flutter/services.dart';
-import 'package:sensors_plus/sensors_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
