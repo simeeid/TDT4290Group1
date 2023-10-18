@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
               luxBloc: Provider.of<LuxBloc>(context, listen: false),
               accelerometerBloc:
                   Provider.of<AccelerometerBloc>(context, listen: false),
+              locationBloc: Provider.of<LocationBloc>(context, listen: false),
             );
           },
         ),

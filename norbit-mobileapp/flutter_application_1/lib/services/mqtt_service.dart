@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import 'dart:async';
@@ -14,17 +15,19 @@ class MqttService {
   final NoiseBloc noiseBloc;
   final LuxBloc luxBloc;
   final AccelerometerBloc accelerometerBloc;
+  final LocationBloc locationBloc;
   String statusText = "Status Text";
   bool isConnected = false;
   StreamSubscription? luxSubscription;
   StreamSubscription? noiseSubscription;
   StreamSubscription? accelerometerSubscription;
+  StreamSubscription? locationSubscription;
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
       MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
-  MqttService({required this.noiseBloc, required this.luxBloc, required this.accelerometerBloc});
+  MqttService({required this.noiseBloc, required this.luxBloc, required this.accelerometerBloc, required this.locationBloc});
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
@@ -136,6 +139,23 @@ class MqttService {
       })); // Encode the data as a JSON string
       client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
       client.publishMessage(accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
+    });
+  }
+
+  void publishLocationData() {
+    const locationTopic = 'location/topic'; // Change this to your desired topic
+    locationSubscription = locationBloc.locationController.stream.listen((locationData) {
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      builder.addString(jsonEncode({
+        'sensorName': 'Location Sensor',
+        'timestamp': DateTime.now().toIso8601String(),
+        'payload': {
+          'latitude': locationData.latitude,
+          'longitude': locationData.longitude
+        }
+      })); // Encode the data as a JSON string
+      client.subscribe(locationTopic, MqttQos.atMostOnce);
+      client.publishMessage(locationTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
 
