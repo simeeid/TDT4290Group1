@@ -1,3 +1,7 @@
+assets/certificates/*.crt 
+assets/certificates/*.key 
+assets/certificates/*.pem 
+
 # Miscellaneous
 *.class
 *.log

@@ -41,7 +41,8 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Norbit mobile app'),
             ),
             body: Padding(
-              padding: const EdgeInsets.all(16.0), // Add padding for all elements
+              padding:
+                  const EdgeInsets.all(16.0), // Add padding for all elements
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -49,7 +50,8 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 16.0),
                   const Center(
                     child: SizedBox(
-                      width: 200.0, // Set the desired width for the StartStopButton
+                      width:
+                          200.0, // Set the desired width for the StartStopButton
                       child: StartStopButton(),
                     ),
                   ),
@@ -57,7 +59,8 @@ class HomeScreen extends StatelessWidget {
                   if (snapshot.data == true)
                     Column(
                       children: [
-                        AccelerometerWidget(accelerometerBloc: accelerometerBloc),
+                        AccelerometerWidget(
+                            accelerometerBloc: accelerometerBloc),
                         const SizedBox(height: 16.0),
                         LuxWidget(luxBloc: luxBloc),
                         const SizedBox(height: 16.0),
