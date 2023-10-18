@@ -27,17 +27,16 @@ describe("Graph config", () => {
       for (let i = 0; i < state.length; ++i) {
         let bool = state[i];
 
-        cy.get("#" + ids[i]).as("cb");
         if (bool) {
           ++active;
-          cy.get("@cb").check();
+          cy.get("#" + ids[i]).check();
         } else {
-          cy.get("@cb").uncheck();
+          cy.get("#" + ids[i]).uncheck();
         }
+        cy.wait(300);
       }
 
       cy.get("#dashboard-chart-container").children().should("have.length", active);
-      cy.wait(1500);
     }
   });
 });
