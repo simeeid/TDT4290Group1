@@ -7,6 +7,7 @@ import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
+import 'package:flutter_application_1/services/mqtt_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/widgets/start_stop_button_widget.dart';
@@ -58,6 +59,11 @@ void main() {
         AccelerometerService(accelerometerBloc: AccelerometerBloc());
     final LocationService locationService =
         LocationService(locationBloc: LocationBloc());
+    final mqttService = MqttService(
+        noiseBloc: NoiseBloc(),
+        luxBloc: LuxBloc(),
+        accelerometerBloc: AccelerometerBloc(),
+        locationBloc: LocationBloc());
 
     await tester.pumpWidget(
       MultiProvider(
@@ -68,6 +74,7 @@ void main() {
           Provider<LuxService>.value(value: luxService),
           Provider<AccelerometerService>.value(value: accelerometerService),
           Provider<LocationService>.value(value: locationService),
+          Provider<MqttService>.value(value: mqttService),
         ],
         child: const MaterialApp(
           home: Scaffold(
@@ -95,6 +102,11 @@ void main() {
         AccelerometerService(accelerometerBloc: AccelerometerBloc());
     final LocationService locationService =
         LocationService(locationBloc: LocationBloc());
+    final mqttService = MqttService(
+        noiseBloc: NoiseBloc(),
+        luxBloc: LuxBloc(),
+        accelerometerBloc: AccelerometerBloc(),
+        locationBloc: LocationBloc());
 
     await tester.pumpWidget(
       MultiProvider(
@@ -105,6 +117,7 @@ void main() {
           Provider<LuxService>.value(value: luxService),
           Provider<AccelerometerService>.value(value: accelerometerService),
           Provider<LocationService>.value(value: locationService),
+          Provider<MqttService>.value(value: mqttService),
         ],
         child: const MaterialApp(
           home: Scaffold(

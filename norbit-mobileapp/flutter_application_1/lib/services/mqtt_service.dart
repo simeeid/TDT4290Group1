@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import 'dart:async';
@@ -14,6 +15,7 @@ class MqttService {
   final NoiseBloc noiseBloc;
   final LuxBloc luxBloc;
   final AccelerometerBloc accelerometerBloc;
+  final LocationBloc locationBloc;
   String statusText = "Status Text";
   bool isConnected = false;
   StreamSubscription? luxSubscription;
@@ -24,12 +26,16 @@ class MqttService {
   final MqttServerClient client =
       MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
-  MqttService({required this.noiseBloc, required this.luxBloc, required this.accelerometerBloc});
+  MqttService(
+      {required this.noiseBloc,
+      required this.luxBloc,
+      required this.accelerometerBloc,
+      required this.locationBloc});
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
-      isConnected = await mqttConnect("123");
-    }
+    isConnected = await mqttConnect("123");
+  }
 
   //Disconnects from mqtt broker.
   disconnect() {
@@ -44,7 +50,8 @@ class MqttService {
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
     ByteData deviceCert =
         await rootBundle.load('assets/certificates/DeviceCertificate.crt');
-    ByteData privateKey = await rootBundle.load('assets/certificates/Private.key');
+    ByteData privateKey =
+        await rootBundle.load('assets/certificates/Private.key');
 
     SecurityContext context = SecurityContext.defaultContext;
     context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
@@ -73,7 +80,7 @@ class MqttService {
       return false;
     }
 
-    //Subscribed topic. 
+    //Subscribed topic.
     const topic = 'main/topic';
     client.subscribe(topic, MqttQos.atMostOnce);
 
@@ -81,9 +88,9 @@ class MqttService {
   }
 
   void setStatus(String content) {
-      statusText = content;
-      print(statusText);
-      // Notify your listeners here
+    statusText = content;
+    print(statusText);
+    // Notify your listeners here
   }
 
   void publishLuxData() {
@@ -94,7 +101,7 @@ class MqttService {
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
         'payload': {
-          'lux':luxData,
+          'lux': luxData,
         }
       })); // Encode the data as a JSON string
       client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
@@ -119,8 +126,10 @@ class MqttService {
 
   void publishAccelerometerData() {
     List<String> accelerometerList = [];
-    const accelerometerTopic = 'accelerometer/topic'; // Change this to your desired topic
-    accelerometerSubscription = accelerometerBloc.accelerometerController.stream.listen((accelerometerData) {
+    const accelerometerTopic =
+        'accelerometer/topic'; // Change this to your desired topic
+    accelerometerSubscription = accelerometerBloc.accelerometerController.stream
+        .listen((accelerometerData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       accelerometerList.add(accelerometerData.x.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.y.toStringAsFixed(2));
@@ -129,31 +138,32 @@ class MqttService {
         'sensorName': 'Accelerometer Sensor',
         'timestamp': DateTime.now().toIso8601String(),
         'payload': {
-          'x':accelerometerData.x,
-          'y':accelerometerData.y,
-          'z':accelerometerData.z,
+          'x': accelerometerData.x,
+          'y': accelerometerData.y,
+          'z': accelerometerData.z,
         }
       })); // Encode the data as a JSON string
       client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
-      client.publishMessage(accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
+      client.publishMessage(
+          accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
 
   void onConnected() {
-      setStatus("Client connection was successful");
-      print("Client connection was successful");
-      // Notify your listeners here
+    setStatus("Client connection was successful");
+    print("Client connection was successful");
+    // Notify your listeners here
   }
 
   void onDisconnected() {
-      print('Disconnected');
-      // Add any additional logic here
-      // Notify your listeners here
+    print('Disconnected');
+    // Add any additional logic here
+    // Notify your listeners here
   }
 
   void pong() {
-      print('Ping response client callback invoked');
-      // Add any additional logic here
-      // Notify your listeners here
+    print('Ping response client callback invoked');
+    // Add any additional logic here
+    // Notify your listeners here
   }
 }
