@@ -18,9 +18,9 @@ const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) =>
   };
 
   return (
-    <div className= {style.labelBlock} >
+    <div className= {style.labelBlock} id="sensor-panel">
       <h3>Sensor Configuration</h3>
-      <div className={style.configRoot}>
+      <div className={style.configRoot} id="config-root">
         <div className={style.configGroup}>
           <h4>Accelerometer settings</h4>
           <div className={style.optionGroup}>

@@ -41,7 +41,7 @@ export const ChartComponent: React.FC<ChartProps> = ({ data, chartLabel, padding
         </YAxis>
         <Tooltip />
       </LineChart>
-      <button onClick={togglePause}>
+      <button className="light" onClick={togglePause}>
         {isPaused ? "Resume" : "Pause"}
       </button>
     </div>
