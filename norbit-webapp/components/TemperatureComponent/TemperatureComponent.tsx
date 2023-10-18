@@ -5,7 +5,7 @@ import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 
-export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
+export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);

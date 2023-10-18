@@ -5,7 +5,7 @@ import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import { TLightIntensityData } from './types';
 
-export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstance }> = ({ amplifyInstance }) => {
+export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({ amplifyInstance }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);

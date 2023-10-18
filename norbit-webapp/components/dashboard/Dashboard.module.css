@@ -2,12 +2,12 @@
 .dashboardContainer {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 
 .chartsContainer {
-  flex: 3;
-  width: 500px;
+  flex: 2;
   margin-right: 5px;
 }
 
@@ -17,6 +17,7 @@
 
   .chartsContainer > div:nth-of-type(even) {
     background-color: #F4F2F0;
+    border-radius: 5px;
   }
 
 .configurationPanel {

@@ -6,10 +6,9 @@ import { SensorConfig } from '../sensorConfiguration/types';
 import {TemperatureComponent} from '../TemperatureComponent/TemperatureComponent';
 import {SoundLevelComponent} from '../SoundLevelComponent/SoundLevelComponent';
 import {LightIntensityComponent} from '../LightIntensityComponent/LightIntensityComponent';
-import { Amplify} from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
+
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
-import { useEffect } from 'react';
-import { set } from 'cypress/types/lodash';
 
 export type TamplifyInstance = typeof Amplify;
 
@@ -26,22 +25,27 @@ const Dashboard: React.FC = () => {
   };
   console.log(config.userPoolId);
 
-  Amplify.configure(config);
-  Amplify.addPluggable(
-    new AWSIoTProvider({
-      aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
-      aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
-    })
-  );
+  const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
 
-
+  if (!mockAmplify) {
+    console.log("Running Amplify in live mode");
+    Amplify.configure(config);
+    Amplify.addPluggable(
+      new AWSIoTProvider({
+        aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
+        aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
+      })
+    );
+  } else {
+    console.log("Mocking Amplify");
+  } 
   return (
-    <div className={dashboardStyles.dashboardContainer}>
-      <div className={dashboardStyles.chartsContainer}>
-        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={Amplify} />}
-        {sensorConfig.temperature && <TemperatureComponent amplifyInstance={Amplify} />}
-        {sensorConfig.light && <LightIntensityComponent amplifyInstance={Amplify}/>}
-        {sensorConfig.sound && <SoundLevelComponent amplifyInstance={Amplify} />}
+    <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
+      <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
+        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={mockAmplify ? Amplify : null} />}
+        {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? Amplify : null} />}
+        {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? Amplify : null} />}
+        {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? Amplify : null} />}
       </div>
       <div className={dashboardStyles.configurationPanel}>
         <SensorConfigurationPanel onConfigurationChange={setSensorConfig} />
