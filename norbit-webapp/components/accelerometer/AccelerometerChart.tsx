@@ -1,12 +1,20 @@
-'use client'
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
+import { TamplifyInstance } from '@/dashboard/Dashboard';
+import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 
-const AccelerometerChart: React.FC = () => {
+const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+
+  // TODO: Handle accelerometer data and proper type declaration
+  const [accelerometerData, setAccelerometerData] = useState<any>(0);
+ 
+
+
+  
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
@@ -17,7 +25,6 @@ const AccelerometerChart: React.FC = () => {
       timestamp: new Date().toLocaleTimeString(),
       datapoint: parseFloat((Math.random() * 10).toFixed(2))
     });
-
     const interval = setInterval(() => {
       const newData = generateDummyData();
 
@@ -44,6 +51,8 @@ const AccelerometerChart: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [buffer, isPaused]);
+
+  useSubscribeToTopics('accelerometer/topic', amplifyInstance, setAccelerometerData)
 
   return (
     <div className="sensorContainer">

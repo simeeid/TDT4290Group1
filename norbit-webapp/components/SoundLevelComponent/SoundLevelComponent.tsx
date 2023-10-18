@@ -2,11 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
+import { TamplifyInstance } from '@/dashboard/Dashboard';
+import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 
-export const SoundLevelComponent: React.FC = () => {
+export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  // TODO Handle sound volume data and proper type declaration
+  const [soundLevelData, setSoundLevelData] = useState<any>(0);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
@@ -44,6 +48,8 @@ export const SoundLevelComponent: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [buffer, isPaused]);
+
+  useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
 
   return (
     <div className="sensorContainer">
