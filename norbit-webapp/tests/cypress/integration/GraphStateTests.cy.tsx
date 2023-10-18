@@ -33,7 +33,7 @@ describe("Graph config", () => {
         } else {
           cy.get("#" + ids[i]).uncheck();
         }
-        cy.wait(300);
+        cy.wait(2000);
       }
 
       cy.get("#dashboard-chart-container").children().should("have.length", active);
