@@ -1,7 +1,7 @@
 'use client';
-import { connectDevice, Device } from '../../DeviceManager';
+import { connectDevice, Device } from '@/DeviceManager';
 import React, { useState } from 'react';
-import './SidebarComponent.css'
+
 import { SidebarProps } from './types'
 import {useAppDispatch, useAppSelector} from '@redux/hook';
 import { deviceList, push } from '@redux/slices/DeviceList';

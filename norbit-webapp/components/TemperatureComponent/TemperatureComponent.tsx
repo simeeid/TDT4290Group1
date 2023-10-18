@@ -2,11 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
+import { TamplifyInstance } from '@/dashboard/Dashboard';
+import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 
-export const LightIntensityComponent: React.FC = () => {
+export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  // TODO Handle temperature data and proper type declaration 
+  const [temperatureData, setTemperatureData] = useState<any>(0);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
@@ -45,13 +49,15 @@ export const LightIntensityComponent: React.FC = () => {
     return () => clearInterval(interval);
   }, [buffer, isPaused]);
 
+  useSubscribeToTopics('temperature/topic', amplifyInstance, setTemperatureData);
+
   return (
     <div className="sensorContainer">
-      <h2>Light Intensity</h2>
+      <h2>Temperature</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Light Intensity"
+        chartLabel="Temperature"
       />
     </div>
   );

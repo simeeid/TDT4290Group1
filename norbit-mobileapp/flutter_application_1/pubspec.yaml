@@ -38,10 +38,7 @@ dependencies:
   noise_meter: ^5.0.2
   permission_handler: ^11.0.0
   rxdart: ^0.27.7
-  #amplify_flutter: ^1.4.1
-
-  #amplify_analytics_pinpoint: ^1.4.1
-  #amplify_authenticator: ^1.4.1
+  geolocator: ^10.1.0
   mqtt_client: ^10.0.0
   sigv4: ^5.0.0
   ndialog: ^4.3.1

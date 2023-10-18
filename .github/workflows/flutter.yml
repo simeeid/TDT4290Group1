@@ -31,6 +31,12 @@ jobs:
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
         flutter pub get
+    - name: Make mock certificates
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        touch ./assets/certificates/DeviceCertificate.crt
+        touch ./assets/certificates/Private.key
+        touch ./assets/certificates/RootCA.pem
     - name: Build APK
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
@@ -63,6 +69,12 @@ jobs:
       run: |
         gem install cocoapods
         flutter pub get
+    - name: Make mock certificates
+      working-directory: norbit-mobileapp/flutter_application_1
+      run: |
+        touch ./assets/certificates/DeviceCertificate.crt
+        touch ./assets/certificates/Private.key
+        touch ./assets/certificates/RootCA.pem
     - uses: futureware-tech/simulator-action@v2
       with:
         model: 'iPhone 13'
