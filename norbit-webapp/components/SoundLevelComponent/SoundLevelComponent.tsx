@@ -1,53 +1,65 @@
-'use client'
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
+import { TSoundLevelData } from './types';
 
 export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
-  // TODO Handle sound volume data and proper type declaration
-  const [soundLevelData, setSoundLevelData] = useState<any>(0);
+  const [soundLevelData, setSoundLevelData] = useState<TSoundLevelData | null>(null);
+  console.log(soundLevelData);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
   }
 
-  useEffect(() => {
-    const generateDummyData = (): ChartData => ({
+  const transformToChartData = (iotData: any): ChartData => {
+    return {
       timestamp: new Date().toLocaleTimeString(),
-      datapoint: parseFloat((Math.random() * 10).toFixed(2))
-    });
+      datapoint: iotData.payload.volume
+    };
+  };
 
-    const interval = setInterval(() => {
-      const newData = generateDummyData();
+  useEffect(() => {
+    if (soundLevelData) {
+      const newData = transformToChartData(soundLevelData);
 
-      if (isPaused) {
-        setBuffer(prevBuffer => [...prevBuffer, newData]);
-      } else {
-        setData(prevData => {
-          let updatedData = [...prevData, ...buffer, newData]; 
+      setData(prevData => {
+        let updatedData;
 
-          // Limit the number of data points displayed
-          const maxDataPoints = 100;
-          if (updatedData.length > maxDataPoints) {
-            updatedData.splice(0, updatedData.length - maxDataPoints); // Remove the oldest entries
+        if (isPaused) {
+          setBuffer(prevBuffer => [...prevBuffer, newData]);
+          return prevData;
+        }
+
+        // Filter buffer to remove consecutive duplicates
+        const filteredBuffer = buffer.reduce((acc, current) => {
+          const previous = acc[acc.length - 1];
+          if (!previous || previous.datapoint !== current.datapoint) {
+            acc.push(current);
           }
+          return acc;
+        }, [] as ChartData[]);
 
-          return updatedData;
-        });
+        updatedData = [...prevData, ...filteredBuffer, newData];
+
+        // Limit the number of data points displayed
+        const maxDataPoints = 100;
+        if (updatedData.length > maxDataPoints) {
+          updatedData = updatedData.slice(-maxDataPoints);  // Keep the last maxDataPoints
+        }
 
         if (buffer.length > 0) {
-          setBuffer([]); // Empty the buffer
+          setBuffer([]); // Clear the buffer
         }
-      }
-    }, 10);
 
-    return () => clearInterval(interval);
-  }, [buffer, isPaused]);
+        return updatedData;
+      });
+    }
+  }, [soundLevelData, isPaused]);
 
   useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
 

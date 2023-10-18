@@ -3,56 +3,64 @@ import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
+import { TAccelerometerData } from './types';
 
 const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
-
-  // TODO: Handle accelerometer data and proper type declaration
-  const [accelerometerData, setAccelerometerData] = useState<any>(0);
- 
-
-
-  
+  const [accelerometerData, setAccelerometerData] = useState<TAccelerometerData | null>(null);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
   }
 
-  useEffect(() => {
-    const generateDummyData = (): ChartData => ({
+  const transformToChartData = (iotData: any): ChartData => {
+    return {
       timestamp: new Date().toLocaleTimeString(),
-      datapoint: parseFloat((Math.random() * 10).toFixed(2))
-    });
-    const interval = setInterval(() => {
-      const newData = generateDummyData();
+      datapoint: iotData.payload.x
+    };
+  };
 
-      if (isPaused) {
-        setBuffer(prevBuffer => [...prevBuffer, newData]);
-      } else {
-        setData(prevData => {
-          let updatedData = [...prevData, ...buffer, newData]; // Add buffer data and new data
+  useEffect(() => {
+    if (accelerometerData) {
+      const newData = transformToChartData(accelerometerData);
 
-          // Limit the number of data points displayed
-          const maxDataPoints = 100;
-          if (updatedData.length > maxDataPoints) {
-            updatedData.splice(0, updatedData.length - maxDataPoints); // Remove the oldest entries
+      setData(prevData => {
+        let updatedData;
+
+        if (isPaused) {
+          setBuffer(prevBuffer => [...prevBuffer, newData]);
+          return prevData;
+        }
+
+        // Filter buffer to remove consecutive duplicates
+        const filteredBuffer = buffer.reduce((acc, current) => {
+          const previous = acc[acc.length - 1];
+          if (!previous || previous.datapoint !== current.datapoint) {
+            acc.push(current);
           }
+          return acc;
+        }, [] as ChartData[]);
 
-          return updatedData;
-        });
+        updatedData = [...prevData, ...filteredBuffer, newData];
+        
+        // Limit the number of data points displayed
+        const maxDataPoints = 100;
+        if (updatedData.length > maxDataPoints) {
+          updatedData = updatedData.slice(-maxDataPoints);  // Keep the last maxDataPoints
+        }
 
         if (buffer.length > 0) {
-          setBuffer([]); // Empty the buffer
+          setBuffer([]); // Clear the buffer
         }
-      }
-    }, 10);
 
-    return () => clearInterval(interval);
-  }, [buffer, isPaused]);
+        return updatedData;
+      });
+    }
+  }, [accelerometerData, isPaused]);
 
-  useSubscribeToTopics('accelerometer/topic', amplifyInstance, setAccelerometerData)
+  useSubscribeToTopics('accelerometer/topic', amplifyInstance, setAccelerometerData);
 
   return (
     <div className="sensorContainer">
@@ -67,7 +75,6 @@ const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance}> = ({ampl
 }
 
 export default AccelerometerChart;
-
 
 
 
