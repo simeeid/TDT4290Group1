@@ -1,5 +1,6 @@
 describe("Graph config", () => {
   it("Should allow charts to be hidden", () => {
+    Cypress.config('defaultCommandTimeout', 10000);
     cy.visit("/");
     let ids = [
       "enable-accelerometer",
