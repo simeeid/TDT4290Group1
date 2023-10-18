@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import AccelerometerChart from '../accelerometer/AccelerometerChart';
 import SensorConfigurationPanel from '../sensorConfiguration/SensorConfigurationPanel';
@@ -10,6 +11,7 @@ import { Amplify} from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 import { useEffect } from 'react';
 import { set } from 'cypress/types/lodash';
+import Map from '@/Map/Map';
 
 export type TamplifyInstance = typeof Amplify;
 

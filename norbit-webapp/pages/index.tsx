@@ -1,8 +1,19 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Dashboard from 'components/dashboard/Dashboard';
+import dynamic from 'next/dynamic';
+import LeafletMap from '@/Map/Map';
+
 
 import { useEffect, useState } from 'react';
+
+const DynamicLeafletMap = dynamic(
+  () => import('components/Map/Map'),
+  {
+    loading: () => <p>Loading map...</p>,
+    ssr: false
+  }
+);
 
 export default function Home() {
   
@@ -16,6 +27,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <Dashboard />
+
+      <DynamicLeafletMap latitude={63} longitude={10} />
+
+
+
 
       </main>
 
