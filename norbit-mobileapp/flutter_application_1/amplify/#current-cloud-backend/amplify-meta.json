@@ -1,0 +1,56 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-flutterapp-dev-224155-authRole",
+      "UnauthRoleArn": "arn:aws:iam::931000463114:role/amplify-flutterapp-dev-224155-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::931000463114:role/amplify-flutterapp-dev-224155-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-flutterapp-dev-224155-deployment",
+      "UnauthRoleName": "amplify-flutterapp-dev-224155-unauthRole",
+      "StackName": "amplify-flutterapp-dev-224155",
+      "StackId": "arn:aws:cloudformation:eu-north-1:931000463114:stack/amplify-flutterapp-dev-224155/c7c73e10-6df6-11ee-9007-06a9514f981e",
+      "AmplifyAppId": "d2ia2x3y7xmg51"
+    }
+  },
+  "auth": {
+    "flutterappae286fef": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-flutterapp-dev-224155-deployment/amplify-cfn-templates/auth/flutterappae286fef-cloudformation-template.json",
+        "logicalId": "authflutterappae286fef"
+      },
+      "lastPushTimeStamp": "2023-10-18T21:00:59.567Z",
+      "output": {
+        "UserPoolId": "eu-north-1_ZYtF8vFls",
+        "AppClientIDWeb": "41otjg7kmn1vo3pfg3m4u6nu4g",
+        "AppClientID": "1g9c3073ocf8pnvm1ra05u0dh1",
+        "IdentityPoolId": "eu-north-1:6038c3f9-7d1f-40cd-94b6-cc5516c94859",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-north-1:931000463114:userpool/eu-north-1_ZYtF8vFls",
+        "IdentityPoolName": "flutterappae286fef_identitypool_ae286fef__dev",
+        "UserPoolName": "flutterappae286fef_userpool_ae286fef"
+      },
+      "lastPushDirHash": "wVbyO/3Gb7s+Ek8bYaKnfWvBJww="
+    }
+  }
+}

@@ -47,16 +47,17 @@ class MqttService {
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
 
-    ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
-    ByteData deviceCert =
-        await rootBundle.load('assets/certificates/DeviceCertificate.crt');
-    ByteData privateKey =
-        await rootBundle.load('assets/certificates/Private.key');
+  final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
+  final awsCredentials = jsonDecode(awsCredentialsString);
+
+  var cognito = new Cognito(
+      poolId: awsCredentials['poolId'],
+      region: awsCredentials['region'],
+      awsAccessKeyId: awsCredentials['awsAccessKeyId'],
+      awsSecretAccessKey: awsCredentials['awsSecretAccessKey']);
+    var credentials = await cognito.GetCredentials();
 
     SecurityContext context = SecurityContext.defaultContext;
-    context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
-    context.useCertificateChainBytes(deviceCert.buffer.asUint8List());
-    context.usePrivateKeyBytes(privateKey.buffer.asUint8List());
 
     client.securityContext = context;
 
