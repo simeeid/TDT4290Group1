@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ChartData, ChartProps } from './types';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Label, Dot, DotProps } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Label } from 'recharts';
 
 export const ChartComponent: React.FC<ChartProps> = ({ data, chartLabel, paddingOffset, onPauseStateChange }) => {
   const offset = paddingOffset == null ? 1 : paddingOffset;
