@@ -16,6 +16,12 @@ export const MockInputComponent: React.FC<MockInputProps> = ({data, setData}) =>
   const updateData = (ev: React.KeyboardEvent<HTMLInputElement>) => {
 
     ev.preventDefault();
+    // This is a hack, because onChange (in react, a demo I found elsewhere required enter)
+    // is called on every change, and not just when the user has stopped typing (i.e. a change
+    // in onChange is the smallest atom for change, and not what the user might consider a 
+    // change).
+    //
+    // This function waits for the enter key to be pressed, and only then does it submit the result.
     if (ev.key != "Enter") {
       return;
     }
@@ -34,7 +40,7 @@ export const MockInputComponent: React.FC<MockInputProps> = ({data, setData}) =>
       setData([...data, dataEntry]);
     }
 
-    // Wipe the input field
+    // Wipe the input field. This saves time during testing
     elem.value = "";
   };
 
