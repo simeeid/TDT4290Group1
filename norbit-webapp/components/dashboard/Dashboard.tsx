@@ -42,10 +42,10 @@ const Dashboard: React.FC = () => {
   return (
     <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
-        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={mockAmplify ? Amplify : null} />}
-        {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? Amplify : null} />}
-        {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? Amplify : null} />}
-        {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? Amplify : null} />}
+        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />}
       </div>
       <div className={dashboardStyles.configurationPanel}>
         <SensorConfigurationPanel onConfigurationChange={setSensorConfig} />
