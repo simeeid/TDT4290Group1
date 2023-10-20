@@ -22,7 +22,7 @@ describe("Numeric graphs", () => {
   // Note: if this test fails, you've failed to, or incorrectly set, the
   // NEXT_PUBLIC_MOCK_AMPLIFY variable to "yes" before running the server.
   // See norbit-webapp/README.md for more information. Failure to set this variable
-  // will result in many integraion tests being flaky, or outright failing to run.
+  // will result in many integration tests being flaky, or outright failing to run.
   it("should contain, but not show the hidden mock input element", () => {
     for (const id of graphIds) {
       const htmlId = "#" + id;
