@@ -4,6 +4,7 @@ import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import { TLightIntensityData } from './types';
+import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
 export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({ amplifyInstance }) => {
   const [data, setData] = useState<ChartData[]>([]);
@@ -66,13 +67,14 @@ export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstan
   useSubscribeToTopics('lux/topic', amplifyInstance, setLightIntensityData);
 
   return (
-      <div className="sensorContainer">
-          <h2>Light Intensity</h2>
-          <ChartComponent
-              data={data}
-              onPauseStateChange={onPauseStateChange}
-              chartLabel="Light Intensity"
-          />
+      <div className="sensorContainer" id="light-container">
+        <h2>Light Intensity</h2>
+        <ChartComponent
+            data={data}
+            onPauseStateChange={onPauseStateChange}
+            chartLabel="Light Intensity"
+        />
+        { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
       </div>
   );
 }

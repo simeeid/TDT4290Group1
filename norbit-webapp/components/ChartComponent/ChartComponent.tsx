@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ChartData, ChartProps } from './types';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Label } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Label, Dot, DotProps } from 'recharts';
 
 export const ChartComponent: React.FC<ChartProps> = ({ data, chartLabel, paddingOffset, onPauseStateChange }) => {
   const offset = paddingOffset == null ? 1 : paddingOffset;
@@ -34,7 +34,12 @@ export const ChartComponent: React.FC<ChartProps> = ({ data, chartLabel, padding
         data={isPaused ? pauseBuffer : data}
         margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
       >
-        <Line type="monotone" dataKey="datapoint" isAnimationActive={false} stroke="#8884d8" />
+        <Line
+          type="monotone"
+          dataKey="datapoint"
+          isAnimationActive={false}
+          stroke="#8884d8"
+        />
         <XAxis dataKey="timestamp" />
         <YAxis domain={[minValue - offset, maxValue + offset]}>
           {chartLabel ? <Label angle={-90} value={chartLabel} position="insideLeft" style={{textAnchor: 'middle'}} /> : ""}
