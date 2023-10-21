@@ -15,6 +15,7 @@ import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/location_service.dart';
+import '../widgets/sensor_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -47,8 +48,6 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const ConnectivityTextField(),
-                  const SizedBox(height: 16.0),
                   const Center(
                     child: SizedBox(
                       width:
@@ -60,13 +59,23 @@ class HomeScreen extends StatelessWidget {
                   if (snapshot.data == true)
                     Column(
                       children: [
-                        AccelerometerWidget(
-                            accelerometerBloc: accelerometerBloc),
-                        const SizedBox(height: 16.0),
-                        LuxWidget(luxBloc: luxBloc),
-                        const SizedBox(height: 16.0),
-                        NoiseWidget(noiseBloc: noiseBloc),
-                        LocationWidget(locationBloc: locationBloc),
+                        SensorWidget(
+                          title: 'Accelerometer',
+                          child: AccelerometerWidget(
+                              accelerometerBloc: accelerometerBloc),
+                        ),
+                        const SizedBox(height: 16),
+                        SensorWidget(
+                            title: 'Light sensor',
+                            child: LuxWidget(luxBloc: luxBloc)),
+                        const SizedBox(height: 16),
+                        SensorWidget(
+                            title: 'Noisemeter',
+                            child: NoiseWidget(noiseBloc: noiseBloc)),
+                        const SizedBox(height: 16),
+                        SensorWidget(
+                            title: 'GPS',
+                            child: LocationWidget(locationBloc: locationBloc)),
                       ],
                     ),
                 ],
