@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { SidebarProps } from './types'
 import {useAppDispatch, useAppSelector} from '@redux/hook';
 import { deviceList, push } from '@redux/slices/DeviceList';
+import SensorConfigurationPanel from '@/sensorConfiguration/SensorConfigurationPanel';
 
 export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
   let dispatch = useAppDispatch();
@@ -88,13 +89,16 @@ export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
             <label htmlFor="device-id">Enter device ID</label>
             <input id="device-id" name="device-id" placeholder="ABCD1234"  />
 
-            <button id="submit-device-id" className="dark" type="submit">Connect now!</button>
+            <button id="submit-device-id" className="green" type="submit">Connect now!</button>
           </form>
 
           <hr />
           <h2>Device list</h2>
 
           { deviceHtml.length == 0 ? <p>No devices connected :(</p> : <div className="device-list">{deviceHtml}</div> }
+        </div>
+        <div className="configurationPanel">
+          <SensorConfigurationPanel />
         </div>
 
       </div>
