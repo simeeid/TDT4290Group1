@@ -4,13 +4,14 @@ import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import { TSoundLevelData } from './types';
+import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
 export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
   const [soundLevelData, setSoundLevelData] = useState<TSoundLevelData | null>(null);
-  console.log(soundLevelData);
+  //console.log(soundLevelData);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
@@ -24,6 +25,7 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
   };
 
   useEffect(() => {
+    
     if (soundLevelData) {
       const newData = transformToChartData(soundLevelData);
 
@@ -64,13 +66,14 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
   useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
 
   return (
-    <div className="sensorContainer">
+    <div className="sensorContainer" id="sound-container">
       <h2>Sound Level</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
         chartLabel="Sound Level (dB)"
       />
+      { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>
   );
 }
