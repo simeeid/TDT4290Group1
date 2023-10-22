@@ -3,8 +3,8 @@ import { connectDevice, Device } from '@/DeviceManager';
 import React, { useState } from 'react';
 
 import { SidebarProps } from './types'
-import {useAppDispatch, useAppSelector} from '@redux/hook';
-import { deviceList, push } from '@redux/slices/DeviceList';
+import { useAppDispatch, useAppSelector } from '@redux/hook';
+import { push } from '@redux/slices/DeviceList';
 import SensorConfigurationPanel from '@/sensorConfiguration/SensorConfigurationPanel';
 
 export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
@@ -78,11 +78,6 @@ export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
                     idField.value = "";
                   }
               
-                  // This is a disgusting hack
-                  //setSidebarActive(false);
-                  //setTimeout(() => {
-                    //setSidebarActive(true);
-                  //}, 0);
                 });
             }
           }}>
