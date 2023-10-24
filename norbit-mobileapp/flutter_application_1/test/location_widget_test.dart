@@ -45,8 +45,10 @@ void main() {
       // Wait for the next frame.
       await tester.pump();
 
-      expect(find.text('Latitude: ${position.latitude}'), findsOneWidget);
-      expect(find.text('Longitude: ${position.longitude}'), findsOneWidget);
+      expect(find.text('Latitude: ${position.latitude.toStringAsFixed(2)}'),
+          findsOneWidget);
+      expect(find.text('Longitude: ${position.longitude.toStringAsFixed(2)}'),
+          findsOneWidget);
     });
 
     testWidgets(
