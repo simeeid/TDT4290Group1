@@ -115,28 +115,29 @@ class SignInService{
             password: password,
         );
 
-        await _handleSignInResult(result);
-        return true;
+        if (await _handleSignInResult(result) == true) {
+            return true;
+        }
         } on AuthException catch (e) {
         safePrint('Error signing in: ${e.message}');
         }
         return false;
     }
 
-    Future<void> _handleSignInResult(SignInResult result) async {
+    Future<bool> _handleSignInResult(SignInResult result) async {
         switch (result.nextStep.signInStep) {
         case AuthSignInStep.confirmSignInWithSmsMfaCode:
             final codeDeliveryDetails = result.nextStep.codeDeliveryDetails!;
             _handleCodeDelivery(codeDeliveryDetails);
-            break;
+            return false;
         case AuthSignInStep.confirmSignInWithNewPassword:
             safePrint('Enter a new password to continue signing in');
-            break;
+            return false;
         case AuthSignInStep.confirmSignInWithCustomChallenge:
             final parameters = result.nextStep.additionalInfo;
             final prompt = parameters['prompt']!;
             safePrint(prompt);
-            break;
+            return false;
         //case AuthSignInStep.resetPassword:
         //    final resetResult = await Amplify.Auth.resetPassword(
         //    username: username,
@@ -149,12 +150,13 @@ class SignInService{
             username: username,
             );
             _handleCodeDelivery(resendResult.codeDeliveryDetails);
-            break;
+            return false;
         case AuthSignInStep.done:
             safePrint('Sign in is complete');
-            break;
+            return true;
         default:
             safePrint('An unhandled sign in step occurred: ${result.nextStep.signInStep}');
+            return false;
         }
 
         }
