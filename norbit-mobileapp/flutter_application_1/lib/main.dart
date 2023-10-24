@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
 import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
@@ -91,7 +92,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomeScreen(),
+        home: const SignInScreen(),
       ),
     );
   }

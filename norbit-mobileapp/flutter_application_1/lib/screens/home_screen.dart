@@ -3,7 +3,6 @@ import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
-import 'package:flutter_application_1/widgets/connectivity_textfield_widget.dart';
 import 'package:flutter_application_1/widgets/sensors/accelerometer_widget.dart';
 import 'package:flutter_application_1/widgets/sensors/location_widget.dart';
 import 'package:flutter_application_1/widgets/sensors/lux_widget.dart';
@@ -15,6 +14,7 @@ import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/location_service.dart';
+import '../widgets/sidebar_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,15 +40,25 @@ class HomeScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Norbit mobile app'),
+              automaticallyImplyLeading: false,
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  );
+                },
+              ),
             ),
+            drawer: const SidebarWidget(),
             body: Padding(
               padding:
                   const EdgeInsets.all(16.0), // Add padding for all elements
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const ConnectivityTextField(),
-                  const SizedBox(height: 16.0),
                   const Center(
                     child: SizedBox(
                       width:
