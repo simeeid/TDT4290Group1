@@ -12,9 +12,10 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final signInService = SignInService(username: usernameController.text, password: passwordController.text);
     return ElevatedButton(
       onPressed: () async {
-        if (await SignInService.signInUser(usernameController.text, passwordController.text)) {
+        if (await signInService.signInUser(usernameController.text, passwordController.text) == true) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const HomeScreen()),
