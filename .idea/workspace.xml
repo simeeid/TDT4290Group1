@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="0f5398b2-1a45-4c0c-b317-89ec7d91df38" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/screens/signin_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/screens/signin_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/signin_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/signin_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/sidebar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/sidebar_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/signin_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/signin_button_widget.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

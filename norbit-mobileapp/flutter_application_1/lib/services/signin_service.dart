@@ -108,16 +108,19 @@ class SignInService{
 
 
     //call when user has entered username and password
-    Future<void> signInUser(String username, String password) async {
+    Future<bool> signInUser(String username, String password) async {
         try {
         final result = await Amplify.Auth.signIn(
             username: username,
             password: password,
         );
+
         await _handleSignInResult(result);
+        return true;
         } on AuthException catch (e) {
         safePrint('Error signing in: ${e.message}');
         }
+        return false;
     }
 
     Future<void> _handleSignInResult(SignInResult result) async {
@@ -153,6 +156,7 @@ class SignInService{
         default:
             safePrint('An unhandled sign in step occurred: ${result.nextStep.signInStep}');
         }
+
         }
 
 

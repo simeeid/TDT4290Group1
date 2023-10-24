@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import '../widgets/signin_button_widget.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  // Define the controllers
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -11,19 +15,24 @@ class SignInScreen extends StatelessWidget {
         title: const Text('Norbit mobile app'),
         automaticallyImplyLeading: false,
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              decoration: InputDecoration(labelText: 'Username'),
+              controller: _usernameController, // Use the controller
+              decoration: const InputDecoration(labelText: 'Username'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
-              decoration: InputDecoration(labelText: 'Password'),
+              controller: _passwordController, // Use the controller
+              decoration: const InputDecoration(labelText: 'Password'),
             ),
-            SizedBox(height: 16),
-            SignInButton(),
+            const SizedBox(height: 16),
+            SignInButton(
+              usernameController: _usernameController,
+              passwordController: _passwordController,
+            ),
           ],
         ),
       ),
