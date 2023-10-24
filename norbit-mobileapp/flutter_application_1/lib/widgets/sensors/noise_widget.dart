@@ -14,7 +14,8 @@ class NoiseWidget extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('Noise level: ${snapshot.data!.toStringAsFixed(2)} dB'),
+              Text('Noise level: ${snapshot.data!.toStringAsFixed(2)} dB',
+                style: const TextStyle(fontSize: 20),),
             ],
           );
         } else if (snapshot.hasError) {

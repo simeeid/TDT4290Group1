@@ -15,6 +15,7 @@ import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/location_service.dart';
+import '../widgets/sensor_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -25,12 +26,10 @@ class HomeScreen extends StatelessWidget {
     final luxBloc = Provider.of<LuxBloc>(context);
     final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
     final locationBloc = Provider.of<LocationBloc>(context);
-    final locationService =
-        Provider.of<LocationService>(context, listen: false);
+    final locationService = Provider.of<LocationService>(context, listen: false);
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
-    final accelerometerService =
-        Provider.of<AccelerometerService>(context, listen: false);
+    final accelerometerService = Provider.of<AccelerometerService>(context, listen: false);
     final startStopBloc = Provider.of<StartStopBloc>(context);
 
     return StreamBuilder<bool>(
@@ -41,35 +40,45 @@ class HomeScreen extends StatelessWidget {
             appBar: AppBar(
               title: const Text('Norbit mobile app'),
             ),
-            body: Padding(
-              padding:
-                  const EdgeInsets.all(16.0), // Add padding for all elements
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const ConnectivityTextField(),
-                  const SizedBox(height: 16.0),
-                  const Center(
-                    child: SizedBox(
-                      width:
-                          200.0, // Set the desired width for the StartStopButton
-                      child: StartStopButton(),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Center(
+                      child: SizedBox(
+                        width: 200.0,
+                        child: StartStopButton(),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  if (snapshot.data == true)
-                    Column(
-                      children: [
-                        AccelerometerWidget(
-                            accelerometerBloc: accelerometerBloc),
-                        const SizedBox(height: 16.0),
-                        LuxWidget(luxBloc: luxBloc),
-                        const SizedBox(height: 16.0),
-                        NoiseWidget(noiseBloc: noiseBloc),
-                        LocationWidget(locationBloc: locationBloc),
-                      ],
-                    ),
-                ],
+                    const SizedBox(height: 16.0),
+                    if (snapshot.data == true)
+                      Column(
+                        children: [
+                          SensorWidget(
+                            title: 'Accelerometer',
+                            child: AccelerometerWidget(accelerometerBloc: accelerometerBloc),
+                          ),
+                          const SizedBox(height: 16),
+                          SensorWidget(
+                            title: 'Light sensor',
+                            child: LuxWidget(luxBloc: luxBloc),
+                          ),
+                          const SizedBox(height: 16),
+                          SensorWidget(
+                            title: 'Noisemeter',
+                            child: NoiseWidget(noiseBloc: noiseBloc),
+                          ),
+                          const SizedBox(height: 16),
+                          SensorWidget(
+                            title: 'GPS',
+                            child: LocationWidget(locationBloc: locationBloc),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
           );
