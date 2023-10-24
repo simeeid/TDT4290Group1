@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
 import '../services/signin_service.dart';
 import '../screens/signin_screen.dart';
+import '../services/login_service.dart';
 
 class SignInButton extends StatelessWidget {
   const SignInButton({super.key, required this.usernameController, required this.passwordController});
@@ -12,18 +13,10 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final signInService = SignInService(username: usernameController.text, password: passwordController.text);
+    final LogInService logInService = LogInService();
     return ElevatedButton(
       onPressed: () async {
-        if (await signInService.signInUser(usernameController.text, passwordController.text) == true) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
-        }
-        else {
-          safePrint("Wrong login info");
-        }
+        logInService.signInWithWebUI();
       },
       style: ElevatedButton.styleFrom(
         primary: Colors.blue,
