@@ -24,7 +24,9 @@ class SignInService{
     SignInService({
         required this.username,
         required this.password,
-    });
+    }){
+        _configureAmplify();
+    }
 
     Future<void> _configureAmplify() async {
         try {
