@@ -11,21 +11,42 @@ import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+
+import '../amplifyconfiguration.dart';
 
 class LogInService{
+
+    LogInService(){
+        _configureAmplify();
+    }
+
+
+    Future<void> _configureAmplify() async {
+        try {
+        AmplifyAuthCognito auth = AmplifyAuthCognito();
+        await Amplify.addPlugin(auth);
+
+        // call Amplify.configure to use the initialized categories in your app
+        await Amplify.configure(amplifyconfig);
+        } on Exception catch (e) {
+        safePrint('An error occurred configuring Amplify: $e');
+        }
+    }
+
     Future<void> signInWithWebUI() async {
         try {
             final result = await Amplify.Auth.signInWithWebUI();
-            safePrint('Sign in result: $result');
+            final creds = await Amplify.Auth.fetchAuthSession();
+            safePrint('Sign in result: $creds');
         } on AuthException catch (e) {
             safePrint('Error signing in: ${e.message}');
         }
     }
 
-    
+
 }
