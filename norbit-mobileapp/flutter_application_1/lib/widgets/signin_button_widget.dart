@@ -1,8 +1,6 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
-import '../services/signin_service.dart';
-import '../screens/signin_screen.dart';
 import '../services/login_service.dart';
 
 class SignInButton extends StatelessWidget {
@@ -16,7 +14,16 @@ class SignInButton extends StatelessWidget {
     final LogInService logInService = LogInService();
     return ElevatedButton(
       onPressed: () async {
-        logInService.signInWithWebUI();
+        bool loginResult = await logInService.signInWithWebUI();
+        if(loginResult == true){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } 
+        else{
+          safePrint("Something went wrong with the login");
+        }
       },
       style: ElevatedButton.styleFrom(
         primary: Colors.blue,
