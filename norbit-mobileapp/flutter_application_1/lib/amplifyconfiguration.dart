@@ -18,7 +18,7 @@ const amplifyconfig = ''' {
         "CognitoUserPool": {
           "Default": {
             "PoolId": "eu-north-1_p8ymXPfR1",
-            "AppClientId": "[COGNITO USER POOL APP CLIENT ID]",
+            "AppClientId": "3ap54eg8fgphqt0vcfqaonmcfr",
             "Region": "eu-north-1"
           }
         },
@@ -26,16 +26,14 @@ const amplifyconfig = ''' {
           "Default": {
             "authenticationFlowType": "USER_SRP_AUTH",
             "OAuth": {
-              "WebDomain": "[YOUR COGNITO DOMAIN ]",
-              "AppClientId": "[COGNITO USER POOL APP CLIENT ID]",
+              "WebDomain": "https://useriotportal.auth.eu-north-1.amazoncognito.com",
+              "AppClientId": "3ap54eg8fgphqt0vcfqaonmcfr",
               "SignInRedirectURI": "myapp://",
               "SignOutRedirectURI": "myapp://",
               "Scopes": [
                 "phone",
                 "email",
-                "openid",
-                "profile",
-                "aws.cognito.signin.user.admin"
+                "openid"
               ]
             }
           }
