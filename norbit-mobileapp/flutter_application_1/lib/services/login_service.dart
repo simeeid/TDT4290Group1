@@ -22,9 +22,15 @@ class LogInService {
 
   Future<bool> signInWithWebUI() async {
     try {
+      final result = await Amplify.Auth.signInWithWebUI();
       final creds = await Amplify.Auth.fetchAuthSession();
       safePrint('Sign in result: $creds');
-      return true;
+      if (creds.isSignedIn) {
+        return true;
+      }
+      else {
+        return false;
+      }
     } on AuthException catch (e) {
       safePrint('Error signing in: ${e.message}');
       return false;
@@ -34,6 +40,7 @@ class LogInService {
   Future<void> signOutWithWebUI() async {
     try {
       await Amplify.Auth.signOut();
+      safePrint("Signed out successfully");
     } on AuthException catch (e) {
       safePrint(e.message);
     }
