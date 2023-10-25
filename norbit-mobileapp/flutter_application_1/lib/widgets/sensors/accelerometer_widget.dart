@@ -5,7 +5,8 @@ import 'package:sensors_plus/sensors_plus.dart';
 class AccelerometerWidget extends StatelessWidget {
   final AccelerometerBloc accelerometerBloc;
 
-  const AccelerometerWidget({Key? key, required this.accelerometerBloc}) : super(key: key);
+  const AccelerometerWidget({Key? key, required this.accelerometerBloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,14 @@ class AccelerometerWidget extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('X: ${snapshot.data!.x.toStringAsFixed(2)}'),
-              Text('Y: ${snapshot.data!.y.toStringAsFixed(2)}'),
-              Text('Z: ${snapshot.data!.z.toStringAsFixed(2)}'),
+              Text(
+                'X: ${snapshot.data!.x.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),
+              ),
+              Text('Y: ${snapshot.data!.y.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),),
+              Text('Z: ${snapshot.data!.z.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),),
             ],
           );
         } else if (snapshot.hasError) {

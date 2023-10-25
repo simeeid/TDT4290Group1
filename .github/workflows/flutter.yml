@@ -67,6 +67,7 @@ jobs:
     - name: Install flutter deps
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
+        gem install cocoapods
         flutter pub get
     - name: Make mock certificates
       working-directory: norbit-mobileapp/flutter_application_1

@@ -1,64 +1,79 @@
-'use client'
 import React, { useEffect, useState } from 'react';
 import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
+import { TSoundLevelData } from './types';
+import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
-export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
+export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
-  // TODO Handle sound volume data and proper type declaration
-  const [soundLevelData, setSoundLevelData] = useState<any>(0);
+  const [soundLevelData, setSoundLevelData] = useState<TSoundLevelData | null>(null);
+  //console.log(soundLevelData);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
   }
 
+  const transformToChartData = (iotData: any): ChartData => {
+    return {
+      timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
+      datapoint: iotData.payload.volume
+    };
+  };
+
   useEffect(() => {
-    const generateDummyData = (): ChartData => ({
-      timestamp: new Date().toLocaleTimeString(),
-      datapoint: parseFloat((Math.random() * 10).toFixed(2))
-    });
+    
+    if (soundLevelData) {
+      const newData = transformToChartData(soundLevelData);
 
-    const interval = setInterval(() => {
-      const newData = generateDummyData();
+      setData(prevData => {
+        let updatedData;
 
-      if (isPaused) {
-        setBuffer(prevBuffer => [...prevBuffer, newData]);
-      } else {
-        setData(prevData => {
-          let updatedData = [...prevData, ...buffer, newData]; 
+        if (isPaused) {
+          setBuffer(prevBuffer => [...prevBuffer, newData]);
+          return prevData;
+        }
 
-          // Limit the number of data points displayed
-          const maxDataPoints = 100;
-          if (updatedData.length > maxDataPoints) {
-            updatedData.splice(0, updatedData.length - maxDataPoints); // Remove the oldest entries
+        // Filter buffer to remove consecutive duplicates
+        const filteredBuffer = buffer.reduce((acc, current) => {
+          const previous = acc[acc.length - 1];
+          if (!previous || previous.datapoint !== current.datapoint) {
+            acc.push(current);
           }
+          return acc;
+        }, [] as ChartData[]);
 
-          return updatedData;
-        });
+        updatedData = [...prevData, ...filteredBuffer, newData];
+
+        // Limit the number of data points displayed
+        const maxDataPoints = 100;
+        if (updatedData.length > maxDataPoints) {
+          updatedData = updatedData.slice(-maxDataPoints);  // Keep the last maxDataPoints
+        }
 
         if (buffer.length > 0) {
-          setBuffer([]); // Empty the buffer
+          setBuffer([]); // Clear the buffer
         }
-      }
-    }, 10);
 
-    return () => clearInterval(interval);
-  }, [buffer, isPaused]);
+        return updatedData;
+      });
+    }
+  }, [soundLevelData, isPaused, buffer]);
 
   useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
 
   return (
-    <div className="sensorContainer">
-      <h2>Sound Level</h2>
+    <div className="sensorContainer" id="sound-container">
+      <h2>Noise meter</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Sound Level (dB)"
+        chartLabel="Noise (dB)"
       />
+      { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>
   );
 }

@@ -11,10 +11,7 @@ describe("Device management", () => {
     for (let i = 0; i < 2; ++i) {
       cy.get("#device-id").should("exist").click().type("example-id-1234");
 
-      cy.get("#submit-device-id").should("exist").click()
-        // Required for the nasty closure hack that involves a timeout. A quick wait here is required
-        // for it to be processed before updating 
-        .wait(200);
+      cy.get("#submit-device-id").should("exist").click();
       cy.get(".device-list").children().should("have.length", 1);
     }
   });

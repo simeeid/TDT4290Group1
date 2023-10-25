@@ -1,28 +1,36 @@
 'use client'
 
-import React, { useState } from 'react';
+import {useAppDispatch, useAppSelector} from '@redux/hook';
+import {SensorConfig, setState} from '@redux/slices/SensorConfig';
+import React from 'react';
 import style from './SensorConfigurationPanel.module.css';
-import { SensorConfig, Props } from './types'; 
 
-
-const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) => {
-  const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
+const SensorConfigurationPanel: React.FC = () => {
+  //const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
+  let dispatch = useAppDispatch();
+  let config = useAppSelector((state) => state.sensorConfig);
 
   const handleToggle = (sensor: keyof SensorConfig) => {
-    const newConfig = {
-      ...config,
-      [sensor]: !config[sensor],
-    };
-    setConfig(newConfig);
-    onConfigurationChange(newConfig);
+    dispatch(
+      setState({
+        newValue: !config[sensor], 
+        field: sensor
+      })
+    );
   };
 
   return (
-    <div className= {style.labelBlock} >
+    <div className= {style.labelBlock} id="sensor-panel">
       <h3>Sensor Configuration</h3>
-      <div className={style.configRoot}>
+      {/*
+        Note that these blocks are excessively verbose to better accomodate future changes,
+        particularly by enabling sane groupings if sensors suddenly get more config (such as
+        sampling rate).
+
+        I.e. it's an intentional choice for maintainability
+      */}
+      <div className={style.configRoot} id="config-root">
         <div className={style.configGroup}>
-          <h4>Accelerometer settings</h4>
           <div className={style.optionGroup}>
             <input
               id="enable-accelerometer"
@@ -35,7 +43,6 @@ const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) =>
         </div>
 
         <div className={style.configGroup}>
-          <h4>Temperature settings</h4>
           <div className={style.optionGroup}>
             <input 
               id="enable-temperature"
@@ -48,7 +55,6 @@ const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) =>
         </div>
 
         <div className={style.configGroup}>
-          <h4>Light intensity settings</h4>
           <div className={style.optionGroup}>
             <input 
               id="enable-light"
@@ -61,7 +67,6 @@ const SensorConfigurationPanel: React.FC<Props> = ({ onConfigurationChange }) =>
         </div>
 
         <div className={style.configGroup}>
-          <h4>Sound level settings</h4>
           <div className={style.optionGroup}>
             <input 
               id="enable-sound"

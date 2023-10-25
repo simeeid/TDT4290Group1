@@ -4,8 +4,9 @@ import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
+import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
-export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
+export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -52,13 +53,14 @@ export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance}>
   useSubscribeToTopics('temperature/topic', amplifyInstance, setTemperatureData);
 
   return (
-    <div className="sensorContainer">
+    <div className="sensorContainer" id="temperature-container">
       <h2>Temperature</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Temperature"
+        chartLabel="Temperature (C)"
       />
+      { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>
   );
 }

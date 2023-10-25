@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/signin_screen.dart';
+import 'package:flutter_application_1/services/login_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
 import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
@@ -9,7 +11,7 @@ import 'screens/home_screen.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
-import '../blocs/start_stop_bloc.dart';
+import 'blocs/start_stop_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -85,13 +87,18 @@ class MyApp extends StatelessWidget {
             );
           },
         ),
+        Provider<LogInService>(
+          create: (context) {
+            return LogInService();
+          },
+        ),
       ],
       child: MaterialApp(
         title: 'Accelerometer App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomeScreen(),
+        home: const SignInScreen(),
       ),
     );
   }

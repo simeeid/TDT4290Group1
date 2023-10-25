@@ -66,7 +66,11 @@ packages:
     source: hosted
     version: "1.4.2"
   amplify_core:
+<<<<<<< HEAD
     dependency: transitive
+=======
+    dependency: "direct main"
+>>>>>>> main
     description:
       name: amplify_core
       sha256: "41614540fce7b64234217675771a355a7ac0d0cb965bc0f640c09b19e37209d9"

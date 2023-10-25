@@ -3,71 +3,84 @@ import { ChartComponent } from '../ChartComponent/ChartComponent';
 import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
+import { TAccelerometerData } from './types';
+import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
-const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance}> = ({amplifyInstance}) => {
+const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
-
-  // TODO: Handle accelerometer data and proper type declaration
-  const [accelerometerData, setAccelerometerData] = useState<any>(0);
- 
-
-
-  
+  const [accelerometerData, setAccelerometerData] = useState<TAccelerometerData | null>(null);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
   }
 
+  const transformToChartData = (iotData: any): ChartData => {
+    return {
+      timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
+      datapoint: Math.sqrt(
+        iotData.payload.x * iotData.payload.x 
+        + iotData.payload.y * iotData.payload.y 
+        + iotData.payload.z * iotData.payload.z
+      )
+    };
+  };
+
   useEffect(() => {
-    const generateDummyData = (): ChartData => ({
-      timestamp: new Date().toLocaleTimeString(),
-      datapoint: parseFloat((Math.random() * 10).toFixed(2))
-    });
-    const interval = setInterval(() => {
-      const newData = generateDummyData();
+    if (accelerometerData) {
+      const newData = transformToChartData(accelerometerData);
 
-      if (isPaused) {
-        setBuffer(prevBuffer => [...prevBuffer, newData]);
-      } else {
-        setData(prevData => {
-          let updatedData = [...prevData, ...buffer, newData]; // Add buffer data and new data
+      setData(prevData => {
+        let updatedData;
 
-          // Limit the number of data points displayed
-          const maxDataPoints = 100;
-          if (updatedData.length > maxDataPoints) {
-            updatedData.splice(0, updatedData.length - maxDataPoints); // Remove the oldest entries
+        if (isPaused) {
+          setBuffer(prevBuffer => [...prevBuffer, newData]);
+          return prevData;
+        }
+
+        // Filter buffer to remove consecutive duplicates
+        const filteredBuffer = buffer.reduce((acc, current) => {
+          const previous = acc[acc.length - 1];
+          if (!previous || previous.datapoint !== current.datapoint) {
+            acc.push(current);
           }
+          return acc;
+        }, [] as ChartData[]);
 
-          return updatedData;
-        });
+        updatedData = [...prevData, ...filteredBuffer, newData];
+        
+        // Limit the number of data points displayed
+        const maxDataPoints = 100;
+        if (updatedData.length > maxDataPoints) {
+          updatedData = updatedData.slice(-maxDataPoints);  // Keep the last maxDataPoints
+        }
 
         if (buffer.length > 0) {
-          setBuffer([]); // Empty the buffer
+          setBuffer([]); // Clear the buffer
         }
-      }
-    }, 10);
 
-    return () => clearInterval(interval);
-  }, [buffer, isPaused]);
+        return updatedData;
+      });
+    }
+  }, [accelerometerData, isPaused, buffer]);
 
-  useSubscribeToTopics('accelerometer/topic', amplifyInstance, setAccelerometerData)
+  useSubscribeToTopics('accelerometer/topic', amplifyInstance, setAccelerometerData);
 
   return (
-    <div className="sensorContainer">
-      <h2>Acceleration</h2>
+    <div className="sensorContainer" id="acceleration-container">
+      <h2>Accelerometer</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration"
+        chartLabel="Acceleration (m/s)"
       />
+      { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>
   );
 }
 
 export default AccelerometerChart;
-
 
 
 
