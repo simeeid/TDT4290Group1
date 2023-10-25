@@ -1,6 +1,5 @@
-import {SensorConfig} from "@redux/slices/SensorConfig";
+import { TamplifyInstance } from "@/dashboard/Dashboard";
 
-export interface Props {
-  onConfigurationChange: (config: SensorConfig) => void;
-  config: SensorConfig;
+export interface ConfigProps {
+  amplifyInstance?: TamplifyInstance | null;
 }

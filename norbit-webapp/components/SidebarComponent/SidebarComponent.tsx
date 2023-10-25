@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@redux/hook';
 import { push } from '@redux/slices/DeviceList';
 import SensorConfigurationPanel from '@/sensorConfiguration/SensorConfigurationPanel';
 
-export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
+export const SidebarComponent: React.FC<SidebarProps> = ({amplifyInstance}) => {
   let dispatch = useAppDispatch();
   let devices = useAppSelector((state) => state.deviceList.devices);
 
@@ -93,7 +93,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({}) => {
           { deviceHtml.length == 0 ? <p>No devices connected :(</p> : <div className="device-list">{deviceHtml}</div> }
         </div>
         <div className="configurationPanel">
-          <SensorConfigurationPanel />
+          <SensorConfigurationPanel amplifyInstance={amplifyInstance} />
         </div>
 
       </div>

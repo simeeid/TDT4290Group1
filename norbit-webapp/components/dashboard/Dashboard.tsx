@@ -8,11 +8,12 @@ import { Amplify } from 'aws-amplify';
 
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 import { useAppSelector } from '@redux/hook';
+import {SensorConfig} from '@redux/slices/SensorConfig';
 
 export type TamplifyInstance = typeof Amplify;
 
 const Dashboard: React.FC = () => {
-  let sensorConfig = useAppSelector((state) => state.sensorConfig);
+  let sensorConfig = useAppSelector((state) => state.sensorConfig) as SensorConfig;
 
   const config = {
     identityPoolId: process.env.NEXT_PUBLIC_IDENTITY_POOL_ID,
