@@ -63,3 +63,8 @@ button.green:hover {
   background-color: #1d9c29;
   color: black;
 }
+
+.chart-component {
+    box-sizing: content-box;
+    padding: 5px;
+}
