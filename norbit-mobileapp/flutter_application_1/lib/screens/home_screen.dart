@@ -3,19 +3,19 @@ import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
-import 'package:flutter_application_1/widgets/connectivity_textfield_widget.dart';
-import 'package:flutter_application_1/widgets/sensors/accelerometer_widget.dart';
-import 'package:flutter_application_1/widgets/sensors/location_widget.dart';
-import 'package:flutter_application_1/widgets/sensors/lux_widget.dart';
-import 'package:flutter_application_1/widgets/sensors/noise_widget.dart';
-import 'package:flutter_application_1/widgets/start_stop_button_widget.dart';
 import 'package:provider/provider.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/accelerometer_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/location_service.dart';
+import '../widgets/sensors/accelerometer_widget.dart';
+import '../widgets/sensors/location_widget.dart';
+import '../widgets/sensors/lux_widget.dart';
+import '../widgets/sensors/noise_widget.dart';
+import '../widgets/sidebar_widget.dart';
 import '../widgets/sensor_widget.dart';
+import '../widgets/start_stop_button_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,7 +39,19 @@ class HomeScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Norbit mobile app'),
+              automaticallyImplyLeading: false,
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  );
+                },
+              ),
             ),
+            drawer: const SidebarWidget(),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -60,17 +72,17 @@ class HomeScreen extends StatelessWidget {
                             title: 'Accelerometer',
                             child: AccelerometerWidget(accelerometerBloc: accelerometerBloc),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 16.0),
                           SensorWidget(
                             title: 'Light sensor',
                             child: LuxWidget(luxBloc: luxBloc),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 16.0),
                           SensorWidget(
                             title: 'Noisemeter',
                             child: NoiseWidget(noiseBloc: noiseBloc),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 16.0),
                           SensorWidget(
                             title: 'GPS',
                             child: LocationWidget(locationBloc: locationBloc),
@@ -88,5 +100,6 @@ class HomeScreen extends StatelessWidget {
         return const CircularProgressIndicator();
       },
     );
+
   }
 }
