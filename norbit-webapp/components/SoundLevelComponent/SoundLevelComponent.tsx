@@ -19,7 +19,7 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
 
   const transformToChartData = (iotData: any): ChartData => {
     return {
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
       datapoint: iotData.payload.volume
     };
   };

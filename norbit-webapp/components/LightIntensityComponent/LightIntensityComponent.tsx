@@ -17,10 +17,10 @@ export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstan
   }
 
   const transformToChartData = (iotData: any): ChartData => {
-      return {
-          timestamp: new Date().toLocaleTimeString(),
-          datapoint: iotData.payload.lux
-      };
+    return {
+      timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
+      datapoint: iotData.payload.lux
+    };
   };
 
   useEffect(() => {
