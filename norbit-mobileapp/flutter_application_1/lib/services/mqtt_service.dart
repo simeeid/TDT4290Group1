@@ -186,19 +186,13 @@ class MqttService {
     setStatus("Client connection was successful");
     print("Client connection was successful");
     // Notify your listeners here
-        const sensorStatesTopic = "config/sensor-states";
+    const sensorStatesTopic = "config/sensor-states";
     final sensorStates = client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final message = c[0].payload as MqttPublishMessage;
-      ///if (message is! MqttReceivedMessage<MqttPublishMessage>) return;
-      //final pt =
-      //    MqttPublishPayload.bytesToStringAsString(message.payload);
-      //safePrint(pt);
-      //safePrint("Look here22222222222222222222222");
-      //safePrint(message.payload);
       final pt = MqttPublishPayload.bytesToStringAsString(message.payload.message);
       print("Look at me, I'm a moving target");
-      print(pt);
+      publishController(pt);
     });
   }
 
@@ -214,9 +208,23 @@ class MqttService {
     // Notify your listeners here
   }
 
-  void publishController(){
+  void publishController(pt){
+    Map<String, dynamic> sensorStates = jsonDecode(pt);
 
-    publishLuxData();
-    publishNoiseData();
+    if (sensorStates['light'] == true) {
+      publishLuxData();
+    } else{
+      luxSubscription?.cancel();
+    }
+    if (sensorStates['sound'] == true) {
+      publishNoiseData();
+    } else{
+      noiseSubscription?.cancel();
+    }
+    if (sensorStates['accelerometer'] == true) {
+      publishAccelerometerData();
+    } else{
+      accelerometerSubscription?.cancel();
+    }
   }
 }
