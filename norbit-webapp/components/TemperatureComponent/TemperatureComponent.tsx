@@ -58,7 +58,7 @@ export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance |
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Temperature"
+        chartLabel="Temperature (C)"
       />
       { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>

@@ -61,17 +61,17 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
         return updatedData;
       });
     }
-  }, [soundLevelData, isPaused]);
+  }, [soundLevelData, isPaused, buffer]);
 
   useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
 
   return (
     <div className="sensorContainer" id="sound-container">
-      <h2>Sound Level</h2>
+      <h2>Noise meter</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Sound Level (dB)"
+        chartLabel="Noise (dB)"
       />
       { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>
