@@ -15,4 +15,5 @@ export interface ChartProps {
    * This function can be used to stop or restart the data flow
    */
   onPauseStateChange?: (paused: boolean) => void;
+  resolution?: number;
 };

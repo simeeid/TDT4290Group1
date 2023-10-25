@@ -31,6 +31,11 @@ html {
   text-align: center;
 }
 
+button {
+  border-radius: 12px;
+  cursor: pointer;
+}
+
 button.light {
   background-color: var(--color-primary);
   color: white;
@@ -47,4 +52,19 @@ button.dark {
   border-radius: 5px;
   padding: 5px 10px;
   box-sizing: border-box;
+}
+
+button.green {
+  background-color: #22c632;
+  border: 2px solid #1d9c29;
+  color: black;
+}
+button.green:hover {
+  background-color: #1d9c29;
+  color: black;
+}
+
+.chart-component {
+    box-sizing: content-box;
+    padding: 5px;
 }

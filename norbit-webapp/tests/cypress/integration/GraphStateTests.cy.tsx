@@ -1,5 +1,5 @@
 describe("Graph config", () => {
-  Cypress.config('defaultCommandTimeout', 10000);
+  //Cypress.config('defaultCommandTimeout', 10000);
   it("Should allow charts to be hidden", () => {
     cy.visit("/");
     let ids = [
@@ -8,6 +8,7 @@ describe("Graph config", () => {
       "enable-light",
       "enable-sound",
     ];
+    cy.get("#expand-sidebar").click();
 
     // Contains an array of arrays of bools corresponding to checkbox states.
     // This just generates an array of permutations of checkbox states, and 
@@ -28,6 +29,10 @@ describe("Graph config", () => {
       for (let i = 0; i < state.length; ++i) {
         let bool = state[i];
 
+        cy.get("#" + ids[i])
+          .scrollIntoView().wait(200);
+        cy.get("#" + ids[i])
+          .should("be.visible");
         if (bool) {
           ++active;
           cy.get("#" + ids[i]).check();
