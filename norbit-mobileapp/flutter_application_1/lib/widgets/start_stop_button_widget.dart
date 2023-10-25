@@ -36,9 +36,7 @@ class StartStopButton extends StatelessWidget {
                   locationService.start();
                   startStopBloc.switchState(true);
                   mqttService.connect();
-                  mqttService.publishNoiseData();
-                  mqttService.publishLuxData();
-                  mqttService.publishAccelerometerData();
+                  mqttService.publishController();
                 } else if (snapshot.data == true) {
                   luxService.stop();
                   accelerometerService.stop();

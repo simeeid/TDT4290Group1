@@ -78,10 +78,6 @@ class MqttService {
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
 
-  final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
-  final awsCredentials = jsonDecode(awsCredentialsString);
-
-  fetchCognitoAuthSession();
 
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
     ByteData deviceCert =
@@ -185,10 +181,25 @@ class MqttService {
     });
   }
 
+
   void onConnected() {
     setStatus("Client connection was successful");
     print("Client connection was successful");
     // Notify your listeners here
+        const sensorStatesTopic = "config/sensor-states";
+    final sensorStates = client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final message = c[0].payload as MqttPublishMessage;
+      ///if (message is! MqttReceivedMessage<MqttPublishMessage>) return;
+      //final pt =
+      //    MqttPublishPayload.bytesToStringAsString(message.payload);
+      //safePrint(pt);
+      //safePrint("Look here22222222222222222222222");
+      //safePrint(message.payload);
+      final pt = MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      print("Look at me, I'm a moving target");
+      print(pt);
+    });
   }
 
   void onDisconnected() {
@@ -201,5 +212,11 @@ class MqttService {
     print('Ping response client callback invoked');
     // Add any additional logic here
     // Notify your listeners here
+  }
+
+  void publishController(){
+
+    publishLuxData();
+    publishNoiseData();
   }
 }

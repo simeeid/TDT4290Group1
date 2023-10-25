@@ -26,9 +26,8 @@
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/amplify/hooks/post-push.sh.sample" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/amplify/hooks/pre-push.js.sample" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/amplifyconfiguration.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/amplifyconfiguration.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/login_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/login_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/signin_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/signin_button_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/start_stop_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/start_stop_button_widget.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
