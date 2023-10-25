@@ -1,17 +1,15 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../screens/home_screen.dart';
 import '../services/login_service.dart';
 
 class SignInButton extends StatelessWidget {
-  const SignInButton({super.key, required this.usernameController, required this.passwordController});
-
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
+  const SignInButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LogInService logInService = LogInService();
+    final logInService = Provider.of<LogInService>(context, listen: false);
     return ElevatedButton(
       onPressed: () async {
         bool loginResult = await logInService.signInWithWebUI();
@@ -30,7 +28,7 @@ class SignInButton extends StatelessWidget {
         minimumSize: const Size(250, 50),
       ),
       child: const Text(
-        'Sign in',
+        'Sign in with AWS',
         style: TextStyle(
           fontSize: 20,
           color: Colors.white,

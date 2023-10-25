@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
+import 'package:flutter_application_1/services/login_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
 import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
@@ -86,13 +87,18 @@ class MyApp extends StatelessWidget {
             );
           },
         ),
+        Provider<LogInService>(
+          create: (context) {
+            return LogInService();
+          },
+        ),
       ],
       child: MaterialApp(
         title: 'Accelerometer App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: SignInScreen(),
+        home: const SignInScreen(),
       ),
     );
   }
