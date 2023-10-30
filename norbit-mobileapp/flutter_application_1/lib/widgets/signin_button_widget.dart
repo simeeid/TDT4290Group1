@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../screens/home_screen.dart';
 import '../services/login_service.dart';
+import '../services/mqtt_service.dart';
 
 class SignInButton extends StatelessWidget {
   const SignInButton({super.key});
@@ -10,9 +11,11 @@ class SignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final logInService = Provider.of<LogInService>(context, listen: false);
+    final mqttService = Provider.of<MqttService>(context, listen: false);
     return ElevatedButton(
       onPressed: () async {
         bool loginResult = await logInService.signInWithWebUI();
+        mqttService.registerDevice();
         if(loginResult == true){
           Navigator.push(
             context,
