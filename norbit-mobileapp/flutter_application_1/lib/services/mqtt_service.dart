@@ -16,6 +16,8 @@ import '../amplifyconfiguration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:http/http.dart' as http;
+
 class MqttService {
   final NoiseBloc noiseBloc;
   final LuxBloc luxBloc;
@@ -68,20 +70,28 @@ class MqttService {
     client.disconnect();
   }
 
-  Future<void> registerDevice() async {
-      try {
-        final cognitoPlugin =
-          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
-        final result = await cognitoPlugin.fetchAuthSession();
+Future<void> registerDevice() async {
+  try {
+    final result = await Amplify.Auth.fetchAuthSession(
+      options: CognitoSessionOptions(getAWSCredentials: true)
+    );
+    
 
-        final identityId = result.identityIdResult.value;
-      final idToken = result.userPoolTokensResult.value.accessToken.toJson();
-        safePrint("Current user's identity ID: $identityId");
+    if (result is CognitoAuthSession) {
+      final identityId = result.identityIdResult;
+      final idToken = result?.userPoolTokens?.idToken;
+
+      safePrint("Current user's identity ID: $identityId");
       safePrint("Current user's JWT idToken: $idToken");
-      } on AuthException catch (e) {
-        safePrint('Error retrieving auth session: ${e.message}');
-      }
+    } else {
+      safePrint('The result is not a CognitoAuthSession');
     }
+
+  } on AuthException catch (e) {
+    safePrint('Error retrieving auth session: ${e.message}');
+  }
+}
+
 
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
@@ -200,6 +210,26 @@ class MqttService {
       client.publishMessage(
           accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
+  }
+
+  Future<http.Response> getCreds() {
+    final username = "antonhs";
+    final modelVersion = "model_002";
+    final deviceName = "device_002";
+    final accessToken = "123";
+
+    return http.post(
+      Uri.parse('https://jsonplaceholder.typicode.com/albums'),
+      headers: <String, String>{
+        'Authorization': accessToken,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'identityId': username,
+        'modelVersion': modelVersion,
+        'deviceName': deviceName,
+      }),
+    );
   }
   void publishLocationData() {
     const locationTopic = 'location/topic'; // Change this to your desired topic
