@@ -4,6 +4,7 @@ import { ChartData } from '../ChartComponent/types';
 import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import { TAccelerometerData } from './types';
+import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
 const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
   const [data, setData] = useState<ChartData[]>([]);
@@ -17,8 +18,12 @@ const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance | null}> =
 
   const transformToChartData = (iotData: any): ChartData => {
     return {
-      timestamp: new Date().toLocaleTimeString(),
-      datapoint: iotData.payload.x
+      timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
+      datapoint: Math.sqrt(
+        iotData.payload.x * iotData.payload.x 
+        + iotData.payload.y * iotData.payload.y 
+        + iotData.payload.z * iotData.payload.z
+      )
     };
   };
 
@@ -58,18 +63,19 @@ const AccelerometerChart: React.FC<{amplifyInstance: TamplifyInstance | null}> =
         return updatedData;
       });
     }
-  }, [accelerometerData, isPaused]);
+  }, [accelerometerData, isPaused, buffer]);
 
   useSubscribeToTopics('accelerometer/topic', amplifyInstance, setAccelerometerData);
 
   return (
-    <div className="sensorContainer">
-      <h2>Acceleration</h2>
+    <div className="sensorContainer" id="acceleration-container">
+      <h2>Accelerometer</h2>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration"
+        chartLabel="Acceleration (m/s)"
       />
+      { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
     </div>
   );
 }

@@ -22,6 +22,43 @@ describe('Header', () => {
     cy.get("button.hamburger-button").click();
     cy.get("div.sidebar").should("be.visible");
   });
+  it("Should contain sensor config", () => {
+    cy.mount(<HeaderComponent useSidebar={true} />);
+    cy.get("div.sidebar").should("not.be.visible");
+    cy.get("button.hamburger-button").click();
+    cy.get("div.sidebar").should("be.visible");
+    cy.get("#sensor-panel")
+      .should("exist")
+      .and("be.visible");
+  });
+  it("Should have scroll when overflowing", () => {
+    cy.mount(<HeaderComponent useSidebar={true} />);
+    cy.get("div.sidebar").should("not.be.visible");
+    cy.get("button.hamburger-button").click();
+    cy.get("div.sidebar").should("be.visible");
+
+    // Sufficiently large (well, excesssively in this test) viewport: no overflow
+    cy.viewport(600, 8000);
+    cy.get("div.sidebar")
+      .invoke("outerHeight")
+      .should("eq", 8000);
+    cy.get("div.sidebar")
+      .invoke("prop", "scrollHeight")
+      .should("eq", 8000);
+    cy.get("div.sidebar")
+      .invoke("outerHeight")
+      .should("eq", 8000);
+
+    // Tiny viewport: div should overflow
+    cy.viewport(600, 80);
+    cy.get("div.sidebar")
+      .invoke("outerHeight")
+      .should("eq", 80);
+    cy.get("div.sidebar")
+      .invoke("prop", "scrollHeight")
+      .should("be.greaterThan", 80);
+
+  })
 });
 
 export {};

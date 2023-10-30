@@ -11,6 +11,12 @@ import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
+import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import '../amplifyconfiguration.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 class MqttService {
   final NoiseBloc noiseBloc;
   final LuxBloc luxBloc;
@@ -25,6 +31,20 @@ class MqttService {
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
       MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
+
+  final _amplifyInstance = Amplify;
+
+  Future<void> _configureAmplify() async {
+    try {
+      final auth = AmplifyAuthCognito();
+      await Amplify.addPlugin(auth);
+
+      // call Amplify.configure to use the initialized categories in your app
+      await Amplify.configure(amplifyconfig);
+    } on Exception catch (e) {
+      safePrint('An error occurred configuring Amplify: $e');
+    }
+  }
 
   MqttService(
       {required this.noiseBloc,
@@ -43,9 +63,25 @@ class MqttService {
     client.disconnect();
   }
 
+  Future<void> fetchCognitoAuthSession() async {
+  try {
+    final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+    final result = await cognitoPlugin.fetchAuthSession();
+    final identityId = result.identityIdResult.value;
+    safePrint("Current user's identity ID: $identityId");
+  } on AuthException catch (e) {
+    safePrint('Error retrieving auth session: ${e.message}');
+  }
+}
+
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
+
+  final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
+  final awsCredentials = jsonDecode(awsCredentialsString);
+
+  fetchCognitoAuthSession();
 
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
     ByteData deviceCert =
@@ -89,7 +125,7 @@ class MqttService {
 
   void setStatus(String content) {
     statusText = content;
-    print(statusText);
+    safePrint(statusText);
     // Notify your listeners here
   }
 
