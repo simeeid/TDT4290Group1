@@ -63,25 +63,28 @@ class MqttService {
     client.disconnect();
   }
 
-  Future<void> fetchCognitoAuthSession() async {
-  try {
-    final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
-    final result = await cognitoPlugin.fetchAuthSession();
-    final identityId = result.identityIdResult.value;
-    safePrint("Current user's identity ID: $identityId");
-  } on AuthException catch (e) {
-    safePrint('Error retrieving auth session: ${e.message}');
+  Future<void> registerDevice() async {
+    try {
+      final cognitoPlugin =
+          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
+
+      final identityId = result.identityIdResult.value;
+      final idToken = result.userPoolTokensResult.value.accessToken.toJson();
+      safePrint("Current user's identity ID: $identityId");
+      safePrint("Current user's JWT idToken: $idToken");
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
+    }
   }
-}
 
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
 
-  final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
-  final awsCredentials = jsonDecode(awsCredentialsString);
-
-  fetchCognitoAuthSession();
+    final awsCredentialsString =
+        await File('assets/certificates/awsCredentials.json').readAsString();
+    final awsCredentials = jsonDecode(awsCredentialsString);
 
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
     ByteData deviceCert =

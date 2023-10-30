@@ -23,8 +23,9 @@ class LogInService {
   Future<bool> signInWithWebUI() async {
     try {
       final result = await Amplify.Auth.signInWithWebUI();
-      final creds = await Amplify.Auth.fetchAuthSession();
-      safePrint('Sign in result: $creds');
+      final creds = await Amplify.Auth.fetchAuthSession(options: CognitoSessionOptions(getAWSCredentials: true));
+      final credsID = await creds;
+      safePrint('Sign in result: $credsID');
       if (creds.isSignedIn) {
         return true;
       }
