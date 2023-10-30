@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f5398b2-1a45-4c0c-b317-89ec7d91df38" name="Changes" comment="" />
+    <list default="true" id="0f5398b2-1a45-4c0c-b317-89ec7d91df38" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/start_stop_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/start_stop_button_widget.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

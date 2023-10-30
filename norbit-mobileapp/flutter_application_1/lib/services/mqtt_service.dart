@@ -27,6 +27,11 @@ class MqttService {
   StreamSubscription? luxSubscription;
   StreamSubscription? noiseSubscription;
   StreamSubscription? accelerometerSubscription;
+  bool luxEnable = true;
+  bool soundEnable = true;
+  bool temperaturEnable = true;
+  bool accelerometerEnable = true;
+  bool gpsEnable = true;
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
@@ -129,6 +134,9 @@ class MqttService {
     const topic = 'lux/topic'; // Change this to your desired topic
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      if (!luxEnable) {
+        return;
+      }
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -144,6 +152,9 @@ class MqttService {
     const noiseTopic = 'noise/topic'; // Change this to your desired topic
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      if (!soundEnable) {
+        return;
+      }
       builder.addString(jsonEncode({
         'sensorName': 'Noise Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -162,6 +173,9 @@ class MqttService {
         'accelerometer/topic'; // Change this to your desired topic
     accelerometerSubscription = accelerometerBloc.accelerometerController.stream
         .listen((accelerometerData) {
+      if (!accelerometerEnable) {
+        return;
+      }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       accelerometerList.add(accelerometerData.x.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.y.toStringAsFixed(2));
@@ -191,8 +205,20 @@ class MqttService {
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final message = c[0].payload as MqttPublishMessage;
       final pt = MqttPublishPayload.bytesToStringAsString(message.payload.message);
-      print("Look at me, I'm a moving target");
-      publishController(pt);
+      Map<String, dynamic> sensorStates = jsonDecode(pt);
+      if (!sensorStates.containsKey("type") || sensorStates["type"] != "sensor-state-config") {
+        // Different format or different received event
+        print("Look at me, I'm aborting mission");
+        print("Look at me: $sensorStates");
+        return;
+      }
+
+      luxEnable = sensorStates['light'];
+      soundEnable = sensorStates['sound'];
+      accelerometerEnable = sensorStates['accelerometer'];
+      print("Look at me: $sensorStates");
+      print("Look at me: $luxEnable,  $soundEnable, $accelerometerEnable");
+      //temperaturEnable = sensorStates['temperature'];
     });
   }
 
@@ -208,23 +234,9 @@ class MqttService {
     // Notify your listeners here
   }
 
-  void publishController(pt){
-    Map<String, dynamic> sensorStates = jsonDecode(pt);
-
-    if (sensorStates['light'] == true) {
-      publishLuxData();
-    } else{
-      luxSubscription?.cancel();
-    }
-    if (sensorStates['sound'] == true) {
-      publishNoiseData();
-    } else{
-      noiseSubscription?.cancel();
-    }
-    if (sensorStates['accelerometer'] == true) {
-      publishAccelerometerData();
-    } else{
-      accelerometerSubscription?.cancel();
-    }
+  void publishController(){
+    publishLuxData();
+    publishNoiseData();
+    publishAccelerometerData();
   }
 }
