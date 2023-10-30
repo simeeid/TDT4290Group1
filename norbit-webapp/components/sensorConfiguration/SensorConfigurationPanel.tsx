@@ -21,7 +21,9 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({amplifyInstance}) => {
 
     if (amplifyInstance != null) {
       amplifyInstance.PubSub.publish("config/sensor-states",
-        config
+        {
+          msg: JSON.stringify({type: "sensor-state-config", ...config})
+        }
       );
     }
   };
