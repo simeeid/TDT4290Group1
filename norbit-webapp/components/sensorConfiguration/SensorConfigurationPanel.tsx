@@ -10,7 +10,6 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({amplifyInstance}) => {
   //const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
   let dispatch = useAppDispatch();
   let config = useAppSelector((state) => state.sensorConfig) as SensorConfig;
-  let messageId = 0;
 
   const handleToggle = (sensor: keyof SensorConfig) => {
     dispatch(
@@ -24,8 +23,7 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({amplifyInstance}) => {
       amplifyInstance.PubSub.publish("config/sensor-states",
         {
          ...config,
-         type: "sensor-state-config",
-         messageId: ++messageId
+         type: "sensor-state-config"
         }
       );
     }

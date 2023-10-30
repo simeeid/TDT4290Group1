@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AccelerometerChart from '../accelerometer/AccelerometerChart';
 import dashboardStyles from './Dashboard.module.css';
 import { TemperatureComponent } from '../TemperatureComponent/TemperatureComponent';
@@ -14,6 +14,7 @@ export type TamplifyInstance = typeof Amplify;
 
 const Dashboard: React.FC = () => {
   let sensorConfig = useAppSelector((state) => state.sensorConfig) as SensorConfig;
+  let [amplifyEnabled, setAmplifyEnabled] = useState(false);
 
   const config = {
     identityPoolId: process.env.NEXT_PUBLIC_IDENTITY_POOL_ID,
@@ -25,22 +26,28 @@ const Dashboard: React.FC = () => {
 
   const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
 
-  if (!mockAmplify) {
-    console.log("Running Amplify in live mode");
-    Amplify.configure(config);
-    Amplify.addPluggable(
-      new AWSIoTProvider({
-        aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
-        aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
-      })
-    );
-  } else {
-    console.log("Mocking Amplify");
-  } 
+  useEffect(() => {
+    if (!amplifyEnabled) {
+      if (!mockAmplify) {
+        console.log("Running Amplify in live mode");
+
+        Amplify.configure(config);
+        Amplify.addPluggable(
+          new AWSIoTProvider({
+            aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
+            aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
+          })
+        );
+      } else {
+        console.log("Mocking Amplify");
+      } 
+      setAmplifyEnabled(true);
+    }
+  }, [amplifyEnabled]);
   return (
     <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
-        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />}
+        <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />
         {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />}
