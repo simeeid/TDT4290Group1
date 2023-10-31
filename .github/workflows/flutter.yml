@@ -31,6 +31,9 @@ jobs:
     - name: Accept Android SDK licenses
       run: |
         yes | flutter doctor --android-licenses > /dev/null
+    - name: Show available platforms
+      run: |
+        sdkmanager --list
     - name: Install flutter deps
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
