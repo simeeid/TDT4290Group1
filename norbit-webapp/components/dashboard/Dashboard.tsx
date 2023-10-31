@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
-        <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />
+        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />}
