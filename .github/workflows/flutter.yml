@@ -28,6 +28,8 @@ jobs:
         distribution: 'liberica'
         java-version: "17.x"
         cache: 'gradle'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
     - name: Accept Android SDK licenses
       run: |
         yes | flutter doctor --android-licenses > /dev/null
