@@ -2,6 +2,10 @@
 /*@tailwind components;*/
 /*@tailwind utilities;*/
 
+:root {
+  --color-primary: #02222f;
+}
+
 /* Not sure where these are overridden, but they make the sidebar headers
  * tiny for no good reason. I'm not aware of any cases where setting the font size
  * of headers to inherit makes any sense.
@@ -14,21 +18,56 @@
   font-weight: revert;
 }
 
-:root {
---foreground-rgb: 0, 0, 0;
---background-start-rgb: 214, 219, 220;
---background-end-rgb: 255, 255, 255;
-
-}
-
-@media (prefers-color-scheme: dark) {
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-}
+html {
+  font-family:
+    -apple-system,BlinkMacSystemFont,
+    Ubuntu,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    /*Fallback*/
+    sans-serif;
 }
 
 .center-text {
   text-align: center;
+}
+
+button {
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+button.light {
+  background-color: var(--color-primary);
+  color: white;
+  border-style: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+button.dark {
+  background-color: #fefefe;
+  color: black;
+  border-style: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+button.green {
+  background-color: #22c632;
+  border: 2px solid #1d9c29;
+  color: black;
+}
+button.green:hover {
+  background-color: #1d9c29;
+  color: black;
+}
+
+.chart-component {
+    box-sizing: content-box;
+    padding: 5px;
 }

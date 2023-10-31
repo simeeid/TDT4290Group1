@@ -15,8 +15,10 @@ class LocationWidget extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('Latitude: ${snapshot.data!.latitude}'),
-              Text('Longitude: ${snapshot.data!.longitude}'),
+              Text('Latitude: ${snapshot.data!.latitude.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),),
+              Text('Longitude: ${snapshot.data!.longitude.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),),
             ],
           );
         } else if (snapshot.hasError) {

@@ -84,6 +84,18 @@ Component tests are comparatively self-contained; Cypress spawns a dummy server 
 
 Note: the integration tests require the server to run separately. You can run it with `npm run build && npm run start`, or `npm run dev` in a separate terminal tab prior to running the tests. As long as the server is on port `:3000`, Cypress will connect and run.
 
-When the server is up, you can use `npm run integration-test` to run the tests.
+**Note:** For the integration tests to run properly, it's required to set `NEXT_PUBLIC_MOCK_AMPLIFY=yes` before running `npm run dev` (or equivalent). This disables the live Amplify connection. If you're using a Unix-style terminal (bash, zsh, fish, etc.), you can do this by running `NEXT_PUBLIC_MOCK_AMPLIFY=yes npm run dev`. 
+
+Alternatively, before running the server commands, you can run...:
+
+* Unix-style shells (Linux and Mac shells, as well as Git Bash and Cygwin): `export NEXT_PUBLIC_MOCK_AMPLIFY=yes`
+* Powershell: `$Env:NEXT_PUBLIC_MOCK_AMPLIFY = 'yes'`
+* Cmd: `set NEXT_PUBLIC_MOCK_AMPLIFY=yes`
+
+Note that these options requires the variable to be unset (or set to a different value than yes) if you want to re-enable Amplify. Alternatively, you can open a new terminal session, which also wipes the variables.
+
+---
+
+When the server is up, you can use `npm run integration-test` to run the tests. Note that if Amplify hasn't been mocked before running the server, certain tests may occasionally fail (see [#67](https://github.com/simeeid/TDT4290Group1/pull/67), where the tests worked locally, but failed in the CI because of the amplify connection, for reasons still unknown), while others designed for this variable to be set (such as the graph data tests) may fail outright.
 
 As long as the server is running, to run all tests at once, you can use `npm run unit-test && npm run component-test && npm run integration-test` to run all the tests in a single command.

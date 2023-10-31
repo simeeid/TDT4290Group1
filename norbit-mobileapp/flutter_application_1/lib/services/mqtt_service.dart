@@ -11,6 +11,12 @@ import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
+import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import '../amplifyconfiguration.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 class MqttService {
   final NoiseBloc noiseBloc;
   final LuxBloc luxBloc;
@@ -25,14 +31,32 @@ class MqttService {
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
-      MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
+  MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
-  MqttService({required this.noiseBloc, required this.luxBloc, required this.accelerometerBloc, required this.locationBloc});
+  final _amplifyInstance = Amplify;
+
+  Future<void> _configureAmplify() async {
+    try {
+      final auth = AmplifyAuthCognito();
+      await Amplify.addPlugin(auth);
+
+      // call Amplify.configure to use the initialized categories in your app
+      await Amplify.configure(amplifyconfig);
+    } on Exception catch (e) {
+      safePrint('An error occurred configuring Amplify: $e');
+    }
+  }
+
+  MqttService(
+      {required this.noiseBloc,
+        required this.luxBloc,
+        required this.accelerometerBloc,
+        required this.locationBloc});
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
-      isConnected = await mqttConnect("123");
-    }
+    isConnected = await mqttConnect("123");
+  }
 
   //Disconnects from mqtt broker.
   disconnect() {
@@ -40,14 +64,31 @@ class MqttService {
     client.disconnect();
   }
 
+  Future<void> fetchCognitoAuthSession() async {
+    try {
+      final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
+      final identityId = result.identityIdResult.value;
+      safePrint("Current user's identity ID: $identityId");
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
+    }
+  }
+
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
 
+    final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
+    final awsCredentials = jsonDecode(awsCredentialsString);
+
+    fetchCognitoAuthSession();
+
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
     ByteData deviceCert =
-        await rootBundle.load('assets/certificates/DeviceCertificate.crt');
-    ByteData privateKey = await rootBundle.load('assets/certificates/Private.key');
+    await rootBundle.load('assets/certificates/DeviceCertificate.crt');
+    ByteData privateKey =
+    await rootBundle.load('assets/certificates/Private.key');
 
     SecurityContext context = SecurityContext.defaultContext;
     context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
@@ -65,7 +106,7 @@ class MqttService {
     client.pongCallback = pong;
 
     final MqttConnectMessage connMess =
-        MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
+    MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
     client.connectionMessage = connMess;
 
     await client.connect();
@@ -76,7 +117,7 @@ class MqttService {
       return false;
     }
 
-    //Subscribed topic. 
+    //Subscribed topic.
     const topic = 'main/topic';
     client.subscribe(topic, MqttQos.atMostOnce);
 
@@ -84,9 +125,9 @@ class MqttService {
   }
 
   void setStatus(String content) {
-      statusText = content;
-      print(statusText);
-      // Notify your listeners here
+    statusText = content;
+    safePrint(statusText);
+    // Notify your listeners here
   }
 
   void publishLuxData() {
@@ -97,7 +138,7 @@ class MqttService {
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
         'payload': {
-          'lux':luxData,
+          'lux': luxData,
         }
       })); // Encode the data as a JSON string
       client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
@@ -122,8 +163,10 @@ class MqttService {
 
   void publishAccelerometerData() {
     List<String> accelerometerList = [];
-    const accelerometerTopic = 'accelerometer/topic'; // Change this to your desired topic
-    accelerometerSubscription = accelerometerBloc.accelerometerController.stream.listen((accelerometerData) {
+    const accelerometerTopic =
+        'accelerometer/topic'; // Change this to your desired topic
+    accelerometerSubscription = accelerometerBloc.accelerometerController.stream
+        .listen((accelerometerData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       accelerometerList.add(accelerometerData.x.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.y.toStringAsFixed(2));
@@ -132,16 +175,16 @@ class MqttService {
         'sensorName': 'Accelerometer Sensor',
         'timestamp': DateTime.now().toIso8601String(),
         'payload': {
-          'x':accelerometerData.x,
-          'y':accelerometerData.y,
-          'z':accelerometerData.z,
+          'x': accelerometerData.x,
+          'y': accelerometerData.y,
+          'z': accelerometerData.z,
         }
       })); // Encode the data as a JSON string
       client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
-      client.publishMessage(accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
+      client.publishMessage(
+          accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
-
   void publishLocationData() {
     const locationTopic = 'location/topic'; // Change this to your desired topic
     locationSubscription = locationBloc.locationController.stream.listen((locationData) {
@@ -151,7 +194,7 @@ class MqttService {
         'timestamp': DateTime.now().toIso8601String(),
         'payload': {
           'latitude': locationData.latitude,
-          'longitude': locationData.longitude
+          'longitude': locationData.longitude,
         }
       })); // Encode the data as a JSON string
       client.subscribe(locationTopic, MqttQos.atMostOnce);
@@ -160,20 +203,20 @@ class MqttService {
   }
 
   void onConnected() {
-      setStatus("Client connection was successful");
-      print("Client connection was successful");
-      // Notify your listeners here
+    setStatus("Client connection was successful");
+    print("Client connection was successful");
+    // Notify your listeners here
   }
 
   void onDisconnected() {
-      print('Disconnected');
-      // Add any additional logic here
-      // Notify your listeners here
+    print('Disconnected');
+    // Add any additional logic here
+    // Notify your listeners here
   }
 
   void pong() {
-      print('Ping response client callback invoked');
-      // Add any additional logic here
-      // Notify your listeners here
+    print('Ping response client callback invoked');
+    // Add any additional logic here
+    // Notify your listeners here
   }
 }
