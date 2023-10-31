@@ -56,6 +56,7 @@ jobs:
         api-level: ${{matrix.android_version}}
         target: google_apis
         profile: pixel_xl
+        arch: x86_64
         script: |
           flutter test -d test
         working-directory: norbit-mobileapp/flutter_application_1
