@@ -40,7 +40,7 @@ const LeafletMap: React.FC<Props> = ({ latitude, longitude }) => {
     };
   }, [latitude, longitude]);
 
-  return <div id="map" ref={mapRef} style={{ width: '40%', height: '400px' }} />;
+  return <div id="map" ref={mapRef} style={{ width: '100%', height: '400px' }} />;
 };
 
 export default LeafletMap;

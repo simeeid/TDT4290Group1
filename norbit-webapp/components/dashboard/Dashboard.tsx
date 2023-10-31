@@ -27,7 +27,6 @@ const Dashboard: React.FC = () => {
   const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
 
   if (!mockAmplify) {
-    console.log("Running Amplify in live mode");
     Amplify.configure(config);
     Amplify.addPluggable(
       new AWSIoTProvider({
@@ -45,6 +44,7 @@ const Dashboard: React.FC = () => {
         {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />}
+        <Map latitude={63} longitude={10} />
       </div>
     </div>
   );
