@@ -91,6 +91,18 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({amplifyInstance}) => {
             <label htmlFor="enable-sound">Show Sound Level Chart</label>
           </div>
         </div>
+
+        <div className={style.configGroup}>
+          <div className={style.optionGroup}>
+            <input 
+              id="enable-location"
+              type="checkbox"
+              checked={config.location}
+              onChange={() => handleToggle('location')}
+            />
+            <label htmlFor="enable-location">Show Location Chart</label>
+          </div>
+        </div>
         {/* As more sensors are added, you can add more configuration options here */}
 
       </div>
