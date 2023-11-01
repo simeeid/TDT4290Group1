@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { deviceList } from "./slices/DeviceList";
-import {sensorConfig} from "./slices/SensorConfig";
+import { sensorConfig } from "./slices/SensorConfig";
 
 export const store = configureStore({
   reducer: {

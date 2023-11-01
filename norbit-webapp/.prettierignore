@@ -1,4 +1,4 @@
-public
-node_modules
-.next
-.storybook
+public/
+node_modules/
+.next/
+.storybook/

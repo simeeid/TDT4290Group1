@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SensorConfig {
   accelerometer: boolean;
@@ -19,12 +19,10 @@ export const sensorConfig = createSlice({
     location: true,
   },
   reducers: {
-    setState: (state, payload: PayloadAction<
-                  {newValue: boolean, field: keyof SensorConfig}
-    >) => {
+    setState: (state, payload: PayloadAction<{ newValue: boolean; field: keyof SensorConfig }>) => {
       state[payload.payload.field] = payload.payload.newValue;
-    }
-  }
+    },
+  },
 });
 
 export const { setState } = sensorConfig.actions;

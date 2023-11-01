@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { ChartComponent } from '../ChartComponent/ChartComponent';
-import { ChartData } from '../ChartComponent/types';
-import { TamplifyInstance } from '@/dashboard/Dashboard';
-import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
-import { TSoundLevelData } from './types';
-import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
+import React, { useEffect, useState } from "react";
+import { ChartComponent } from "../ChartComponent/ChartComponent";
+import { ChartData } from "../ChartComponent/types";
+import { TamplifyInstance } from "@/dashboard/Dashboard";
+import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
+import { TSoundLevelData } from "./types";
+import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 
-export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
+export const SoundLevelComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
+  amplifyInstance,
+}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -15,25 +17,24 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
-  }
+  };
 
   const transformToChartData = (iotData: any): ChartData => {
     return {
       timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
-      datapoint: iotData.payload.volume
+      datapoint: iotData.payload.volume,
     };
   };
 
   useEffect(() => {
-    
     if (soundLevelData) {
       const newData = transformToChartData(soundLevelData);
 
-      setData(prevData => {
+      setData((prevData) => {
         let updatedData;
 
         if (isPaused) {
-          setBuffer(prevBuffer => [...prevBuffer, newData]);
+          setBuffer((prevBuffer) => [...prevBuffer, newData]);
           return prevData;
         }
 
@@ -51,7 +52,7 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
         // Limit the number of data points displayed
         const maxDataPoints = 100;
         if (updatedData.length > maxDataPoints) {
-          updatedData = updatedData.slice(-maxDataPoints);  // Keep the last maxDataPoints
+          updatedData = updatedData.slice(-maxDataPoints); // Keep the last maxDataPoints
         }
 
         if (buffer.length > 0) {
@@ -63,17 +64,13 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
     }
   }, [soundLevelData, isPaused, buffer]);
 
-  useSubscribeToTopics('noise/topic', amplifyInstance, setSoundLevelData);
+  useSubscribeToTopics("noise/topic", amplifyInstance, setSoundLevelData);
 
   return (
     <div className="sensorContainer" id="sound-container">
       <h2>Noise meter</h2>
-      <ChartComponent
-        data={data}
-        onPauseStateChange={onPauseStateChange}
-        chartLabel="Noise (dB)"
-      />
-      { amplifyInstance == null && <MockInputComponent data={data} setData={setData} /> }
+      <ChartComponent data={data} onPauseStateChange={onPauseStateChange} chartLabel="Noise (dB)" />
+      {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );
-}
+};

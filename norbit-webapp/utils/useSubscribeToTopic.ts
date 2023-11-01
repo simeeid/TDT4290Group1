@@ -1,9 +1,11 @@
 import { TamplifyInstance } from "@/dashboard/Dashboard";
 import { useEffect } from "react";
 
-
-export const useSubscribeToTopics = (topic: string, amplifyInstance: TamplifyInstance | null, setState: React.Dispatch<React.SetStateAction<any>> ) => {
-
+export const useSubscribeToTopics = (
+  topic: string,
+  amplifyInstance: TamplifyInstance | null,
+  setState: React.Dispatch<React.SetStateAction<any>>
+) => {
   useEffect(() => {
     if (amplifyInstance == null) {
       return;
@@ -12,16 +14,17 @@ export const useSubscribeToTopics = (topic: string, amplifyInstance: TamplifyIns
       next: (data: any) => {
         setState(data.value);
         //TODO remove this logstatement after finihing the implementation
-        console.log('Message received', data.value.payload);
+        console.log("Message received", data.value.payload);
       },
       error: (error: any) => {
         console.error(error);
       },
       close: () => {
-        console.log('Subscription closed');
-      }
+        console.log("Subscription closed");
+      },
     });
-    return () => {if(subscription) subscription.unsubscribe()};
+    return () => {
+      if (subscription) subscription.unsubscribe();
+    };
   }, [amplifyInstance, setState, topic]);
-
-}
+};

@@ -1,13 +1,9 @@
-import { HeaderComponent } from './HeaderComponent';
+import { HeaderComponent } from "./HeaderComponent";
 
 export default {
   title: "HeaderComponent",
   component: HeaderComponent,
-  args: {
-
-  }
+  args: {},
 };
 
-export const Default = {}
-
-
+export const Default = {};
