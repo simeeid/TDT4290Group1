@@ -6,7 +6,5 @@
     "unused-imports/no-unused-imports": "error",
     "no-unreachable": "error"
   },
-  "ignorePatterns": [
-    "tests/*"
-  ]
+  "ignorePatterns": ["tests/*"]
 }
