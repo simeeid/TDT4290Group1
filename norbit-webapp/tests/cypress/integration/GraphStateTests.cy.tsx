@@ -2,12 +2,7 @@ describe("Graph config", () => {
   //Cypress.config('defaultCommandTimeout', 10000);
   it("Should allow charts to be hidden", () => {
     cy.visit("/");
-    let ids = [
-      "enable-accelerometer",
-      "enable-light",
-      "enable-sound",
-      "enable-location",
-    ];
+    let ids = ["enable-accelerometer", "enable-light", "enable-sound", "enable-location"];
     cy.get("#expand-sidebar").click();
 
     // Contains an array of arrays of bools corresponding to checkbox states.

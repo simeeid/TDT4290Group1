@@ -12,10 +12,12 @@ import dynamic from "next/dynamic";
 
 export type TamplifyInstance = typeof Amplify;
 
-
-export const MapComponent = dynamic(() => import("@/MapComponent/MapComponent").then((m) => m.MapComponent), {
-  ssr: false,
-});
+export const MapComponent = dynamic(
+  () => import("@/MapComponent/MapComponent").then((m) => m.MapComponent),
+  {
+    ssr: false,
+  }
+);
 
 const Dashboard: React.FC = () => {
   let sensorConfig = useAppSelector((state) => state.sensorConfig) as SensorConfig;

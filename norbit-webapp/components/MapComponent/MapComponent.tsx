@@ -12,20 +12,20 @@ if (typeof window !== "undefined") {
 }
 
 //export const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapContainer), {
-  //ssr: false,
+//ssr: false,
 //});
 //export const Marker = dynamic(() => import("react-leaflet").then((m) => m.Marker), { ssr: false });
 //export const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), {
-  //ssr: false,
+//ssr: false,
 //});
 
-const Recenter = ({lat, lng}: {lat: number, lng: number}) => {
- const map = useMap();
+const Recenter = ({ lat, lng }: { lat: number; lng: number }) => {
+  const map = useMap();
   useEffect(() => {
     map.setView([lat, lng]);
   }, [lat, lng]);
   return null;
-}
+};
 export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
   amplifyInstance,
 }) => {
