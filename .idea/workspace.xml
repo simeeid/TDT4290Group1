@@ -6,13 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="0f5398b2-1a45-4c0c-b317-89ec7d91df38" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/login_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/login_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/services/mqtt_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/signin_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/lib/widgets/signin_button_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/norbit-webapp/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-webapp/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/norbit-mobileapp/flutter_application_1/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
