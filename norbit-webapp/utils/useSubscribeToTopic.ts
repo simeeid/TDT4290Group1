@@ -1,5 +1,5 @@
 import { TamplifyInstance } from "@/dashboard/Dashboard";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 export const useSubscribeToTopics = (
   topic: string,
