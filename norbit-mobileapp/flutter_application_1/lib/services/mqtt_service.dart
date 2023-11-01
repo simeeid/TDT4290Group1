@@ -78,8 +78,8 @@ class MqttService {
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
 
-  final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
-  final awsCredentials = jsonDecode(awsCredentialsString);
+  //final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
+  //final awsCredentials = jsonDecode(awsCredentialsString);
 
   fetchCognitoAuthSession();
 
