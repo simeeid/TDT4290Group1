@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { TamplifyInstance } from "@/dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { MapData } from "./types";
-import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import { MapContainer, useMap, Marker, TileLayer } from "react-leaflet";
 
