@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AccelerometerChart from "../accelerometer/AccelerometerChart";
 import dashboardStyles from "./Dashboard.module.css";
-import { TemperatureComponent } from "../TemperatureComponent/TemperatureComponent";
 import { SoundLevelComponent } from "../SoundLevelComponent/SoundLevelComponent";
 import { LightIntensityComponent } from "../LightIntensityComponent/LightIntensityComponent";
 import { Amplify } from "aws-amplify";
@@ -9,9 +8,14 @@ import { Amplify } from "aws-amplify";
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers";
 import { useAppSelector } from "@redux/hook";
 import { SensorConfig } from "@redux/slices/SensorConfig";
-import { MapComponent } from "@/MapComponent/MapComponent";
+import dynamic from "next/dynamic";
 
 export type TamplifyInstance = typeof Amplify;
+
+
+export const MapComponent = dynamic(() => import("@/MapComponent/MapComponent").then((m) => m.MapComponent), {
+  ssr: false,
+});
 
 const Dashboard: React.FC = () => {
   let sensorConfig = useAppSelector((state) => state.sensorConfig) as SensorConfig;
@@ -51,9 +55,6 @@ const Dashboard: React.FC = () => {
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
         {sensorConfig.accelerometer && (
           <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />
-        )}
-        {sensorConfig.temperature && (
-          <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />
         )}
         {sensorConfig.light && (
           <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />

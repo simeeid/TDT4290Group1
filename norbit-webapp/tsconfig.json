@@ -20,7 +20,7 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./pages/*", "./components/*", "./logic/*"],
+      "@/*": ["./pages/*", "./components/*", "./logic/*", "./utils/"],
       "@redux/*": ["./redux/*"],
       "@styles/*": ["./styles/*"]
     },

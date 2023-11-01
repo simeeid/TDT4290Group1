@@ -57,18 +57,6 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({ amplifyInstance }) =>
         <div className={style.configGroup}>
           <div className={style.optionGroup}>
             <input
-              id="enable-temperature"
-              type="checkbox"
-              checked={config.temperature}
-              onChange={() => handleToggle("temperature")}
-            />
-            <label htmlFor="enable-temperature">Show Temperature Chart</label>
-          </div>
-        </div>
-
-        <div className={style.configGroup}>
-          <div className={style.optionGroup}>
-            <input
               id="enable-light"
               type="checkbox"
               checked={config.light}

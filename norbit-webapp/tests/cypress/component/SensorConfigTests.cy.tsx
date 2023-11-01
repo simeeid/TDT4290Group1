@@ -25,7 +25,6 @@ describe("Header", () => {
     cy.log("State: ", state);
     const ids: Array<[string, keyof SensorConfig]> = [
       ["#enable-accelerometer", "accelerometer"],
-      ["#enable-temperature", "temperature"],
       ["#enable-light", "light"],
       ["#enable-sound", "sound"],
     ];

@@ -4,20 +4,28 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { MapData } from "./types";
 import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
+import { MapContainer, useMap, Marker, TileLayer } from "react-leaflet";
 
 let L: typeof import("leaflet") | null;
 if (typeof window !== "undefined") {
   L = require("leaflet");
 }
 
-export const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapContainer), {
-  ssr: false,
-});
-export const Marker = dynamic(() => import("react-leaflet").then((m) => m.Marker), { ssr: false });
-export const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), {
-  ssr: false,
-});
+//export const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapContainer), {
+  //ssr: false,
+//});
+//export const Marker = dynamic(() => import("react-leaflet").then((m) => m.Marker), { ssr: false });
+//export const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), {
+  //ssr: false,
+//});
 
+const Recenter = ({lat, lng}: {lat: number, lng: number}) => {
+ const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng]);
+  }, [lat, lng]);
+  return null;
+}
 export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
   amplifyInstance,
 }) => {
@@ -55,6 +63,7 @@ export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }
             icon={L.icon({ iconUrl: "pngegg.png", iconSize: [25, 25], iconAnchor: [12, 12] })}
           />
         )}
+        <Recenter lat={mapData.latitude} lng={mapData.longitude} />
       </MapContainer>
     </div>
   );

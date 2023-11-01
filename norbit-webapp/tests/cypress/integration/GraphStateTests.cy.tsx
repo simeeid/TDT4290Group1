@@ -4,7 +4,6 @@ describe("Graph config", () => {
     cy.visit("/");
     let ids = [
       "enable-accelerometer",
-      "enable-temperature",
       "enable-light",
       "enable-sound",
       "enable-location",
