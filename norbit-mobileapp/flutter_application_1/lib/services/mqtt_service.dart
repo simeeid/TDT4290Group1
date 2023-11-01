@@ -10,7 +10,6 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-
 import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
@@ -28,6 +27,11 @@ class MqttService {
   StreamSubscription? noiseSubscription;
   StreamSubscription? accelerometerSubscription;
   StreamSubscription? locationSubscription;
+  bool luxEnable = true;
+  bool soundEnable = true;
+  bool temperatureEnable = true;
+  bool accelerometerEnable = true;
+  bool gpsEnable = true;
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
@@ -79,8 +83,8 @@ class MqttService {
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
 
-    final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
-    final awsCredentials = jsonDecode(awsCredentialsString);
+  //final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
+  //final awsCredentials = jsonDecode(awsCredentialsString);
 
     fetchCognitoAuthSession();
 
@@ -134,6 +138,9 @@ class MqttService {
     const topic = 'lux/topic'; // Change this to your desired topic
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      if (!luxEnable) {
+        return;
+      }
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -149,6 +156,9 @@ class MqttService {
     const noiseTopic = 'noise/topic'; // Change this to your desired topic
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      if (!soundEnable) {
+        return;
+      }
       builder.addString(jsonEncode({
         'sensorName': 'Noise Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -167,6 +177,9 @@ class MqttService {
         'accelerometer/topic'; // Change this to your desired topic
     accelerometerSubscription = accelerometerBloc.accelerometerController.stream
         .listen((accelerometerData) {
+      if (!accelerometerEnable) {
+        return;
+      }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       accelerometerList.add(accelerometerData.x.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.y.toStringAsFixed(2));
@@ -202,10 +215,27 @@ class MqttService {
     });
   }
 
+
   void onConnected() {
     setStatus("Client connection was successful");
     print("Client connection was successful");
     // Notify your listeners here
+    const sensorStatesTopic = "config/sensor-states";
+    final sensorStates = client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final message = c[0].payload as MqttPublishMessage;
+      final pt = MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      Map<String, dynamic> sensorStates = jsonDecode(pt);
+      if (!sensorStates.containsKey("type") || sensorStates["type"] != "sensor-state-config") {
+        // Different format or different received event
+        return;
+      }
+
+      luxEnable = sensorStates['light'];
+      soundEnable = sensorStates['sound'];
+      accelerometerEnable = sensorStates['accelerometer'];
+      //temperatureEnable = sensorStates['temperature'];
+    });
   }
 
   void onDisconnected() {
@@ -218,5 +248,12 @@ class MqttService {
     print('Ping response client callback invoked');
     // Add any additional logic here
     // Notify your listeners here
+  }
+
+  void publishController(){
+    publishLuxData();
+    publishNoiseData();
+    publishAccelerometerData();
+    publishLocationData();
   }
 }

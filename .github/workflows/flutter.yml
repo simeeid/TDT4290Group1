@@ -9,6 +9,10 @@ on:
 
 jobs:
   build-android:
+    strategy:
+      fail-fast: false
+      matrix:
+        android_version: [32, 33, 34]
     # GitHub Actions doesn't have hardware acceleration in the ubuntu runner, because reasons
     runs-on: macos-latest
     steps:
@@ -24,9 +28,14 @@ jobs:
         distribution: 'liberica'
         java-version: "17.x"
         cache: 'gradle'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
     - name: Accept Android SDK licenses
       run: |
         yes | flutter doctor --android-licenses > /dev/null
+    - name: Show available platforms
+      run: |
+        sdkmanager --list
     - name: Install flutter deps
       working-directory: norbit-mobileapp/flutter_application_1
       run: |
@@ -44,8 +53,10 @@ jobs:
     - name: Run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
+        api-level: ${{matrix.android_version}}
+        target: google_apis
         profile: pixel_xl
+        arch: x86_64
         script: |
           flutter test -d test
         working-directory: norbit-mobileapp/flutter_application_1

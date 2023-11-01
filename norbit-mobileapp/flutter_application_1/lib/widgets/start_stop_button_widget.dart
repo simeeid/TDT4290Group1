@@ -24,36 +24,33 @@ class StartStopButton extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return SizedBox(
-              width: 250,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (snapshot.data == false) {
-                    luxService.start();
-                    accelerometerService.start();
-                    await noiseService.start();
-                    await locationService.determinePosition();
-                    locationService.start();
-                    startStopBloc.switchState(true);
-                    mqttService.connect();
-                    mqttService.publishNoiseData();
-                    mqttService.publishLuxData();
-                    mqttService.publishAccelerometerData();
-                  } else if (snapshot.data == true) {
-                    luxService.stop();
-                    accelerometerService.stop();
-                    noiseService.stop();
-                    locationService.stop();
-                    startStopBloc.switchState(false);
-                    mqttService.disconnect();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: snapshot.data! ? Colors.red : Colors
-                        .green),
-                child: Text(snapshot.data! ? 'Stop' : 'Start',
-                    style: const TextStyle(fontSize: 20)),
-              ),
+            width: 250,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () async {
+                if (snapshot.data == false) {
+                  luxService.start();
+                  accelerometerService.start();
+                  await noiseService.start();
+                  await locationService.determinePosition();
+                  locationService.start();
+                  startStopBloc.switchState(true);
+                  mqttService.connect();
+                  mqttService.publishController();
+                } else if (snapshot.data == true) {
+                  luxService.stop();
+                  accelerometerService.stop();
+                  noiseService.stop();
+                  locationService.stop();
+                  startStopBloc.switchState(false);
+                  mqttService.disconnect();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: snapshot.data! ? Colors.red : Colors.green),
+              child: Text(snapshot.data! ? 'Stop' : 'Start',
+                  style: const TextStyle(fontSize: 20)),
+            ),
           );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');

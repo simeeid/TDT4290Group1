@@ -4,19 +4,33 @@ import {useAppDispatch, useAppSelector} from '@redux/hook';
 import {SensorConfig, setState} from '@redux/slices/SensorConfig';
 import React from 'react';
 import style from './SensorConfigurationPanel.module.css';
+import {ConfigProps} from './types';
 
-const SensorConfigurationPanel: React.FC = () => {
+const SensorConfigurationPanel: React.FC<ConfigProps> = ({amplifyInstance}) => {
   //const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
   let dispatch = useAppDispatch();
-  let config = useAppSelector((state) => state.sensorConfig);
+  let config = useAppSelector((state) => state.sensorConfig) as SensorConfig;
 
   const handleToggle = (sensor: keyof SensorConfig) => {
+    let newState = {
+      ...config,
+      [sensor]: !config[sensor]
+    };
     dispatch(
       setState({
         newValue: !config[sensor], 
         field: sensor
       })
     );
+
+    if (amplifyInstance != null) {
+      amplifyInstance.PubSub.publish("config/sensor-states",
+        {
+          ...newState,
+          type: "sensor-state-config"
+        }
+      );
+    }
   };
 
   return (
