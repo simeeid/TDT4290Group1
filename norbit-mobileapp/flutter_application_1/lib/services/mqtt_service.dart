@@ -10,11 +10,15 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path/path.dart' as path;
+import 'package:flutter/services.dart' show ByteData, rootBundle;
 
 import 'package:http/http.dart' as http;
 
@@ -23,6 +27,7 @@ class MqttService {
   final LuxBloc luxBloc;
   final AccelerometerBloc accelerometerBloc;
   final LocationBloc locationBloc;
+  final storage = FlutterSecureStorage();
   String statusText = "Status Text";
   bool isConnected = false;
   StreamSubscription? luxSubscription;
@@ -61,7 +66,7 @@ class MqttService {
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
-    isConnected = await mqttConnect("123");
+    isConnected = await mqttConnect("device_137");
   }
 
   //Disconnects from mqtt broker.
@@ -70,49 +75,74 @@ class MqttService {
     client.disconnect();
   }
 
-Future<void> registerDevice() async {
-  try {
-    final result = await Amplify.Auth.fetchAuthSession(
-      options: CognitoSessionOptions(getAWSCredentials: true)
-    );
-    
+  Future<void> registerDevice() async {
+    try {
+      final cognitoPlugin =
+      Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
 
-    if (result is CognitoAuthSession) {
-      final identityId = result.identityIdResult;
-      final idToken = result?.userPoolTokens?.idToken;
-
+      final identityId = result.identityIdResult.value;
+      final idToken = result.userPoolTokensResult.value.accessToken.toJson();
       safePrint("Current user's identity ID: $identityId");
       safePrint("Current user's JWT idToken: $idToken");
-    } else {
-      safePrint('The result is not a CognitoAuthSession');
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
     }
+  } 
 
-  } on AuthException catch (e) {
-    safePrint('Error retrieving auth session: ${e.message}');
+  Future<void> fetchCognitoAuthSession() async {
+    try {
+      final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
+      final identityId = result.identityIdResult.value;
+      safePrint("Current user's identity ID: $identityId");
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
+    }
   }
-}
 
 
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
+    String? certificatePemUnloaded = await storage.read(key: 'certificatePem');
+    String? rootCAUnloaded = await storage.read(key: 'rootCA');
+    String? privateKeyUnloaded = await storage.read(key: 'privateKey');
+    safePrint("Look here $privateKeyUnloaded");
+    
+    if (rootCAUnloaded != null && certificatePemUnloaded != null && privateKeyUnloaded != null) {
+      String rootCAPath = await createAssetFile(rootCAUnloaded, '/assets/certificates/RootCA.pem');
+      safePrint(rootCAPath);
+      
 
-    final awsCredentialsString =
-        await File('assets/certificates/awsCredentials.json').readAsString();
-    final awsCredentials = jsonDecode(awsCredentialsString);
+      String certificatePemPath = await createAssetFile(certificatePemUnloaded, '/assets/certificates/DeviceCertificate.crt');
+      safePrint(certificatePemPath);
 
-    ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
+      String privateKeyPath = await createAssetFile(privateKeyUnloaded, '/assets/certificates/Private.key');
+      safePrint(privateKeyPath);
+    }
+
+    String rootCAPath = '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/RootCA.pem';
+    String privateKeyPath = '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/Private.key';
+    String deviceCertPath = '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/DeviceCertificate.crt';
+
+    ByteData rootCA = await rootBundle.load(rootCAPath);
     ByteData deviceCert =
-    await rootBundle.load('assets/certificates/DeviceCertificate.crt');
+    await rootBundle.load(deviceCertPath);
     ByteData privateKey =
-    await rootBundle.load('assets/certificates/Private.key');
+    await rootBundle.load(privateKeyPath);
+
+    List<int> rootCABytes = await File(rootCAPath).readAsBytes();
+    List<int> privateKeyBytes = await File(privateKeyPath).readAsBytes();
+    List<int> deviceCertBytes = await File(deviceCertPath).readAsBytes();
 
     SecurityContext context = SecurityContext.defaultContext;
-    context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
-    context.useCertificateChainBytes(deviceCert.buffer.asUint8List());
-    context.usePrivateKeyBytes(privateKey.buffer.asUint8List());
+    context.setTrustedCertificatesBytes(rootCABytes);
+    context.useCertificateChainBytes(deviceCertBytes);
+    context.usePrivateKeyBytes(privateKeyBytes);
 
     client.securityContext = context;
+
 
     client.logging(on: true);
     client.keepAlivePeriod = 20;
@@ -212,17 +242,18 @@ Future<void> registerDevice() async {
     });
   }
 
-  Future<http.Response> getCreds() {
+  Future<http.Response> getCreds(token) {
     final username = "antonhs";
     final modelVersion = "model_002";
-    final deviceName = "device_002";
-    final accessToken = "123";
+    final deviceName = "device_137";
+    final accessToken = token;
+    final deviceId = 'device_137';
 
     return http.post(
-      Uri.parse('https://jsonplaceholder.typicode.com/albums'),
+      Uri.parse('https://9wixxl72v8.execute-api.eu-north-1.amazonaws.com/beta/deviceManagement/${deviceId}'),
       headers: <String, String>{
         'Authorization': accessToken,
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
         'identityId': username,
@@ -293,4 +324,14 @@ Future<void> registerDevice() async {
     publishAccelerometerData();
     publishLocationData();
   }
+
+  Future<String> createAssetFile(String fileContent, String filePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}$filePath');
+    safePrint("Lookie: $file");
+    safePrint("Lookie: $directory");
+    await file.writeAsString(fileContent, mode: FileMode.write);
+    return file.path;
+  }
 }
+

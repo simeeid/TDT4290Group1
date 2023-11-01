@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'dart:convert';
 
 class LogInService {
   LogInService() {
@@ -20,20 +21,42 @@ class LogInService {
     }
   }
 
-  Future<bool> signInWithWebUI() async {
+  Future<Map<String, dynamic>> signInWithWebUI() async {
     try {
       final result = await Amplify.Auth.signInWithWebUI();
-      final creds = await Amplify.Auth.fetchAuthSession();
-      safePrint('Sign in result: $creds');
-      if (creds.isSignedIn) {
-        return true;
+      final session = await Amplify.Auth.fetchAuthSession(
+        options: const FetchAuthSessionOptions()
+      );
+      final idToken = (session as CognitoAuthSession).userPoolTokensResult.value.idToken.raw;
+      safePrint('idToken: $idToken');
+
+      String encodeBase64(dynamic json){
+        String jsonString = jsonEncode(json);
+        String base64String = base64UrlEncode(utf8.encode(jsonString));
+        return base64String;
+      }
+      if (session.isSignedIn) {
+        fetchCognitoAuthSession();
+        return {'isSignedIn': session.isSignedIn, 'jwt': idToken};
       }
       else {
-        return false;
+        return {'isSignedIn': false, 'jwt': null};
       }
     } on AuthException catch (e) {
       safePrint('Error signing in: ${e.message}');
-      return false;
+      return {'isSignedIn': false, 'jwt': null};
+    }
+  }
+
+  Future<void> fetchCognitoAuthSession() async {
+    try {
+      final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
+      final accessToken = result;
+      final identityId = result.identityIdResult.value;
+      safePrint("Current user's identity ID: $identityId");
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
     }
   }
 
@@ -46,3 +69,4 @@ class LogInService {
     }
   }
 }
+
