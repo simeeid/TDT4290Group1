@@ -1,5 +1,5 @@
 import React from 'react';
-import {MockInputProps} from "./types";
+import { MockInputProps } from "./types";
 
 /**
  * This component deals with mocking input in integration tests, as there's no trivial way to mock
