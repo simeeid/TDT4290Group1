@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
         {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />}
         {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />}
-        <Map latitude={63} longitude={10} />
+        <Map amplifyInstance={mockAmplify ? null : Amplify} />
       </div>
     </div>
   );
