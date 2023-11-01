@@ -137,10 +137,10 @@ class MqttService {
   void publishLuxData() {
     const topic = 'lux/topic'; // Change this to your desired topic
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
-      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       if (!luxEnable) {
         return;
       }
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -155,10 +155,10 @@ class MqttService {
   void publishNoiseData() {
     const noiseTopic = 'noise/topic'; // Change this to your desired topic
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
-      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       if (!soundEnable) {
         return;
       }
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(jsonEncode({
         'sensorName': 'Noise Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -201,6 +201,9 @@ class MqttService {
   void publishLocationData() {
     const locationTopic = 'location/topic'; // Change this to your desired topic
     locationSubscription = locationBloc.locationController.stream.listen((locationData) {
+      if (!gpsEnable) {
+        return;
+      }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(jsonEncode({
         'sensorName': 'Location Sensor',
@@ -234,6 +237,7 @@ class MqttService {
       luxEnable = sensorStates['light'];
       soundEnable = sensorStates['sound'];
       accelerometerEnable = sensorStates['accelerometer'];
+      gpsEnable = sensorStates['location'];
       //temperatureEnable = sensorStates['temperature'];
     });
   }
