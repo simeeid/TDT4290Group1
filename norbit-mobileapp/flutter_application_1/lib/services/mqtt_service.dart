@@ -84,6 +84,11 @@ class MqttService {
     setStatus("Connecting MQTT Broker");
 
 
+  //final awsCredentialsString = await File('assets/certificates/awsCredentials.json').readAsString();
+  //final awsCredentials = jsonDecode(awsCredentialsString);
+
+  fetchCognitoAuthSession();
+
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
     ByteData deviceCert =
         await rootBundle.load('assets/certificates/DeviceCertificate.crt');
