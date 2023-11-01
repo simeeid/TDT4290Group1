@@ -166,7 +166,7 @@ class MqttService {
           'volume': noiseData,
         }
       })); // Encode the data as a JSON string
-      client.subscribe(noiseTopic, MqttQos.atMostOnce);
+      //client.subscribe(noiseTopic, MqttQos.atMostOnce);
       client.publishMessage(noiseTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
@@ -193,7 +193,7 @@ class MqttService {
           'z': accelerometerData.z,
         }
       })); // Encode the data as a JSON string
-      client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
+      //client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
       client.publishMessage(
           accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
@@ -210,7 +210,7 @@ class MqttService {
           'longitude': locationData.longitude,
         }
       })); // Encode the data as a JSON string
-      client.subscribe(locationTopic, MqttQos.atMostOnce);
+      //client.subscribe(locationTopic, MqttQos.atMostOnce);
       client.publishMessage(locationTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }

@@ -1,10 +1,7 @@
 assets/certificates/*.crt 
 assets/certificates/*.key 
 assets/certificates/*.pem 
-<<<<<<< HEAD
-=======
 assets/certificates/awsCredentials.json 
->>>>>>> main
 
 # Miscellaneous
 *.class
