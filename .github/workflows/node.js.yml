@@ -21,6 +21,10 @@ jobs:
         with:
           node-version: 21
           cache: 'npm'
+      - name: Install packages
+        working-directory: norbit-webapp
+        run: |
+          npm i
       - name: Run prettier
         working-directory: norbit-webapp
         run: |
