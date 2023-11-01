@@ -40,24 +40,27 @@ export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }
 
   let currPosition: LatLngTuple = [ mapData.latitude, mapData.longitude ];
   return (
-    <MapContainer
-      center={currPosition}
-      zoom={13}
-      scrollWheelZoom={false}
-      ref={mapRef}
-      style={{
-        height: "300px",
-      }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      { typeof window !== undefined && L != null && <Marker
-        position={currPosition}
-        icon={L.icon({iconUrl: "pngegg.png", iconSize: [25, 25], iconAnchor: [12, 12]})} 
-      />}
-    </MapContainer>
+    <div className="sensorContainer" id="location-container">
+      <h2>Location</h2>
+      <MapContainer
+        center={currPosition}
+        zoom={13}
+        scrollWheelZoom={false}
+        ref={mapRef}
+        style={{
+          height: "300px",
+        }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        { typeof window !== undefined && L != null && <Marker
+          position={currPosition}
+          icon={L.icon({iconUrl: "pngegg.png", iconSize: [25, 25], iconAnchor: [12, 12]})} 
+        />}
+      </MapContainer>
+    </div>
   )
 };
 
