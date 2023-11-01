@@ -10,14 +10,10 @@ if (typeof window !== "undefined") {
   L = require("leaflet");
 }
 
-//export const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapContainer), {
-//ssr: false,
-//});
-//export const Marker = dynamic(() => import("react-leaflet").then((m) => m.Marker), { ssr: false });
-//export const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), {
-//ssr: false,
-//});
-
+/**
+ * Mini wrapper-component for centering the map when the location changes. It makes
+ * sense for this particular map, as the data is primarily meant to follow the datapoint.
+ */
 const Recenter = ({ lat, lng }: { lat: number; lng: number }) => {
   const map = useMap();
   useEffect(() => {

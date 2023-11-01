@@ -12,6 +12,12 @@ import dynamic from "next/dynamic";
 
 export type TamplifyInstance = typeof Amplify;
 
+/**
+ * Dynamic wrapper around MapComponent to allow for fully client-sided rendering of the MapComponent.
+ * This is required because Leaflet is a client-sided libarry, but next.js is server-sided.
+ * INdividual components withint MapComponent could be made dynamic instead, but unfortunately, this
+ * doesn't seem to extend to functions like `useMap`, which still break.
+ */
 export const MapComponent = dynamic(
   () => import("@/MapComponent/MapComponent").then((m) => m.MapComponent),
   {
@@ -32,8 +38,14 @@ const Dashboard: React.FC = () => {
     };
   }, []);
 
+  // Used to control whether or not AWS should be mocked.
+  // Note that thiss variable should ONLY be set to yes for integration testing purposes.
   const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
 
+  // This is not optimal, but it ensures amplify is only run once. If addPluggable is run
+  // multiple times, this causes the client to receive and send duplicate messages.
+  // This previously being used is likely the reason why we completely burned through the
+  // AWS quota for October.
   useEffect(() => {
     if (!amplifyEnabled) {
       if (!mockAmplify) {

@@ -13,8 +13,6 @@ export const useSubscribeToTopics = (
     const subscription = amplifyInstance.PubSub.subscribe(topic).subscribe({
       next: (data: any) => {
         setState(data.value);
-        //TODO remove this logstatement after finihing the implementation
-        console.log("Message received", data.value.payload);
       },
       error: (error: any) => {
         console.error(error);

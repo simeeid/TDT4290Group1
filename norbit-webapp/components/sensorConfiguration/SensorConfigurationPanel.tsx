@@ -1,5 +1,3 @@
-"use client";
-
 import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { SensorConfig, setState } from "@redux/slices/SensorConfig";
 import React from "react";
@@ -7,11 +5,13 @@ import style from "./SensorConfigurationPanel.module.css";
 import { ConfigProps } from "./types";
 
 const SensorConfigurationPanel: React.FC<ConfigProps> = ({ amplifyInstance }) => {
-  //const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
   let dispatch = useAppDispatch();
   let config = useAppSelector((state) => state.sensorConfig) as SensorConfig;
 
   const handleToggle = (sensor: keyof SensorConfig) => {
+    // Dispatch doesn't update `config` for whatever reason, but to ensure this code
+    // doesn't misbehave, the new state is stored before dispatch in case the
+    // behaviour ever changes to mutate config.
     let newState = {
       ...config,
       [sensor]: !config[sensor],
@@ -26,6 +26,10 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({ amplifyInstance }) =>
     if (amplifyInstance != null) {
       amplifyInstance.PubSub.publish("config/sensor-states", {
         ...newState,
+        // Required to ensure the client can differentiate between message types.
+        // The subscription function in flutter isn't for specific topics, so it just
+        // contains everything subscribed to, and filtering is left as an exercise to
+        // us. Far from optimal, but it appears to be the only option
         type: "sensor-state-config",
       });
     }

@@ -75,7 +75,7 @@ const AccelerometerChart: React.FC<{ amplifyInstance: TamplifyInstance | null }>
       <ChartComponent
         data={data}
         onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration (m/s)"
+        chartLabel="Acceleration (m/s^2)"
       />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>

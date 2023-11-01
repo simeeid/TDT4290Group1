@@ -13,7 +13,6 @@ export const SoundLevelComponent: React.FC<{ amplifyInstance: TamplifyInstance |
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
   const [soundLevelData, setSoundLevelData] = useState<TSoundLevelData | null>(null);
-  //console.log(soundLevelData);
 
   const onPauseStateChange = (newState: boolean) => {
     setIsPaused(newState);
