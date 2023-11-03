@@ -1,16 +1,16 @@
+import 'package:amplify_core/amplify_core.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AwsService {
   final String token;
+  final String username;
+  final String deviceId;
 
-  AwsService(this.token);
+  AwsService(this.token, this.username, this.deviceId);
 
   Future<http.Response> getCreds() async {
-    const username = "antonhs";
     const modelVersion = "model_002";
-    const deviceName = "device_137";
-    const deviceId = 'device_137';
 
     final url = Uri.parse(
         'https://9wixxl72v8.execute-api.eu-north-1.amazonaws.com/beta/deviceManagement/$deviceId');
@@ -23,10 +23,11 @@ class AwsService {
     final body = jsonEncode(<String, String>{
       'identityId': username,
       'modelVersion': modelVersion,
-      'deviceName': deviceName,
+      'deviceName': deviceId,
     });
 
     final response = await http.post(url, headers: headers, body: body);
+    safePrint('This is response: $response');
     return response;
   }
 }

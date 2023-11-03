@@ -6,7 +6,6 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 class LogInService {
   String? idToken;
   String? username;
-  String? identityId;
 
   LogInService() {
     _configureAmplify();
@@ -36,10 +35,8 @@ class LogInService {
           .value
           .idToken
           .raw;
-      //identityId = (session as CognitoAuthSession).identityIdResult.value;
       safePrint('This is idToken: $idToken');
       safePrint('This is username: $username');
-      //safePrint('This is identityId: $identityId');
 
       if (session.isSignedIn) {
         return {'isSignedIn': session.isSignedIn, 'jwt': idToken};

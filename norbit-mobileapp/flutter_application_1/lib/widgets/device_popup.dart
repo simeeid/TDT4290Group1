@@ -1,13 +1,18 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import '../services/mqtt_service.dart';
+import '../services/aws_service.dart';
+import '../services/login_service.dart';
 
 class DevicePopup extends StatelessWidget {
   DevicePopup({super.key});
-  final TextEditingController _deviceNicknameController = TextEditingController();
 
+  final TextEditingController _deviceNicknameController =
+      TextEditingController();
+  final loginService =
+      Provider.of<LogInService>(context as BuildContext, listen: false);
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +36,13 @@ class DevicePopup extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
-            final mqttService = Provider.of<MqttService>(context, listen: false);
 
-            // You can use the `deviceNickname` variable to access the user's input.
-            String deviceNickname = _deviceNicknameController.text;
+            String deviceId = _deviceNicknameController.text;
+            String username = loginService.username!;
+            String token = loginService.idToken!;
 
-            // Add code here for registering the device
+            final awsService = AwsService(token, username, deviceId);
+            awsService.getCreds();
 
             _deviceNicknameController.clear();
           },
