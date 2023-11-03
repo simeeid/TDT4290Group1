@@ -2,9 +2,12 @@ import 'dart:async';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'dart:convert';
 
 class LogInService {
+  String? idToken;
+  String? username;
+  String? identityId;
+
   LogInService() {
     _configureAmplify();
   }
@@ -24,39 +27,28 @@ class LogInService {
   Future<Map<String, dynamic>> signInWithWebUI() async {
     try {
       final result = await Amplify.Auth.signInWithWebUI();
+      final currentUser = await Amplify.Auth.getCurrentUser();
+      username = currentUser.username;
       final session = await Amplify.Auth.fetchAuthSession(
-        options: const FetchAuthSessionOptions()
-      );
-      final idToken = (session as CognitoAuthSession).userPoolTokensResult.value.idToken.raw;
-      safePrint('idToken: $idToken');
+          options: const FetchAuthSessionOptions());
+      idToken = (session as CognitoAuthSession)
+          .userPoolTokensResult
+          .value
+          .idToken
+          .raw;
+      //identityId = (session as CognitoAuthSession).identityIdResult.value;
+      safePrint('This is idToken: $idToken');
+      safePrint('This is username: $username');
+      //safePrint('This is identityId: $identityId');
 
-      String encodeBase64(dynamic json){
-        String jsonString = jsonEncode(json);
-        String base64String = base64UrlEncode(utf8.encode(jsonString));
-        return base64String;
-      }
       if (session.isSignedIn) {
-        fetchCognitoAuthSession();
         return {'isSignedIn': session.isSignedIn, 'jwt': idToken};
-      }
-      else {
+      } else {
         return {'isSignedIn': false, 'jwt': null};
       }
     } on AuthException catch (e) {
       safePrint('Error signing in: ${e.message}');
       return {'isSignedIn': false, 'jwt': null};
-    }
-  }
-
-  Future<void> fetchCognitoAuthSession() async {
-    try {
-      final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
-      final result = await cognitoPlugin.fetchAuthSession();
-      final accessToken = result;
-      final identityId = result.identityIdResult.value;
-      safePrint("Current user's identity ID: $identityId");
-    } on AuthException catch (e) {
-      safePrint('Error retrieving auth session: ${e.message}');
     }
   }
 
@@ -69,4 +61,3 @@ class LogInService {
     }
   }
 }
-

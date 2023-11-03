@@ -7,20 +7,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'dart:typed_data';
-import 'package:image/image.dart' as img;
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
-
-import 'package:http/http.dart' as http;
 
 class MqttService {
   final NoiseBloc noiseBloc;
@@ -42,7 +36,7 @@ class MqttService {
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
-  MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
+      MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
   final _amplifyInstance = Amplify;
 
@@ -60,9 +54,9 @@ class MqttService {
 
   MqttService(
       {required this.noiseBloc,
-        required this.luxBloc,
-        required this.accelerometerBloc,
-        required this.locationBloc});
+      required this.luxBloc,
+      required this.accelerometerBloc,
+      required this.locationBloc});
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
@@ -78,7 +72,7 @@ class MqttService {
   Future<void> registerDevice() async {
     try {
       final cognitoPlugin =
-      Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
       final result = await cognitoPlugin.fetchAuthSession();
 
       final identityId = result.identityIdResult.value;
@@ -88,19 +82,7 @@ class MqttService {
     } on AuthException catch (e) {
       safePrint('Error retrieving auth session: ${e.message}');
     }
-  } 
-
-  Future<void> fetchCognitoAuthSession() async {
-    try {
-      final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
-      final result = await cognitoPlugin.fetchAuthSession();
-      final identityId = result.identityIdResult.value;
-      safePrint("Current user's identity ID: $identityId");
-    } on AuthException catch (e) {
-      safePrint('Error retrieving auth session: ${e.message}');
-    }
   }
-
 
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
@@ -109,28 +91,30 @@ class MqttService {
     String? rootCAUnloaded = await storage.read(key: 'rootCA');
     String? privateKeyUnloaded = await storage.read(key: 'privateKey');
     safePrint("Look here $privateKeyUnloaded");
-    
-    if (rootCAUnloaded != null && certificatePemUnloaded != null && privateKeyUnloaded != null) {
-      String rootCAPath = await createAssetFile(rootCAUnloaded, '/assets/certificates/RootCA.pem');
-      safePrint(rootCAPath);
-      
 
-      String certificatePemPath = await createAssetFile(certificatePemUnloaded, '/assets/certificates/DeviceCertificate.crt');
-      safePrint(certificatePemPath);
+    if (rootCAUnloaded != null &&
+        certificatePemUnloaded != null &&
+        privateKeyUnloaded != null) {
+      String rootCAPath = await createAssetFile(
+          rootCAUnloaded, '/assets/certificates/RootCA.pem');
 
-      String privateKeyPath = await createAssetFile(privateKeyUnloaded, '/assets/certificates/Private.key');
-      safePrint(privateKeyPath);
+      String certificatePemPath = await createAssetFile(
+          certificatePemUnloaded, '/assets/certificates/DeviceCertificate.crt');
+
+      String privateKeyPath = await createAssetFile(
+          privateKeyUnloaded, '/assets/certificates/Private.key');
     }
 
-    String rootCAPath = '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/RootCA.pem';
-    String privateKeyPath = '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/Private.key';
-    String deviceCertPath = '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/DeviceCertificate.crt';
+    String rootCAPath =
+        '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/RootCA.pem';
+    String privateKeyPath =
+        '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/Private.key';
+    String deviceCertPath =
+        '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/DeviceCertificate.crt';
 
     ByteData rootCA = await rootBundle.load(rootCAPath);
-    ByteData deviceCert =
-    await rootBundle.load(deviceCertPath);
-    ByteData privateKey =
-    await rootBundle.load(privateKeyPath);
+    ByteData deviceCert = await rootBundle.load(deviceCertPath);
+    ByteData privateKey = await rootBundle.load(privateKeyPath);
 
     List<int> rootCABytes = await File(rootCAPath).readAsBytes();
     List<int> privateKeyBytes = await File(privateKeyPath).readAsBytes();
@@ -143,7 +127,6 @@ class MqttService {
 
     client.securityContext = context;
 
-
     client.logging(on: true);
     client.keepAlivePeriod = 20;
     client.port = 8883;
@@ -153,7 +136,7 @@ class MqttService {
     client.pongCallback = pong;
 
     final MqttConnectMessage connMess =
-    MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
+        MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
     client.connectionMessage = connMess;
 
     await client.connect();
@@ -242,29 +225,10 @@ class MqttService {
     });
   }
 
-  Future<http.Response> getCreds(token) {
-    final username = "antonhs";
-    final modelVersion = "model_002";
-    final deviceName = "device_137";
-    final accessToken = token;
-    final deviceId = 'device_137';
-
-    return http.post(
-      Uri.parse('https://9wixxl72v8.execute-api.eu-north-1.amazonaws.com/beta/deviceManagement/${deviceId}'),
-      headers: <String, String>{
-        'Authorization': accessToken,
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, String>{
-        'identityId': username,
-        'modelVersion': modelVersion,
-        'deviceName': deviceName,
-      }),
-    );
-  }
   void publishLocationData() {
     const locationTopic = 'location/topic'; // Change this to your desired topic
-    locationSubscription = locationBloc.locationController.stream.listen((locationData) {
+    locationSubscription =
+        locationBloc.locationController.stream.listen((locationData) {
       if (!gpsEnable) {
         return;
       }
@@ -278,30 +242,9 @@ class MqttService {
         }
       })); // Encode the data as a JSON string
       //client.subscribe(locationTopic, MqttQos.atMostOnce);
-      client.publishMessage(locationTopic, MqttQos.atLeastOnce, builder.payload!);
+      client.publishMessage(
+          locationTopic, MqttQos.atLeastOnce, builder.payload!);
     });
-  }
-
-
-  Future<http.Response> getCreds(token) {
-    final username = "antonhs";
-    final modelVersion = "model_002";
-    final deviceName = "device_137";
-    final accessToken = token;
-    final deviceId = 'device_137';
-
-    return http.post(
-      Uri.parse('https://9wixxl72v8.execute-api.eu-north-1.amazonaws.com/beta/deviceManagement/${deviceId}'),
-      headers: <String, String>{
-        'Authorization': accessToken,
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, String>{
-        'identityId': username,
-        'modelVersion': modelVersion,
-        'deviceName': deviceName,
-      }),
-    );
   }
 
   void onConnected() {
@@ -309,12 +252,15 @@ class MqttService {
     print("Client connection was successful");
     // Notify your listeners here
     const sensorStatesTopic = "config/sensor-states";
-    final sensorStates = client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
+    final sensorStates =
+        client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final message = c[0].payload as MqttPublishMessage;
-      final pt = MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      final pt =
+          MqttPublishPayload.bytesToStringAsString(message.payload.message);
       Map<String, dynamic> sensorStates = jsonDecode(pt);
-      if (!sensorStates.containsKey("type") || sensorStates["type"] != "sensor-state-config") {
+      if (!sensorStates.containsKey("type") ||
+          sensorStates["type"] != "sensor-state-config") {
         // Different format or different received event
         return;
       }
@@ -339,7 +285,7 @@ class MqttService {
     // Notify your listeners here
   }
 
-  void publishController(){
+  void publishController() {
     publishLuxData();
     publishNoiseData();
     publishAccelerometerData();
@@ -355,4 +301,3 @@ class MqttService {
     return file.path;
   }
 }
-
