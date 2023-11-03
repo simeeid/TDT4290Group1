@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../services/login_service.dart';
+import 'device_popup.dart';
 
 class SidebarWidget extends StatelessWidget {
   const SidebarWidget({super.key});
@@ -24,6 +24,12 @@ class SidebarWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            title: const Text('Register Device'),
+            onTap: () {
+              _showDevicePopup(context);
+            },
+          ),
+          ListTile(
             title: const Text('Sign Out'),
             onTap: () {
               logInService.signOutWithWebUI();
@@ -36,6 +42,15 @@ class SidebarWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showDevicePopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DevicePopup();
+      },
     );
   }
 }
