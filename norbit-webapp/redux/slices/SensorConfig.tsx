@@ -5,6 +5,7 @@ export interface SensorConfig {
   temperature: boolean;
   light: boolean;
   sound: boolean;
+  location: boolean;
   // Other sensors can be added here, e.g., temperature: boolean;
 }
 
@@ -15,6 +16,7 @@ export const sensorConfig = createSlice({
     temperature: false,
     light: true,
     sound: true,
+    location: true,
   },
   reducers: {
     setState: (state, payload: PayloadAction<

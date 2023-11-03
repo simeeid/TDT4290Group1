@@ -15,7 +15,7 @@ class StartStopButton extends StatelessWidget {
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
     final accelerometerService =
-        Provider.of<AccelerometerService>(context, listen: false);
+    Provider.of<AccelerometerService>(context, listen: false);
     final startStopBloc = Provider.of<StartStopBloc>(context);
     final mqttService = Provider.of<MqttService>(context, listen: false);
     final locationService = Provider.of<LocationService>(context);
@@ -36,9 +36,7 @@ class StartStopButton extends StatelessWidget {
                   locationService.start();
                   startStopBloc.switchState(true);
                   mqttService.connect();
-                  mqttService.publishNoiseData();
-                  mqttService.publishLuxData();
-                  mqttService.publishAccelerometerData();
+                  mqttService.publishController();
                 } else if (snapshot.data == true) {
                   luxService.stop();
                   accelerometerService.stop();

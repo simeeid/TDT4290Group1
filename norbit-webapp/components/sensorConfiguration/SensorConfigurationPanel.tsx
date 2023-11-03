@@ -4,19 +4,33 @@ import {useAppDispatch, useAppSelector} from '@redux/hook';
 import {SensorConfig, setState} from '@redux/slices/SensorConfig';
 import React from 'react';
 import style from './SensorConfigurationPanel.module.css';
+import {ConfigProps} from './types';
 
-const SensorConfigurationPanel: React.FC = () => {
+const SensorConfigurationPanel: React.FC<ConfigProps> = ({amplifyInstance}) => {
   //const [config, setConfig] = useState<SensorConfig>({ accelerometer: true, temperature: true, sound: true, light: true });
   let dispatch = useAppDispatch();
-  let config = useAppSelector((state) => state.sensorConfig);
+  let config = useAppSelector((state) => state.sensorConfig) as SensorConfig;
 
   const handleToggle = (sensor: keyof SensorConfig) => {
+    let newState = {
+      ...config,
+      [sensor]: !config[sensor]
+    };
     dispatch(
       setState({
         newValue: !config[sensor], 
         field: sensor
       })
     );
+
+    if (amplifyInstance != null) {
+      amplifyInstance.PubSub.publish("config/sensor-states",
+        {
+          ...newState,
+          type: "sensor-state-config"
+        }
+      );
+    }
   };
 
   return (
@@ -75,6 +89,18 @@ const SensorConfigurationPanel: React.FC = () => {
               onChange={() => handleToggle('sound')}
             />
             <label htmlFor="enable-sound">Show Sound Level Chart</label>
+          </div>
+        </div>
+
+        <div className={style.configGroup}>
+          <div className={style.optionGroup}>
+            <input 
+              id="enable-location"
+              type="checkbox"
+              checked={config.location}
+              onChange={() => handleToggle('location')}
+            />
+            <label htmlFor="enable-location">Show Location Chart</label>
           </div>
         </div>
         {/* As more sensors are added, you can add more configuration options here */}

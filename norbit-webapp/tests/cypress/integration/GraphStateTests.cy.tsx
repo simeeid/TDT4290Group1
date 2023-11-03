@@ -7,6 +7,7 @@ describe("Graph config", () => {
       "enable-temperature",
       "enable-light",
       "enable-sound",
+      "enable-location",
     ];
     cy.get("#expand-sidebar").click();
 

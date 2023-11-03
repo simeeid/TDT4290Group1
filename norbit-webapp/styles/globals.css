@@ -10,6 +10,9 @@
  * tiny for no good reason. I'm not aware of any cases where setting the font size
  * of headers to inherit makes any sense.
  */
+
+@import "~leaflet/dist/leaflet.css";
+
  h1, h2, h3, h4, h5, h6 {
   font-size: revert;
   font-weight: revert;

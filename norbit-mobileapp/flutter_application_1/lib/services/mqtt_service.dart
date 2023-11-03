@@ -33,10 +33,16 @@ class MqttService {
   StreamSubscription? luxSubscription;
   StreamSubscription? noiseSubscription;
   StreamSubscription? accelerometerSubscription;
+  StreamSubscription? locationSubscription;
+  bool luxEnable = true;
+  bool soundEnable = true;
+  bool temperatureEnable = true;
+  bool accelerometerEnable = true;
+  bool gpsEnable = true;
 
   // Initializes client. To use own AWS account: Change string to link under mqtt test client, connection details, endpoint.
   final MqttServerClient client =
-      MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
+  MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
   final _amplifyInstance = Amplify;
 
@@ -54,9 +60,9 @@ class MqttService {
 
   MqttService(
       {required this.noiseBloc,
-      required this.luxBloc,
-      required this.accelerometerBloc,
-      required this.locationBloc});
+        required this.luxBloc,
+        required this.accelerometerBloc,
+        required this.locationBloc});
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
@@ -147,7 +153,7 @@ class MqttService {
     client.pongCallback = pong;
 
     final MqttConnectMessage connMess =
-        MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
+    MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
     client.connectionMessage = connMess;
 
     await client.connect();
@@ -174,6 +180,9 @@ class MqttService {
   void publishLuxData() {
     const topic = 'lux/topic'; // Change this to your desired topic
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
+      if (!luxEnable) {
+        return;
+      }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
@@ -189,6 +198,9 @@ class MqttService {
   void publishNoiseData() {
     const noiseTopic = 'noise/topic'; // Change this to your desired topic
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
+      if (!soundEnable) {
+        return;
+      }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(jsonEncode({
         'sensorName': 'Noise Sensor',
@@ -197,7 +209,7 @@ class MqttService {
           'volume': noiseData,
         }
       })); // Encode the data as a JSON string
-      client.subscribe(noiseTopic, MqttQos.atMostOnce);
+      //client.subscribe(noiseTopic, MqttQos.atMostOnce);
       client.publishMessage(noiseTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
@@ -208,6 +220,9 @@ class MqttService {
         'accelerometer/topic'; // Change this to your desired topic
     accelerometerSubscription = accelerometerBloc.accelerometerController.stream
         .listen((accelerometerData) {
+      if (!accelerometerEnable) {
+        return;
+      }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       accelerometerList.add(accelerometerData.x.toStringAsFixed(2));
       accelerometerList.add(accelerometerData.y.toStringAsFixed(2));
@@ -221,11 +236,31 @@ class MqttService {
           'z': accelerometerData.z,
         }
       })); // Encode the data as a JSON string
-      client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
+      //client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
       client.publishMessage(
           accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
+  void publishLocationData() {
+    const locationTopic = 'location/topic'; // Change this to your desired topic
+    locationSubscription = locationBloc.locationController.stream.listen((locationData) {
+      if (!gpsEnable) {
+        return;
+      }
+      final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      builder.addString(jsonEncode({
+        'sensorName': 'Location Sensor',
+        'timestamp': DateTime.now().toIso8601String(),
+        'payload': {
+          'latitude': locationData.latitude,
+          'longitude': locationData.longitude,
+        }
+      })); // Encode the data as a JSON string
+      //client.subscribe(locationTopic, MqttQos.atMostOnce);
+      client.publishMessage(locationTopic, MqttQos.atLeastOnce, builder.payload!);
+    });
+  }
+
 
   Future<http.Response> getCreds(token) {
     final username = "antonhs";
@@ -252,6 +287,23 @@ class MqttService {
     setStatus("Client connection was successful");
     print("Client connection was successful");
     // Notify your listeners here
+    const sensorStatesTopic = "config/sensor-states";
+    final sensorStates = client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final message = c[0].payload as MqttPublishMessage;
+      final pt = MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      Map<String, dynamic> sensorStates = jsonDecode(pt);
+      if (!sensorStates.containsKey("type") || sensorStates["type"] != "sensor-state-config") {
+        // Different format or different received event
+        return;
+      }
+
+      luxEnable = sensorStates['light'];
+      soundEnable = sensorStates['sound'];
+      accelerometerEnable = sensorStates['accelerometer'];
+      gpsEnable = sensorStates['location'];
+      //temperatureEnable = sensorStates['temperature'];
+    });
   }
 
   void onDisconnected() {
@@ -264,6 +316,13 @@ class MqttService {
     print('Ping response client callback invoked');
     // Add any additional logic here
     // Notify your listeners here
+  }
+
+  void publishController(){
+    publishLuxData();
+    publishNoiseData();
+    publishAccelerometerData();
+    publishLocationData();
   }
 
   Future<String> createAssetFile(String fileContent, String filePath) async {
