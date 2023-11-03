@@ -283,6 +283,27 @@ class MqttService {
   }
 
 
+  Future<http.Response> getCreds(token) {
+    final username = "antonhs";
+    final modelVersion = "model_002";
+    final deviceName = "device_137";
+    final accessToken = token;
+    final deviceId = 'device_137';
+
+    return http.post(
+      Uri.parse('https://9wixxl72v8.execute-api.eu-north-1.amazonaws.com/beta/deviceManagement/${deviceId}'),
+      headers: <String, String>{
+        'Authorization': accessToken,
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'identityId': username,
+        'modelVersion': modelVersion,
+        'deviceName': deviceName,
+      }),
+    );
+  }
+
   void onConnected() {
     setStatus("Client connection was successful");
     print("Client connection was successful");
