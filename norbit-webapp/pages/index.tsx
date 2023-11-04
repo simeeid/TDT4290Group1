@@ -40,6 +40,7 @@ export default function Home() {
         <button onClick={handleSignIn}>Sign In
 
         </button>
+        <Dashboard />
 
 
 
