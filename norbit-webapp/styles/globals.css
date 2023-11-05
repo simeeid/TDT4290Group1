@@ -35,8 +35,23 @@ html {
 }
 
 button {
-  border-radius: 12px;
+  border-radius: 1px;
   cursor: pointer;
+  border: none;
+  background-color: #f4f2f0;
+  color: #000000;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s; 
+}
+
+button:hover {
+  background-color: #dbdbdb;
+}
+
+.signin-button {
+  padding: 0.5rem 1rem;
+  position: relative;
+  top:-80px;
 }
 
 button.light {
