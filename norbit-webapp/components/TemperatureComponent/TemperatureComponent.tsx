@@ -6,7 +6,7 @@ import { TamplifyInstance } from '@/dashboard/Dashboard';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import {MockInputComponent} from '@/MockInputComponent/MockInputComponent';
 
-export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance | null}> = ({amplifyInstance}) => {
+export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance | null, topic : string}> = ({amplifyInstance, topic}) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -50,7 +50,7 @@ export const TemperatureComponent: React.FC<{amplifyInstance: TamplifyInstance |
     return () => clearInterval(interval);
   }, [buffer, isPaused]);
 
-  useSubscribeToTopics('temperature/topic', amplifyInstance, setTemperatureData);
+  useSubscribeToTopics(topic, amplifyInstance, setTemperatureData);
 
   return (
     <div className="sensorContainer" id="temperature-container">

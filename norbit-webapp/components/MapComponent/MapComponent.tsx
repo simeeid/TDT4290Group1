@@ -24,7 +24,7 @@ export const TileLayer = dynamic(
   { ssr: false }
 );
 
-export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({ amplifyInstance }) => {
+export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null, topic: string }> = ({ amplifyInstance, topic }) => {
 
   const mapRef = useRef(null);
   const [payload, setPayload] = useState<any>(null); 
@@ -36,7 +36,7 @@ export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }
 
   }, [payload]);  
 
-  useSubscribeToTopics('location/topic',amplifyInstance,setPayload);
+  useSubscribeToTopics(topic,amplifyInstance,setPayload);
 
   let currPosition: LatLngTuple = [ mapData.latitude, mapData.longitude ];
   return (

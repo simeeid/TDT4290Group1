@@ -14,15 +14,35 @@ export type TamplifyInstance = typeof Amplify;
 const Dashboard: React.FC = () => {
   let sensorConfig = useAppSelector((state) => state.sensorConfig) as SensorConfig;
   const mockAmplify = useAppSelector((state) => state.amplify.isMock);
+  const user = useAppSelector((state) => state.amplify.userName);
+  const devices = useAppSelector((state) => state.deviceList.devices);
+  const lastConnectedDevice = devices[devices.length - 1];
+
+
+  if (!lastConnectedDevice) {
+    return (
+      <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
+        <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
+          <h1>Connect a device to see data</h1>
+        </div>
+      </div>
+    );
+    
+  }
+  const accelerometerTopic = `${user}/${lastConnectedDevice.code}/accelerometer`;
+  const temperatureTopic = `${user}/${lastConnectedDevice.code}/temperature`;
+  const lightTopic = `${user}/${lastConnectedDevice.code}/lux`;
+  const soundTopic = `${user}/${lastConnectedDevice.code}/volume`;
+  const locationTopic = `${user}/${lastConnectedDevice.code}/location`;
 
   return (
     <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
-        {sensorConfig.accelerometer && <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.temperature && <TemperatureComponent amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.light && <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.sound && <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.location && <MapComponent amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.accelerometer && <AccelerometerChart topic={accelerometerTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.temperature && <TemperatureComponent topic={temperatureTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.light && <LightIntensityComponent topic={lightTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.sound && <SoundLevelComponent topic={soundTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.location && <MapComponent topic={locationTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
       </div>
     </div>
   );
