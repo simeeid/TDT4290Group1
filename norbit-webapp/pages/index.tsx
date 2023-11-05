@@ -1,8 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Dashboard from 'components/dashboard/Dashboard';
-
-
 import { Amplify, Auth } from 'aws-amplify';
 import { amplifyConfig } from 'amplify-config';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
@@ -10,23 +8,36 @@ import { useState } from 'react';
 import { TLightIntensityData } from 'components/LightIntensityComponent/types';
 import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import {useEffect}  from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import { userSignedIn } from '@redux/slices/amplifySlice';
+import { setUserName } from '@redux/slices/amplifySlice';
 export default function Home() {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state: RootState) => state.amplify.isAuthenticated);
 
-  Amplify.configure(amplifyConfig);
-  const handleSignIn = async () => {
-    await Auth.federatedSignIn();
-    
-    Amplify.addPluggable(new AWSIoTProvider({
-        aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
-        aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
-    }));
+  useEffect(() => {
+    checkUserAuthentication();
+  }, []);
 
-    Auth.currentCredentials().then((info) => {
-      console.log(info.identityId);
-    });
 
-};
+  const checkUserAuthentication = async () => {
+    try {
+      const session = await Auth.currentSession();
+      if (session) {
+        dispatch(userSignedIn());
+        dispatch(setUserName(session.getIdToken().payload['cognito:username']));
+      
+      }
+    } catch (error) {
+      console.log("User is not authenticated");
+    }
+  };
+
+  const handleSignIn = () => {
+    Auth.federatedSignIn();
+  };
+
 
   return (
     <div className={styles.container}>
@@ -37,15 +48,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <button onClick={handleSignIn}>Sign In
-
-        </button>
-        <Dashboard />
-
-
-
-
+        {isAuthenticated ? (
+          <Dashboard />
+        ) : (
+          <button className='signin-button' onClick={handleSignIn}>Sign In</button>
+        )}
       </main>
+
 
       <footer className={styles.footer}></footer>
     </div>
