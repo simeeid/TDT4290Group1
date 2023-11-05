@@ -1,16 +1,16 @@
-# flutter_application_1
+# Flutter mobile app
 
-A new Flutter project.
+The main purpose of the flutter mobile app is to collect sensor data. 
 
-## Getting Started
+When first opening the flutter app, it will we possible to sign in with AWS. If it is your first time signing in with this device, you will be asked to register your device. After registering your device you can press the "start" button to start collecting sensor data. The app will ask you to allow location and noise data to be collected, accept this if you want it to be collected for further use. You can now see all your sensor data on the screen, this is also being sent to the web app. When you want to stop collecting sensor data you press the "stop" button. You can sign out by opening the side menu and pressing "sign out". 
 
-This project is a starting point for a Flutter application.
+## Architecture
 
-A few resources to get you started if this is your first Flutter project:
+The flutter mobile app uses BLoC architecture. Please see this pdf to read more about the architecture:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Class diagram
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How to  run
+How to run flutter system:
+
+How to run tests:
