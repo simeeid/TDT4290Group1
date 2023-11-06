@@ -2,6 +2,7 @@ import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../blocs/connectivity/device_name_bloc.dart';
 import '../blocs/connectivity/token_bloc.dart';
 import '../blocs/connectivity/username_bloc.dart';
 import '../services/aws_service.dart';
@@ -9,9 +10,14 @@ import '../services/aws_service.dart';
 class DevicePopupWrapper extends StatelessWidget {
   final UsernameBloc usernameBloc;
   final TokenBloc tokenBloc;
+  final DeviceNameBloc deviceNameBloc;
 
-  const DevicePopupWrapper(
-      {super.key, required this.usernameBloc, required this.tokenBloc});
+  const DevicePopupWrapper({
+    super.key,
+    required this.usernameBloc,
+    required this.tokenBloc,
+    required this.deviceNameBloc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +27,16 @@ class DevicePopupWrapper extends StatelessWidget {
         return StreamBuilder<String>(
           stream: tokenBloc.tokenController,
           builder: (context, snapshotToken) {
-            return DevicePopup(
-              username: snapshotUsername.data!,
-              token: snapshotToken.data!,
+            return StreamBuilder<String>(
+              stream: deviceNameBloc.deviceNameStream,
+              builder: (context, snapshotDeviceName) {
+                return DevicePopup(
+                  username: snapshotUsername.data!,
+                  token: snapshotToken.data!,
+                  deviceName: snapshotDeviceName.data,
+                  deviceNameBloc: deviceNameBloc,
+                );
+              },
             );
           },
         );
@@ -35,12 +48,18 @@ class DevicePopupWrapper extends StatelessWidget {
 class DevicePopup extends StatelessWidget {
   final String username;
   final String token;
+  final String? deviceName;
+  final DeviceNameBloc deviceNameBloc;
 
-  DevicePopup({Key? key, required this.username, required this.token})
-      : super(key: key);
+  DevicePopup({
+    Key? key,
+    required this.username,
+    required this.token,
+    this.deviceName,
+    required this.deviceNameBloc,
+  }) : super(key: key);
 
-  final TextEditingController _deviceNicknameController =
-      TextEditingController();
+  final TextEditingController _deviceNicknameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +84,14 @@ class DevicePopup extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
 
-            String deviceId = _deviceNicknameController.text;
+            String deviceName = _deviceNicknameController.text;
 
-            final awsService = AwsService(token, username, deviceId);
+            final awsService = AwsService(token, username, deviceName);
             awsService.getCreds();
 
+            deviceNameBloc.addDeviceName(deviceName);
+
             _deviceNicknameController.clear();
-            safePrint("YEY WE DID IT LOL");
           },
           child: const Text('Save'),
         ),

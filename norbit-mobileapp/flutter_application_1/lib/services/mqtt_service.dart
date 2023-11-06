@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/token_bloc.dart';
+import '../blocs/connectivity/device_name_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import 'dart:async';
@@ -16,7 +18,11 @@ import '../amplifyconfiguration.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 
+import '../blocs/connectivity/username_bloc.dart';
+
 class MqttService {
+  final UsernameBloc usernameBloc;
+  final DeviceNameBloc deviceNameBloc;
   final NoiseBloc noiseBloc;
   final LuxBloc luxBloc;
   final AccelerometerBloc accelerometerBloc;
@@ -28,6 +34,8 @@ class MqttService {
   StreamSubscription? noiseSubscription;
   StreamSubscription? accelerometerSubscription;
   StreamSubscription? locationSubscription;
+  StreamSubscription? usernameSubscription;
+  StreamSubscription? deviceNameSubscription;
   bool luxEnable = true;
   bool soundEnable = true;
   bool temperatureEnable = true;
@@ -53,7 +61,9 @@ class MqttService {
   }
 
   MqttService(
-      {required this.noiseBloc,
+      {required this.usernameBloc,
+      required this.deviceNameBloc,
+      required this.noiseBloc,
       required this.luxBloc,
       required this.accelerometerBloc,
       required this.locationBloc});
@@ -67,21 +77,6 @@ class MqttService {
   disconnect() {
     luxSubscription?.cancel();
     client.disconnect();
-  }
-
-  Future<void> registerDevice() async {
-    try {
-      final cognitoPlugin =
-          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
-      final result = await cognitoPlugin.fetchAuthSession();
-
-      final identityId = result.identityIdResult.value;
-      final idToken = result.userPoolTokensResult.value.accessToken.toJson();
-      safePrint("Current user's identity ID: $identityId");
-      safePrint("Current user's JWT idToken: $idToken");
-    } on AuthException catch (e) {
-      safePrint('Error retrieving auth session: ${e.message}');
-    }
   }
 
   //code for connecting to mqtt broker.
@@ -147,10 +142,6 @@ class MqttService {
       return false;
     }
 
-    //Subscribed topic.
-    const topic = 'main/topic';
-    client.subscribe(topic, MqttQos.atMostOnce);
-
     return true;
   }
 
@@ -160,8 +151,18 @@ class MqttService {
     // Notify your listeners here
   }
 
-  void publishLuxData() {
-    const topic = 'lux/topic'; // Change this to your desired topic
+  Future<String> getTopic() async {
+    final usernameData = await usernameBloc.usernameController.stream.first;
+    final deviceNameData =
+        await deviceNameBloc.deviceNameController.stream.first;
+    safePrint('THIS IS IT $usernameData/$deviceNameData');
+    return "$usernameData/$deviceNameData";
+  }
+
+  Future<void> publishLuxData() async {
+    final topic = await getTopic();
+    final luxTopic = '$topic/lux';
+    safePrint('THIS IS LUX TOPIC: $luxTopic');
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
       if (!luxEnable) {
         return;
@@ -174,12 +175,13 @@ class MqttService {
           'lux': luxData,
         }
       })); // Encode the data as a JSON string
-      client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
+      client.publishMessage(luxTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
 
-  void publishNoiseData() {
-    const noiseTopic = 'noise/topic'; // Change this to your desired topic
+  Future<void> publishNoiseData() async {
+    final topic = await getTopic();
+    final noiseTopic = '$topic/noise';
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
       if (!soundEnable) {
         return;
@@ -197,10 +199,10 @@ class MqttService {
     });
   }
 
-  void publishAccelerometerData() {
+  Future<void> publishAccelerometerData() async {
     List<String> accelerometerList = [];
-    const accelerometerTopic =
-        'accelerometer/topic'; // Change this to your desired topic
+    final topic = await getTopic();
+    final accelerometerTopic = '$topic/accelerometer';
     accelerometerSubscription = accelerometerBloc.accelerometerController.stream
         .listen((accelerometerData) {
       if (!accelerometerEnable) {
@@ -225,10 +227,10 @@ class MqttService {
     });
   }
 
-  void publishLocationData() {
-    const locationTopic = 'location/topic'; // Change this to your desired topic
-    locationSubscription =
-        locationBloc.locationController.stream.listen((locationData) {
+  Future<void> publishLocationData() async {
+    final topic = await getTopic();
+    final locationTopic = '$topic/location';
+    locationBloc.locationController.stream.listen((locationData) {
       if (!gpsEnable) {
         return;
       }

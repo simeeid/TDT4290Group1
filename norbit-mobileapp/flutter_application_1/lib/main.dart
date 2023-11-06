@@ -6,6 +6,7 @@ import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
+import 'blocs/connectivity/device_name_bloc.dart';
 import 'blocs/connectivity/location_bloc.dart';
 import 'blocs/connectivity/token_bloc.dart';
 import 'blocs/connectivity/username_bloc.dart';
@@ -53,6 +54,10 @@ class MyApp extends StatelessWidget {
           create: (_) => UsernameBloc(),
           dispose: (_, bloc) => bloc.dispose(),
         ),
+        Provider<DeviceNameBloc>(
+          create: (_) => DeviceNameBloc(),
+          dispose: (_, bloc) => bloc.dispose(),
+        ),
         Provider<StartStopBloc>(
           create: (_) => StartStopBloc(),
           dispose: (_, bloc) => bloc.dispose(),
@@ -82,6 +87,8 @@ class MyApp extends StatelessWidget {
         Provider<MqttService>(
           create: (context) {
             return MqttService(
+              usernameBloc: Provider.of<UsernameBloc>(context, listen: false),
+              deviceNameBloc: Provider.of<DeviceNameBloc>(context, listen: false),
               noiseBloc: Provider.of<NoiseBloc>(context, listen: false),
               luxBloc: Provider.of<LuxBloc>(context, listen: false),
               accelerometerBloc:

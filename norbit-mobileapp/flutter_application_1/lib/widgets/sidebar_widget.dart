@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/blocs/connectivity/device_name_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/username_bloc.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
@@ -52,8 +53,10 @@ class SidebarWidget extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return DevicePopupWrapper(
-            usernameBloc: Provider.of<UsernameBloc>(context),
-            tokenBloc: Provider.of<TokenBloc>(context));
+          usernameBloc: Provider.of<UsernameBloc>(context),
+          tokenBloc: Provider.of<TokenBloc>(context),
+          deviceNameBloc: Provider.of<DeviceNameBloc>(context),
+        );
       },
     );
   }
