@@ -27,7 +27,8 @@ class AwsService {
     });
 
     final response = await http.post(url, headers: headers, body: body);
-    safePrint('This is response: $response');
+    final responseBody = response.body;
+    safePrint('This is response: $responseBody');
     return response;
   }
 }

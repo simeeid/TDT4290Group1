@@ -7,6 +7,8 @@ import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'blocs/connectivity/location_bloc.dart';
+import 'blocs/connectivity/token_bloc.dart';
+import 'blocs/connectivity/username_bloc.dart';
 import 'screens/home_screen.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
@@ -41,6 +43,14 @@ class MyApp extends StatelessWidget {
         ),
         Provider<LocationBloc>(
           create: (_) => LocationBloc(),
+          dispose: (_, bloc) => bloc.dispose(),
+        ),
+        Provider<TokenBloc>(
+          create: (_) => TokenBloc(),
+          dispose: (_, bloc) => bloc.dispose(),
+        ),
+        Provider<UsernameBloc>(
+          create: (_) => UsernameBloc(),
           dispose: (_, bloc) => bloc.dispose(),
         ),
         Provider<StartStopBloc>(
@@ -89,7 +99,10 @@ class MyApp extends StatelessWidget {
         ),
         Provider<LogInService>(
           create: (context) {
-            return LogInService();
+            return LogInService(
+              usernameBloc: Provider.of<UsernameBloc>(context, listen: false),
+              tokenBloc: Provider.of<TokenBloc>(context, listen: false),
+            );
           },
         ),
       ],

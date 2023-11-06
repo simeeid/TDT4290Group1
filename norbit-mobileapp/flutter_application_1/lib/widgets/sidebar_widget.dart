@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/blocs/connectivity/username_bloc.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
+import '../blocs/connectivity/token_bloc.dart';
 import '../services/login_service.dart';
 import 'device_popup.dart';
 
@@ -49,7 +51,9 @@ class SidebarWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DevicePopup();
+        return DevicePopupWrapper(
+            usernameBloc: Provider.of<UsernameBloc>(context),
+            tokenBloc: Provider.of<TokenBloc>(context));
       },
     );
   }

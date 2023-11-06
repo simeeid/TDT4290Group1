@@ -1,18 +1,46 @@
-import 'dart:js';
-
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../blocs/connectivity/token_bloc.dart';
+import '../blocs/connectivity/username_bloc.dart';
 import '../services/aws_service.dart';
-import '../services/login_service.dart';
+
+class DevicePopupWrapper extends StatelessWidget {
+  final UsernameBloc usernameBloc;
+  final TokenBloc tokenBloc;
+
+  const DevicePopupWrapper(
+      {super.key, required this.usernameBloc, required this.tokenBloc});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<String>(
+      stream: usernameBloc.usernameController,
+      builder: (context, snapshotUsername) {
+        return StreamBuilder<String>(
+          stream: tokenBloc.tokenController,
+          builder: (context, snapshotToken) {
+            return DevicePopup(
+              username: snapshotUsername.data!,
+              token: snapshotToken.data!,
+            );
+          },
+        );
+      },
+    );
+  }
+}
 
 class DevicePopup extends StatelessWidget {
-  DevicePopup({super.key});
+  final String username;
+  final String token;
+
+  DevicePopup({Key? key, required this.username, required this.token})
+      : super(key: key);
 
   final TextEditingController _deviceNicknameController =
       TextEditingController();
-  final loginService =
-      Provider.of<LogInService>(context as BuildContext, listen: false);
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +66,12 @@ class DevicePopup extends StatelessWidget {
             Navigator.of(context).pop();
 
             String deviceId = _deviceNicknameController.text;
-            String username = loginService.username!;
-            String token = loginService.idToken!;
 
             final awsService = AwsService(token, username, deviceId);
             awsService.getCreds();
 
             _deviceNicknameController.clear();
+            safePrint("YEY WE DID IT LOL");
           },
           child: const Text('Save'),
         ),
