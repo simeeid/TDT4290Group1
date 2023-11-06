@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ChartComponent } from "../ChartComponent/ChartComponent";
 import { ChartData } from "../ChartComponent/types";
-import { TamplifyInstance } from "@/dashboard/Dashboard";
+import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TSoundLevelData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";

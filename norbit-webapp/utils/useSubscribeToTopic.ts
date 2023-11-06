@@ -1,4 +1,4 @@
-import { TamplifyInstance } from "@/dashboard/Dashboard";
+import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import React, { useEffect } from "react";
 
 export const useSubscribeToTopics = (

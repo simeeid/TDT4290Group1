@@ -1,4 +1,4 @@
-import SensorConfigurationPanel from "@/sensorConfiguration/SensorConfigurationPanel";
+import SensorConfigurationPanel from "@/SensorConfigurationPanel/SensorConfigurationPanel";
 import React from "react";
 import { store } from "@redux/store";
 import { sensorConfig, SensorConfig } from "@redux/slices/SensorConfig";

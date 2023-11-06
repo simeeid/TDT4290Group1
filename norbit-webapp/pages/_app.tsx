@@ -11,9 +11,8 @@ import RootLayout from "components/RootLayout/RootLayout";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Providers>
-      {" "}
       <RootLayout>
-        <Component {...pageProps} />{" "}
+        <Component {...pageProps} />
       </RootLayout>
     </Providers>
   );

@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { SidebarProps } from "./types";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { push } from "@redux/slices/DeviceList";
-import SensorConfigurationPanel from "@/sensorConfiguration/SensorConfigurationPanel";
+import SensorConfigurationPanel from "@/SensorConfigurationPanel/SensorConfigurationPanel";
 
 export const SidebarComponent: React.FC<SidebarProps> = ({ amplifyInstance }) => {
   let dispatch = useAppDispatch();

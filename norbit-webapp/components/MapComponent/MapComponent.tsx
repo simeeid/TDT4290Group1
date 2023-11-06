@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TamplifyInstance } from "@/dashboard/Dashboard";
+import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { MapData } from "./types";
 import { LatLngTuple } from "leaflet";
@@ -18,9 +18,10 @@ const Recenter = ({ lat, lng }: { lat: number; lng: number }) => {
   const map = useMap();
   useEffect(() => {
     map.setView([lat, lng]);
-  }, [lat, lng]);
+  }, [lat, lng, map]);
   return null;
 };
+
 export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
   amplifyInstance,
 }) => {
@@ -31,7 +32,7 @@ export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }
   useEffect(() => {
     if (!payload) return;
     setMapData(payload.payload);
-  }, [payload]);
+  }, [mapData, payload]);
 
   useSubscribeToTopics("location/topic", amplifyInstance, setPayload);
 

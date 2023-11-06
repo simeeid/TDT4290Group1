@@ -4,6 +4,7 @@ import { sensorConfig } from "./slices/SensorConfig";
 
 export const store = configureStore({
   reducer: {
+    // Active slices go here
     deviceList: deviceList.reducer,
     sensorConfig: sensorConfig.reducer,
   },

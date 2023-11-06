@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import AccelerometerChart from "../accelerometer/AccelerometerChart";
+import AccelerometerChart from "../AccelerometerChart/AccelerometerChart";
 import dashboardStyles from "./Dashboard.module.css";
 import { SoundLevelComponent } from "../SoundLevelComponent/SoundLevelComponent";
 import { LightIntensityComponent } from "../LightIntensityComponent/LightIntensityComponent";
