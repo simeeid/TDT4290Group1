@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import AccelerometerChart from "../AccelerometerChart/AccelerometerChart";
+import AccelerometerChart from "@/AccelerometerChart/AccelerometerChart";
 import dashboardStyles from "./Dashboard.module.css";
-import { SoundLevelComponent } from "../SoundLevelComponent/SoundLevelComponent";
-import { LightIntensityComponent } from "../LightIntensityComponent/LightIntensityComponent";
+import { SoundLevelComponent } from "@/SoundLevelComponent/SoundLevelComponent";
+import { LightIntensityComponent } from "@/LightIntensityComponent/LightIntensityComponent";
 import { Amplify } from "aws-amplify";
 
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers";
