@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInitialized } from 'redux/slices/amplifySlice';
 import { RootState } from 'redux/store';
 import { amplifyConfig } from 'amplify-config';
+import React from 'react';
 interface AmplifyInitializerProps {
   children: React.ReactNode;
 }
