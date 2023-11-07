@@ -13,21 +13,26 @@
 
 @import "~leaflet/dist/leaflet.css";
 
- h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-size: revert;
   font-weight: revert;
 }
 
 html {
   font-family:
-    -apple-system,BlinkMacSystemFont,
+    -apple-system,
+    BlinkMacSystemFont,
     Ubuntu,
     "Segoe UI",
     Roboto,
     Helvetica,
     Arial,
-    /*Fallback*/
-    sans-serif;
+    /*Fallback*/ sans-serif;
 }
 
 .center-text {
@@ -68,6 +73,6 @@ button.green:hover {
 }
 
 .chart-component {
-    box-sizing: content-box;
-    padding: 5px;
+  box-sizing: content-box;
+  padding: 5px;
 }
