@@ -3,7 +3,7 @@ import dashboardStyles from "./Dashboard.module.css";
 import { SoundLevelComponent } from "@/SoundLevelComponent/SoundLevelComponent";
 import { LightIntensityComponent } from "@/LightIntensityComponent/LightIntensityComponent";
 import { Amplify } from "aws-amplify";
-import React from 'react';
+import React from "react";
 
 import { useAppSelector } from "@redux/hook";
 import { SensorConfig } from "@redux/slices/SensorConfig";
@@ -31,7 +31,6 @@ const Dashboard: React.FC = () => {
   const devices = useAppSelector((state) => state.deviceList.devices);
   const lastConnectedDevice = devices[devices.length - 1];
 
-
   if (!lastConnectedDevice) {
     return (
       <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
@@ -40,7 +39,6 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
     );
-    
   }
   const accelerometerTopic = `${user}/${lastConnectedDevice.code}/accelerometer`;
   const lightTopic = `${user}/${lastConnectedDevice.code}/lux`;
@@ -50,10 +48,24 @@ const Dashboard: React.FC = () => {
   return (
     <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
-        {sensorConfig.accelerometer && <AccelerometerChart topic={accelerometerTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.light && <LightIntensityComponent topic={lightTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.sound && <SoundLevelComponent topic={soundTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
-        {sensorConfig.location && <MapComponent topic={locationTopic} amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.accelerometer && (
+          <AccelerometerChart
+            topic={accelerometerTopic}
+            amplifyInstance={mockAmplify ? null : Amplify}
+          />
+        )}
+        {sensorConfig.light && (
+          <LightIntensityComponent
+            topic={lightTopic}
+            amplifyInstance={mockAmplify ? null : Amplify}
+          />
+        )}
+        {sensorConfig.sound && (
+          <SoundLevelComponent topic={soundTopic} amplifyInstance={mockAmplify ? null : Amplify} />
+        )}
+        {sensorConfig.location && (
+          <MapComponent topic={locationTopic} amplifyInstance={mockAmplify ? null : Amplify} />
+        )}
       </div>
     </div>
   );

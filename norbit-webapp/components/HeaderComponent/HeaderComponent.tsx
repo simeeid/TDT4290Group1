@@ -1,12 +1,12 @@
 import { Amplify } from "aws-amplify";
 import React from "react";
 import { SidebarComponent } from "../SidebarComponent/SidebarComponent";
-import { SidebarProps } from '../SidebarComponent/types'
-import { HeaderProps } from "./types"
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@redux/store';
-import { userSignedOut } from '@redux/slices/amplifySlice';
-import { Auth } from 'aws-amplify';
+import { SidebarProps } from "../SidebarComponent/types";
+import { HeaderProps } from "./types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@redux/store";
+import { userSignedOut } from "@redux/slices/amplifySlice";
+import { Auth } from "aws-amplify";
 
 export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSidebar, ...props }) => {
   const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
@@ -22,8 +22,6 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
       console.error("Error signing out: ", error);
     }
   };
-  
-
 
   return (
     <header>
@@ -34,17 +32,18 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
       <div className="signout-button">
         {isAuthenticated && <button onClick={handleSignOut}>Sign Out</button>}
       </div>
-      <div className='user-and-menu'>
+      <div className="user-and-menu">
         <div>
-          <p>
-            Hello {user}
-          </p>
+          <p>Hello {user}</p>
         </div>
         <div className="sidebar-button">
-          { useSidebar ? <SidebarComponent {...props} amplifyInstance={mockAmplify ? null : Amplify} /> : ""}
+          {useSidebar ? (
+            <SidebarComponent {...props} amplifyInstance={mockAmplify ? null : Amplify} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
-
     </header>
   );
 };

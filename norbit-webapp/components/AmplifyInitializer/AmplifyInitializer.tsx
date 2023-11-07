@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
-import { AWSIoTProvider } from '@aws-amplify/pubsub';
-import { useDispatch, useSelector } from 'react-redux';
-import { setInitialized } from 'redux/slices/amplifySlice';
-import { RootState } from 'redux/store';
-import { amplifyConfig } from 'amplify-config';
-import React from 'react';
+import { useEffect } from "react";
+import { Amplify } from "aws-amplify";
+import { AWSIoTProvider } from "@aws-amplify/pubsub";
+import { useDispatch, useSelector } from "react-redux";
+import { setInitialized } from "redux/slices/amplifySlice";
+import { RootState } from "redux/store";
+import { amplifyConfig } from "amplify-config";
+import React from "react";
 interface AmplifyInitializerProps {
   children: React.ReactNode;
 }
-
 
 const AmplifyInitializer: React.FC<AmplifyInitializerProps> = ({ children }) => {
   const dispatch = useDispatch();
@@ -35,6 +34,6 @@ const AmplifyInitializer: React.FC<AmplifyInitializerProps> = ({ children }) => 
   }, [dispatch, initialized, isMock]);
 
   return <>{children}</>;
-}
+};
 
 export default AmplifyInitializer;

@@ -6,8 +6,10 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TSoundLevelData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 
-export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | null, topic: string}> = ({amplifyInstance, topic}) => {
-
+export const SoundLevelComponent: React.FC<{
+  amplifyInstance: TamplifyInstance | null;
+  topic: string;
+}> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -63,7 +65,6 @@ export const SoundLevelComponent: React.FC<{amplifyInstance: TamplifyInstance | 
   }, [soundLevelData, isPaused, buffer]);
 
   useSubscribeToTopics(topic, amplifyInstance, setSoundLevelData);
-
 
   return (
     <div className="sensorContainer" id="sound-container">

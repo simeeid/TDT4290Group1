@@ -1,11 +1,11 @@
-import Head from 'next/head';
-import styles from '@styles/Home.module.css';
+import Head from "next/head";
+import styles from "@styles/Home.module.css";
 import Dashboard from "@/Dashboard/Dashboard";
-import { Auth } from 'aws-amplify';
-import {useEffect}  from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
-import { userSignedIn, setUserName } from '@redux/slices/amplifySlice';
+import { Auth } from "aws-amplify";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { userSignedIn, setUserName } from "@redux/slices/amplifySlice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -15,14 +15,12 @@ export default function Home() {
     checkUserAuthentication();
   });
 
-
   const checkUserAuthentication = async () => {
     try {
       const session = await Auth.currentSession();
       if (session) {
         dispatch(userSignedIn());
-        dispatch(setUserName(session.getIdToken().payload['cognito:username']));
-      
+        dispatch(setUserName(session.getIdToken().payload["cognito:username"]));
       }
     } catch (error) {
       console.log("User is not authenticated");
@@ -32,7 +30,6 @@ export default function Home() {
   const handleSignIn = () => {
     Auth.federatedSignIn();
   };
-
 
   return (
     <div className={styles.container}>
@@ -49,11 +46,11 @@ export default function Home() {
         {isAuthenticated ? (
           <Dashboard />
         ) : (
-          <button className='signin-button' onClick={handleSignIn}>Sign In</button>
+          <button className="signin-button" onClick={handleSignIn}>
+            Sign In
+          </button>
         )}
-
       </main>
-
 
       <footer className={styles.footer}></footer>
     </div>

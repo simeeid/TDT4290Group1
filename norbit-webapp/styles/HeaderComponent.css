@@ -21,7 +21,6 @@ header p {
 /* Additional styles for the sign-out button */
 .signout-button button {
   padding: 0.5rem 1rem;
-
 }
 
 .signout-button button:hover {

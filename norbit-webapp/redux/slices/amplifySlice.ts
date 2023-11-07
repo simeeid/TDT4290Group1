@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const amplifySlice = createSlice({
-  name: 'amplify',
+  name: "amplify",
   initialState: {
     initialized: false,
     isMock: process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes",
