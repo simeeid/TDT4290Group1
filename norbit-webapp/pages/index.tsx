@@ -6,16 +6,21 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { userSignedIn, setUserName } from "@redux/slices/amplifySlice";
+import {HeaderComponent} from "@/HeaderComponent/HeaderComponent";
 
 export default function Home() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: RootState) => state.amplify.isAuthenticated);
+  const mock = useSelector((state: RootState) => state.amplify.isMock);
 
   useEffect(() => {
     checkUserAuthentication();
   });
 
   const checkUserAuthentication = async () => {
+    if (mock) {
+      return;
+    }
     try {
       const session = await Auth.currentSession();
       if (session) {
@@ -28,6 +33,11 @@ export default function Home() {
   };
 
   const handleSignIn = () => {
+    if (mock) {
+      dispatch(userSignedIn());
+      dispatch(setUserName("ILikeTrains"));
+      return;
+    }
     Auth.federatedSignIn();
   };
 
@@ -41,12 +51,12 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <HeaderComponent useSidebar={isAuthenticated} />
       <main className={styles.main}>
         {isAuthenticated ? (
           <Dashboard />
         ) : (
-          <button className="signin-button" onClick={handleSignIn}>
+          <button id="signin" name="sign-in" className="green" onClick={handleSignIn}>
             Sign In
           </button>
         )}

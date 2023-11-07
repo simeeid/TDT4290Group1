@@ -47,16 +47,15 @@ button {
   color: #000000;
   border-radius: 0.25rem;
   transition: background-color 0.3s;
+  box-sizing: border-box;
 }
 
 button:hover {
   background-color: #dbdbdb;
 }
 
-.signin-button {
-  padding: 0.5rem 1rem;
-  position: relative;
-  top: -80px;
+button#signin {
+    width: 50vw;
 }
 
 button.light {
@@ -65,7 +64,6 @@ button.light {
   border-style: none;
   border-radius: 5px;
   padding: 5px 10px;
-  box-sizing: border-box;
 }
 
 button.dark {
@@ -81,6 +79,8 @@ button.green {
   background-color: #22c632;
   border: 2px solid #1d9c29;
   color: black;
+  padding: 5px;
+
 }
 button.green:hover {
   background-color: #1d9c29;

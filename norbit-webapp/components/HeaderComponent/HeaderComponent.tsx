@@ -9,12 +9,16 @@ import { userSignedOut } from "@redux/slices/amplifySlice";
 import { Auth } from "aws-amplify";
 
 export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSidebar, ...props }) => {
-  const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
-
+  const mockAmplify = useSelector((state: RootState) => state.amplify.isMock);
   const isAuthenticated = useSelector((state: RootState) => state.amplify.isAuthenticated);
   const user = useSelector((state: RootState) => state.amplify.userName);
   const dispatch = useDispatch();
   const handleSignOut = async () => {
+    if (mockAmplify) {
+      console.log("Mock: signing out");
+      dispatch(userSignedOut());
+      return;
+    }
     try {
       await Auth.signOut();
       dispatch(userSignedOut());
@@ -30,7 +34,7 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
         <p>Norbit</p>
       </div>
       <div className="signout-button">
-        {isAuthenticated && <button onClick={handleSignOut}>Sign Out</button>}
+        {isAuthenticated && <button id="signout" onClick={handleSignOut}>Sign Out</button>}
       </div>
       <div className="user-and-menu">
         <div>

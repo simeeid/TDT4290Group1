@@ -1,5 +1,5 @@
 import React from "react";
-import { HeaderComponent } from "components/HeaderComponent/HeaderComponent";
+
 interface Props {
   children: React.ReactNode;
 }
@@ -7,7 +7,6 @@ interface Props {
 const RootLayout: React.FC<Props> = ({ children }) => {
   return (
     <div>
-      <HeaderComponent useSidebar={true} />
       {children}
     </div>
   );

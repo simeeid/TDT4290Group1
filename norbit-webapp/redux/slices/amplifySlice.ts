@@ -17,6 +17,7 @@ export const amplifySlice = createSlice({
     },
     userSignedOut: (state) => {
       state.isAuthenticated = false;
+      state.userName = null;
     },
     setUserName: (state, action) => {
       state.userName = action.payload;
