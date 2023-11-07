@@ -10,7 +10,7 @@ import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import {useEffect}  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { userSignedIn, setUserName } from '@redux/slices/amplifySlices';
+import { userSignedIn, setUserName } from '@redux/slices/amplifySlice';
 
 export default function Home() {
   const dispatch = useDispatch();
