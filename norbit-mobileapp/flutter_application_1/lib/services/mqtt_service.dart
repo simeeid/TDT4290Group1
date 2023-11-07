@@ -70,7 +70,7 @@ class MqttService {
 
   //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
-    isConnected = await mqttConnect("device_137");
+    isConnected = await mqttConnect("123");
   }
 
   //Disconnects from mqtt broker.
@@ -79,46 +79,76 @@ class MqttService {
     client.disconnect();
   }
 
+  Future<void> fetchCognitoAuthSession() async {
+    try {
+      final cognitoPlugin =
+          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
+    }
+  }
+
+  void setStatus(String content) {
+    statusText = content;
+    safePrint(statusText);
+    // Notify your listeners here
+  }
+
+  void onConnected() {
+    setStatus("Client connection was successful");
+    print("Client connection was successful");
+    // Notify your listeners here
+    const sensorStatesTopic = "config/sensor-states";
+    final sensorStates =
+        client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final message = c[0].payload as MqttPublishMessage;
+      final pt =
+          MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      Map<String, dynamic> sensorStates = jsonDecode(pt);
+      if (!sensorStates.containsKey("type") ||
+          sensorStates["type"] != "sensor-state-config") {
+        // Different format or different received event
+        return;
+      }
+
+      luxEnable = sensorStates['light'];
+      soundEnable = sensorStates['sound'];
+      accelerometerEnable = sensorStates['accelerometer'];
+      gpsEnable = sensorStates['location'];
+      //temperatureEnable = sensorStates['temperature'];
+    });
+  }
+
+  void onDisconnected() {
+    print('Disconnected');
+    // Add any additional logic here
+    // Notify your listeners here
+  }
+
+  void pong() {
+    print('Ping response client callback invoked');
+    // Add any additional logic here
+    // Notify your listeners here
+  }
+
   //code for connecting to mqtt broker.
   Future<bool> mqttConnect(String uniqueId) async {
     setStatus("Connecting MQTT Broker");
-    String? certificatePemUnloaded = await storage.read(key: 'certificatePem');
-    String? rootCAUnloaded = await storage.read(key: 'rootCA');
-    String? privateKeyUnloaded = await storage.read(key: 'privateKey');
-    safePrint("Look here $privateKeyUnloaded");
 
-    if (rootCAUnloaded != null &&
-        certificatePemUnloaded != null &&
-        privateKeyUnloaded != null) {
-      String rootCAPath = await createAssetFile(
-          rootCAUnloaded, '/assets/certificates/RootCA.pem');
+    fetchCognitoAuthSession();
 
-      String certificatePemPath = await createAssetFile(
-          certificatePemUnloaded, '/assets/certificates/DeviceCertificate.crt');
-
-      String privateKeyPath = await createAssetFile(
-          privateKeyUnloaded, '/assets/certificates/Private.key');
-    }
-
-    String rootCAPath =
-        '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/RootCA.pem';
-    String privateKeyPath =
-        '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/Private.key';
-    String deviceCertPath =
-        '/data/user/0/com.example.flutter_application_1/app_flutter/assets/certificates/DeviceCertificate.crt';
-
-    ByteData rootCA = await rootBundle.load(rootCAPath);
-    ByteData deviceCert = await rootBundle.load(deviceCertPath);
-    ByteData privateKey = await rootBundle.load(privateKeyPath);
-
-    List<int> rootCABytes = await File(rootCAPath).readAsBytes();
-    List<int> privateKeyBytes = await File(privateKeyPath).readAsBytes();
-    List<int> deviceCertBytes = await File(deviceCertPath).readAsBytes();
+    ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
+    ByteData deviceCert =
+        await rootBundle.load('assets/certificates/DeviceCertificate.crt');
+    ByteData privateKey =
+        await rootBundle.load('assets/certificates/Private.key');
 
     SecurityContext context = SecurityContext.defaultContext;
-    context.setTrustedCertificatesBytes(rootCABytes);
-    context.useCertificateChainBytes(deviceCertBytes);
-    context.usePrivateKeyBytes(privateKeyBytes);
+    context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
+    context.useCertificateChainBytes(deviceCert.buffer.asUint8List());
+    context.usePrivateKeyBytes(privateKey.buffer.asUint8List());
 
     client.securityContext = context;
 
@@ -141,14 +171,7 @@ class MqttService {
     } else {
       return false;
     }
-
     return true;
-  }
-
-  void setStatus(String content) {
-    statusText = content;
-    safePrint(statusText);
-    // Notify your listeners here
   }
 
   Future<String> getTopic() async {
@@ -165,22 +188,31 @@ class MqttService {
   }
 
   Future<void> publishLuxData() async {
+    if (client.connectionStatus!.state != MqttConnectionState.connected) {
+      safePrint("Client is not connected. Cannot publish.");
+      return;
+    }
     String topic = await getTopic();
     final luxTopic = '$topic/lux';
     safePrint('THIS IS LUX TOPIC: $luxTopic');
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
+      safePrint('LISTENING WORKS');
       if (!luxEnable) {
+        safePrint('LYX NOT ENABLED');
         return;
       }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+      safePrint('BUILDER WORKS');
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
         'payload': {
           'lux': luxData,
         }
-      })); // Encode the data as a JSON string
+      }));
+      safePrint('JSON WORKS');
       client.publishMessage(luxTopic, MqttQos.atLeastOnce, builder.payload!);
+      safePrint('PUBLISH WORKS');
     });
   }
 
@@ -254,57 +286,10 @@ class MqttService {
     });
   }
 
-  void onConnected() {
-    setStatus("Client connection was successful");
-    print("Client connection was successful");
-    // Notify your listeners here
-    const sensorStatesTopic = "config/sensor-states";
-    final sensorStates =
-        client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
-    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
-      final message = c[0].payload as MqttPublishMessage;
-      final pt =
-          MqttPublishPayload.bytesToStringAsString(message.payload.message);
-      Map<String, dynamic> sensorStates = jsonDecode(pt);
-      if (!sensorStates.containsKey("type") ||
-          sensorStates["type"] != "sensor-state-config") {
-        // Different format or different received event
-        return;
-      }
-
-      luxEnable = sensorStates['light'];
-      soundEnable = sensorStates['sound'];
-      accelerometerEnable = sensorStates['accelerometer'];
-      gpsEnable = sensorStates['location'];
-      //temperatureEnable = sensorStates['temperature'];
-    });
-  }
-
-  void onDisconnected() {
-    print('Disconnected');
-    // Add any additional logic here
-    // Notify your listeners here
-  }
-
-  void pong() {
-    print('Ping response client callback invoked');
-    // Add any additional logic here
-    // Notify your listeners here
-  }
-
   Future<void> publishController() async {
     await publishLuxData();
     await publishNoiseData();
     await publishAccelerometerData();
     await publishLocationData();
-  }
-
-  Future<String> createAssetFile(String fileContent, String filePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}$filePath');
-    safePrint("Lookie: $file");
-    safePrint("Lookie: $directory");
-    await file.writeAsString(fileContent, mode: FileMode.write);
-    return file.path;
   }
 }
