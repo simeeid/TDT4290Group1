@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/device_popup.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
+import '../blocs/connectivity/device_name_bloc.dart';
+import '../blocs/connectivity/token_bloc.dart';
+import '../blocs/connectivity/username_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/location_service.dart';
 
@@ -15,7 +19,7 @@ class StartStopButton extends StatelessWidget {
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
     final accelerometerService =
-    Provider.of<AccelerometerService>(context, listen: false);
+        Provider.of<AccelerometerService>(context, listen: false);
     final startStopBloc = Provider.of<StartStopBloc>(context);
     final mqttService = Provider.of<MqttService>(context, listen: false);
     final locationService = Provider.of<LocationService>(context);
@@ -29,6 +33,12 @@ class StartStopButton extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () async {
                 if (snapshot.data == false) {
+                  final deviceNickname = DeviceNickname(
+                      deviceNameBloc:
+                          Provider.of<DeviceNameBloc>(context, listen: false));
+                  if (await deviceNickname.getNickname() == false) {
+                    _showDevicePopup(context);
+                  }
                   luxService.start();
                   accelerometerService.start();
                   await noiseService.start();
@@ -59,4 +69,18 @@ class StartStopButton extends StatelessWidget {
       },
     );
   }
+
+  void _showDevicePopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DevicePopupWrapper(
+          usernameBloc: Provider.of<UsernameBloc>(context),
+          tokenBloc: Provider.of<TokenBloc>(context),
+          deviceNameBloc: Provider.of<DeviceNameBloc>(context),
+        );
+      },
+    );
+  }
+
 }

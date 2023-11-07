@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -96,12 +95,11 @@ class DevicePopup extends StatelessWidget {
             final data = awsCredsMap['data'];
             final certificatePem = data['certificatePem'];
             final privateKey = data['privateKey'];
-            final rootCA = data['rootCA'];
             final saveService = SaveService();
             await saveService.saveStringToFile(
                 certificatePem, 'certificate.txt');
             await saveService.saveStringToFile(privateKey, 'privateKey.txt');
-            await saveService.saveStringToFile(rootCA, 'rootCA.txt');
+            await saveService.saveStringToFile(deviceName, 'deviceName.txt');
 
             _deviceNicknameController.clear();
           },
@@ -110,4 +108,27 @@ class DevicePopup extends StatelessWidget {
       ],
     );
   }
+}
+
+class DeviceNickname {
+  final DeviceNameBloc deviceNameBloc;
+
+  DeviceNickname({required this.deviceNameBloc});
+
+  Future<bool> getNickname() async {
+    try {
+      final saveService = SaveService();
+      final String? deviceName = await saveService.readStringFromFile('deviceName.txt');
+      if (deviceName != null) {
+        deviceNameBloc.addDeviceName(deviceName);
+        safePrint('DEVICE NAME IS $deviceName');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
 }

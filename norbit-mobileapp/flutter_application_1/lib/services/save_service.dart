@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,18 +15,14 @@ class SaveService {
     }
   }
 
-  Future<String> readStringFromFile(String filename) async {
+  Future<String?> readStringFromFile(String filename) async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$filename');
     if (await file.exists()) {
       String fileContent = await file.readAsString();
-      int length = fileContent.length;
-      String last20Characters = fileContent.substring(length - 20, length);
-      safePrint('CONTENT $last20Characters');
-      //safePrint('CONTENT $fileContent');
       return fileContent;
     } else {
-      return 'File not found';
+      return null;
     }
   }
 

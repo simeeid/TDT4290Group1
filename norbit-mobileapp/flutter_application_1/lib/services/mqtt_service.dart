@@ -109,26 +109,33 @@ class MqttService {
 
   Future<bool> mqttConnect() async {
     setStatus("Connecting MQTT Broker");
+    ByteData deviceCert, privateKey;
 
     fetchCognitoAuthSession();
     final saveService = SaveService();
 
-    final String rootCAData = await saveService.readStringFromFile('rootCA.txt');
-    List<int> rootList = utf8.encode(rootCAData);
-    ByteData rootCA = ByteData.sublistView(Uint8List.fromList(rootList));
+    ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
 
-    final String deviceCertData = await saveService.readStringFromFile('certificate.txt');
-    List<int> certList = utf8.encode(deviceCertData);
-    ByteData deviceCert = ByteData.sublistView(Uint8List.fromList(certList));
-
-    final String privateKeyData = await saveService.readStringFromFile('privateKey.txt');
-    List<int> keyList = utf8.encode(privateKeyData);
-    ByteData privateKey = ByteData.sublistView(Uint8List.fromList(keyList));
-
+    final String? deviceCertData = await saveService.readStringFromFile('certificate.txt');
+    if (deviceCertData != null) {
+      List<int> certList = utf8.encode(deviceCertData);
+      deviceCert = ByteData.sublistView(Uint8List.fromList(certList));
+    }
+    else {
+      return false;
+    }
+    final String? privateKeyData = await saveService.readStringFromFile('privateKey.txt');
+    if (privateKeyData != null) {
+      List<int> keyList = utf8.encode(privateKeyData);
+      privateKey = ByteData.sublistView(Uint8List.fromList(keyList));
+    }
+    else {
+      return false;
+    }
     SecurityContext context = SecurityContext.defaultContext;
-    context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
     context.useCertificateChainBytes(deviceCert.buffer.asUint8List());
     context.usePrivateKeyBytes(privateKey.buffer.asUint8List());
+    context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());
 
     client.securityContext = context;
 
