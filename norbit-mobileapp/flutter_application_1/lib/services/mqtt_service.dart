@@ -1,23 +1,18 @@
 import 'dart:io';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
-import 'package:flutter_application_1/blocs/connectivity/token_bloc.dart';
 import '../blocs/connectivity/device_name_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'dart:typed_data';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
-
 import '../blocs/connectivity/username_bloc.dart';
 
 class MqttService {
@@ -27,7 +22,6 @@ class MqttService {
   final LuxBloc luxBloc;
   final AccelerometerBloc accelerometerBloc;
   final LocationBloc locationBloc;
-  final storage = FlutterSecureStorage();
   String statusText = "Status Text";
   bool isConnected = false;
   StreamSubscription? luxSubscription;
@@ -68,14 +62,15 @@ class MqttService {
       required this.accelerometerBloc,
       required this.locationBloc});
 
-  //runs on button click. Mostly user experience. Spinning-wheel-loading thing while waiting for connection.
   connect() async {
-    isConnected = await mqttConnect("123");
+    isConnected = await mqttConnect();
   }
 
-  //Disconnects from mqtt broker.
   disconnect() {
     luxSubscription?.cancel();
+    noiseSubscription?.cancel();
+    accelerometerSubscription?.cancel();
+    locationSubscription?.cancel();
     client.disconnect();
   }
 
@@ -92,16 +87,9 @@ class MqttService {
   void setStatus(String content) {
     statusText = content;
     safePrint(statusText);
-    // Notify your listeners here
   }
 
   void onConnected() {
-    setStatus("Client connection was successful");
-    print("Client connection was successful");
-    // Notify your listeners here
-    const sensorStatesTopic = "config/sensor-states";
-    final sensorStates =
-        client.subscribe(sensorStatesTopic, MqttQos.atMostOnce);
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final message = c[0].payload as MqttPublishMessage;
       final pt =
@@ -109,32 +97,16 @@ class MqttService {
       Map<String, dynamic> sensorStates = jsonDecode(pt);
       if (!sensorStates.containsKey("type") ||
           sensorStates["type"] != "sensor-state-config") {
-        // Different format or different received event
         return;
       }
-
       luxEnable = sensorStates['light'];
       soundEnable = sensorStates['sound'];
       accelerometerEnable = sensorStates['accelerometer'];
       gpsEnable = sensorStates['location'];
-      //temperatureEnable = sensorStates['temperature'];
     });
   }
 
-  void onDisconnected() {
-    print('Disconnected');
-    // Add any additional logic here
-    // Notify your listeners here
-  }
-
-  void pong() {
-    print('Ping response client callback invoked');
-    // Add any additional logic here
-    // Notify your listeners here
-  }
-
-  //code for connecting to mqtt broker.
-  Future<bool> mqttConnect(String uniqueId) async {
+  Future<bool> mqttConnect() async {
     setStatus("Connecting MQTT Broker");
 
     fetchCognitoAuthSession();
@@ -157,16 +129,14 @@ class MqttService {
     client.port = 8883;
     client.secure = true;
     client.onConnected = onConnected;
-    client.onDisconnected = onDisconnected;
-    client.pongCallback = pong;
 
+    final usernameData = await usernameBloc.usernameController.stream.first;
     final MqttConnectMessage connMess =
-        MqttConnectMessage().withClientIdentifier(uniqueId).startClean();
+        MqttConnectMessage().withClientIdentifier(usernameData).startClean();
     client.connectionMessage = connMess;
 
     await client.connect();
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
-      print("Connected to AWS Successfully!");
       setStatus("Connected to AWS Successfully!");
     } else {
       return false;
