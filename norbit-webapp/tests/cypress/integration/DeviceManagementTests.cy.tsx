@@ -1,4 +1,18 @@
 describe("Device management", () => {
+  beforeEach(() => {
+    cy.visit("/").wait(300);
+    cy.get("#signin").click({ force: true });
+    cy.get("#expand-sidebar").click();
+    cy.get("#device-id").type("a", { force: true });
+    cy.get("#submit-device-id").click({ force: true });
+    cy.get("#close-sidebar").click();
+    //cy.find("#signin").click();
+  });
+
+  afterEach(() => {
+    cy.get("#signout").click({ force: true });
+  });
+
   it("Should allow connections", () => {
     cy.visit("/");
     cy.get("button.hamburger-button").click();
