@@ -152,15 +152,20 @@ class MqttService {
   }
 
   Future<String> getTopic() async {
+    String usernameValue = '';
+    String deviceNameValue = '';
     final usernameData = await usernameBloc.usernameController.stream.first;
+    usernameValue = usernameData;
     final deviceNameData =
         await deviceNameBloc.deviceNameController.stream.first;
-    safePrint('THIS IS IT $usernameData/$deviceNameData');
-    return "$usernameData/$deviceNameData";
+    deviceNameValue = deviceNameData;
+    safePrint('THIS IS USER AND DEVIVE NAME $usernameValue $deviceNameValue');
+    safePrint('THIS IS IT $usernameValue/$deviceNameValue');
+    return "$usernameValue/$deviceNameValue";
   }
 
   Future<void> publishLuxData() async {
-    final topic = await getTopic();
+    String topic = await getTopic();
     final luxTopic = '$topic/lux';
     safePrint('THIS IS LUX TOPIC: $luxTopic');
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
@@ -180,7 +185,7 @@ class MqttService {
   }
 
   Future<void> publishNoiseData() async {
-    final topic = await getTopic();
+    String topic = await getTopic();
     final noiseTopic = '$topic/noise';
     noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
       if (!soundEnable) {
@@ -201,7 +206,7 @@ class MqttService {
 
   Future<void> publishAccelerometerData() async {
     List<String> accelerometerList = [];
-    final topic = await getTopic();
+    String topic = await getTopic();
     final accelerometerTopic = '$topic/accelerometer';
     accelerometerSubscription = accelerometerBloc.accelerometerController.stream
         .listen((accelerometerData) {
@@ -228,7 +233,7 @@ class MqttService {
   }
 
   Future<void> publishLocationData() async {
-    final topic = await getTopic();
+    String topic = await getTopic();
     final locationTopic = '$topic/location';
     locationBloc.locationController.stream.listen((locationData) {
       if (!gpsEnable) {
@@ -287,11 +292,11 @@ class MqttService {
     // Notify your listeners here
   }
 
-  void publishController() {
-    publishLuxData();
-    publishNoiseData();
-    publishAccelerometerData();
-    publishLocationData();
+  Future<void> publishController() async {
+    await publishLuxData();
+    await publishNoiseData();
+    await publishAccelerometerData();
+    await publishLocationData();
   }
 
   Future<String> createAssetFile(String fileContent, String filePath) async {
