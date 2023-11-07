@@ -30,6 +30,7 @@ const AmplifyInitializer: React.FC<AmplifyInitializerProps> = ({ children }) => 
         console.log("Mocking Amplify");
       }
       dispatch(setInitialized(true));
+      initialized = true;
     }
   }, [dispatch, initialized, isMock]);
 
