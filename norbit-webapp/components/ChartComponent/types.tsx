@@ -1,7 +1,7 @@
 export interface ChartData {
   timestamp: string;
   datapoint: number;
-};
+}
 
 export interface ChartProps {
   data: ChartData[];
@@ -16,4 +16,4 @@ export interface ChartProps {
    */
   onPauseStateChange?: (paused: boolean) => void;
   resolution?: number;
-};
+}

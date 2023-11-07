@@ -12,8 +12,8 @@ export default {
       { timestamp: "04:20:04", datapoint: 3 },
       { timestamp: "04:20:05", datapoint: 4 },
       { timestamp: "04:20:06", datapoint: 5 },
-    ]
-  }
+    ],
+  },
 };
 
 export const Default = {};

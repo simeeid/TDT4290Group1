@@ -40,15 +40,17 @@ The dockerfile creates a standard environment for running the app. The dockerfil
 There are two different modes, which is specified at image build time. By default, the image is built in production mode, meaning it runs `npm run build && npm run start`. The image can be built in development mode instead, which runs `npm run dev` instead.
 
 Example commands:
+
 ```
 cd norbit-webapp
 # Option 1: dev mode
 docker build --build-arg BUILD_MODE=dev -t norbit .
 # Option 2: production mode
-docker build -t norbit . 
+docker build -t norbit .
 
 docker run -p 3000:3000 --rm -ti norbit
 ```
+
 (the exact name is not important; you can pick a different name, particularly if you're running both debug and production containers on the same system)
 
 Note that in neither case does it sync the source tree into the docker container. Due to limitations of how volumes are mounted, filesystem update information [is discarded][docker-volume-info-discard], meaning `npm run dev` doesn't pick up file changes. Using the dockerfile for development therefore requires a rebuild of the dockerfile for all changes. It's recommended to create a copyable command for reuse for development instead, or running locally.
@@ -57,9 +59,10 @@ Note that in neither case does it sync the source tree into the docker container
 
 ## Running tests
 
-There are three different types of  tests spread across two different libraries. Unit tests are managed by jest, while component and integration tests are handled by cypress.
+There are three different types of tests spread across two different libraries. Unit tests are managed by jest, while component and integration tests are handled by cypress.
 
 ### Running all tests
+
 **Note:** This step requires bash. To run on Windows, you can use Git Bash, or optionally WSL with configuration this document won't cover. You can always run the tests separately manually, as outlined in the next two sections.
 
 ### Running unit tests
@@ -68,7 +71,7 @@ Run `npm run unit-test`
 
 ### Running Cypress
 
-The Cypress tests can be run interactively with `npm run cypress`. 
+The Cypress tests can be run interactively with `npm run cypress`.
 
 Cypress doesn't let you run two the two types of tests at once with any command. However, this isn't as obvious when running interactively, as the two are separated in the UI in a way that's logical for UX as well.
 
@@ -76,7 +79,7 @@ Consequently, running the tests manually requires running two commands. These ar
 
 #### Component tests
 
-To run component tests, use `npm run component-test`. 
+To run component tests, use `npm run component-test`.
 
 Component tests are comparatively self-contained; Cypress spawns a dummy server it renders the components in, and does whatever test stuff on it there. No further outside intervention is needed to get the tests to cooperate.
 
@@ -84,13 +87,13 @@ Component tests are comparatively self-contained; Cypress spawns a dummy server 
 
 Note: the integration tests require the server to run separately. You can run it with `npm run build && npm run start`, or `npm run dev` in a separate terminal tab prior to running the tests. As long as the server is on port `:3000`, Cypress will connect and run.
 
-**Note:** For the integration tests to run properly, it's required to set `NEXT_PUBLIC_MOCK_AMPLIFY=yes` before running `npm run dev` (or equivalent). This disables the live Amplify connection. If you're using a Unix-style terminal (bash, zsh, fish, etc.), you can do this by running `NEXT_PUBLIC_MOCK_AMPLIFY=yes npm run dev`. 
+**Note:** For the integration tests to run properly, it's required to set `NEXT_PUBLIC_MOCK_AMPLIFY=yes` before running `npm run dev` (or equivalent). This disables the live Amplify connection. If you're using a Unix-style terminal (bash, zsh, fish, etc.), you can do this by running `NEXT_PUBLIC_MOCK_AMPLIFY=yes npm run dev`.
 
 Alternatively, before running the server commands, you can run...:
 
-* Unix-style shells (Linux and Mac shells, as well as Git Bash and Cygwin): `export NEXT_PUBLIC_MOCK_AMPLIFY=yes`
-* Powershell: `$Env:NEXT_PUBLIC_MOCK_AMPLIFY = 'yes'`
-* Cmd: `set NEXT_PUBLIC_MOCK_AMPLIFY=yes`
+- Unix-style shells (Linux and Mac shells, as well as Git Bash and Cygwin): `export NEXT_PUBLIC_MOCK_AMPLIFY=yes`
+- Powershell: `$Env:NEXT_PUBLIC_MOCK_AMPLIFY = 'yes'`
+- Cmd: `set NEXT_PUBLIC_MOCK_AMPLIFY=yes`
 
 Note that these options requires the variable to be unset (or set to a different value than yes) if you want to re-enable Amplify. Alternatively, you can open a new terminal session, which also wipes the variables.
 

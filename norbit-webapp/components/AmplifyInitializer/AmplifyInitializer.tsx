@@ -13,7 +13,7 @@ interface AmplifyInitializerProps {
 
 const AmplifyInitializer: React.FC<AmplifyInitializerProps> = ({ children }) => {
   const dispatch = useDispatch();
-  const { initialized, isMock } = useSelector((state: RootState) => state.amplify);
+  let { initialized, isMock } = useSelector((state: RootState) => state.amplify);
 
   useEffect(() => {
     if (!initialized) {

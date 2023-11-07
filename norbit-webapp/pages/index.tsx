@@ -1,12 +1,7 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import Dashboard from 'components/dashboard/Dashboard';
-import { Amplify, Auth } from 'aws-amplify';
-import { amplifyConfig } from 'amplify-config';
-import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
-import { useState } from 'react';
-import { TLightIntensityData } from 'components/LightIntensityComponent/types';
-import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
+import styles from '@styles/Home.module.css';
+import Dashboard from "@/Dashboard/Dashboard";
+import { Auth } from 'aws-amplify';
 import {useEffect}  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
@@ -43,7 +38,10 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Norbit IoT Simulator</title>
-        <meta name="description" content="Preview an IoT dashboard using your smartphone. Explore real-time data visualization and device management with Norbit IoT Simulator" />
+        <meta
+          name="description"
+          content="Preview an IoT dashboard using your smartphone. Explore real-time data visualization and device management with Norbit IoT Simulator"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -53,6 +51,7 @@ export default function Home() {
         ) : (
           <button className='signin-button' onClick={handleSignIn}>Sign In</button>
         )}
+
       </main>
 
 

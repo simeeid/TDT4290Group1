@@ -1,5 +1,5 @@
-import React from 'react';
-import { HeaderComponent } from 'components/HeaderComponent/HeaderComponent';
+import React from "react";
+import { HeaderComponent } from "components/HeaderComponent/HeaderComponent";
 interface Props {
   children: React.ReactNode;
 }
