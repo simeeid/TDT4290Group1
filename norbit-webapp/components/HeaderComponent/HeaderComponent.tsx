@@ -43,9 +43,9 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
             Hello {user}
           </p>
         </div>
-      <div className="sidebar-button">
-        { useSidebar ? <SidebarComponent {...props} amplifyInstance={mockAmplify ? null : Amplify} /> : ""}
-      </div>
+        <div className="sidebar-button">
+          { useSidebar ? <SidebarComponent {...props} amplifyInstance={mockAmplify ? null : Amplify} /> : ""}
+        </div>
       </div>
 
     </header>
