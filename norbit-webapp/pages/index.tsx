@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { userSignedIn, setUserName } from "@redux/slices/amplifySlice";
-import {HeaderComponent} from "@/HeaderComponent/HeaderComponent";
+import { HeaderComponent } from "@/HeaderComponent/HeaderComponent";
 
 export default function Home() {
   const dispatch = useDispatch();

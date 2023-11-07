@@ -55,7 +55,7 @@ button:hover {
 }
 
 button#signin {
-    width: 50vw;
+  width: 50vw;
 }
 
 button.light {
@@ -80,7 +80,6 @@ button.green {
   border: 2px solid #1d9c29;
   color: black;
   padding: 5px;
-
 }
 button.green:hover {
   background-color: #1d9c29;

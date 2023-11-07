@@ -34,7 +34,11 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
         <p>Norbit</p>
       </div>
       <div className="signout-button">
-        {isAuthenticated && <button id="signout" onClick={handleSignOut}>Sign Out</button>}
+        {isAuthenticated && (
+          <button id="signout" onClick={handleSignOut}>
+            Sign Out
+          </button>
+        )}
       </div>
       <div className="user-and-menu">
         <div>
