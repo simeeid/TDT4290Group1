@@ -1,27 +1,30 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 
 class SaveService {
-  Future<void> saveStringToFile(String text) async {
+  Future<void> saveStringToFile(String text, String filename) async {
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/my_file.txt');
+    final file = File('${directory.path}/$filename');
 
     try {
       await file.writeAsString(text);
-      print('String saved to file successfully');
+      safePrint('String saved to file successfully');
     } catch (e) {
-      print('Error saving string to file: $e');
+      safePrint('Error saving string to file: $e');
     }
   }
-  Future<String> readStringFromFile() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/my_file.txt');
 
+  Future<String> readStringFromFile(String filename) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$filename');
     if (await file.exists()) {
       String fileContent = await file.readAsString();
-      safePrint(fileContent);
+      int length = fileContent.length;
+      String last20Characters = fileContent.substring(length - 20, length);
+      safePrint('CONTENT $last20Characters');
+      //safePrint('CONTENT $fileContent');
       return fileContent;
     } else {
       return 'File not found';

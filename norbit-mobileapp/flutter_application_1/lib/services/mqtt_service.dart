@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
+import 'package:flutter_application_1/services/save_service.dart';
 import '../blocs/connectivity/device_name_bloc.dart';
 import '../blocs/connectivity/lux_bloc.dart';
 import '../blocs/connectivity/noise_bloc.dart';
@@ -110,12 +111,19 @@ class MqttService {
     setStatus("Connecting MQTT Broker");
 
     fetchCognitoAuthSession();
+    final saveService = SaveService();
 
-    ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
-    ByteData deviceCert =
-        await rootBundle.load('assets/certificates/DeviceCertificate.crt');
-    ByteData privateKey =
-        await rootBundle.load('assets/certificates/Private.key');
+    final String rootCAData = await saveService.readStringFromFile('rootCA.txt');
+    List<int> rootList = utf8.encode(rootCAData);
+    ByteData rootCA = ByteData.sublistView(Uint8List.fromList(rootList));
+
+    final String deviceCertData = await saveService.readStringFromFile('certificate.txt');
+    List<int> certList = utf8.encode(deviceCertData);
+    ByteData deviceCert = ByteData.sublistView(Uint8List.fromList(certList));
+
+    final String privateKeyData = await saveService.readStringFromFile('privateKey.txt');
+    List<int> keyList = utf8.encode(privateKeyData);
+    ByteData privateKey = ByteData.sublistView(Uint8List.fromList(keyList));
 
     SecurityContext context = SecurityContext.defaultContext;
     context.setClientAuthoritiesBytes(rootCA.buffer.asUint8List());

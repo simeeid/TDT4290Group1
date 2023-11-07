@@ -9,7 +9,7 @@ class AwsService {
 
   AwsService(this.token, this.username, this.deviceId);
 
-  Future<http.Response> getCreds() async {
+  Future<String> getCreds() async {
     const modelVersion = "model_002";
 
     final url = Uri.parse(
@@ -29,6 +29,6 @@ class AwsService {
     final response = await http.post(url, headers: headers, body: body);
     final responseBody = response.body;
     safePrint('This is response: $responseBody');
-    return response;
+    return responseBody;
   }
 }

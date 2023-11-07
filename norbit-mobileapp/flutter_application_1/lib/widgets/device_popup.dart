@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import '../blocs/connectivity/device_name_bloc.dart';
 import '../blocs/connectivity/token_bloc.dart';
 import '../blocs/connectivity/username_bloc.dart';
 import '../services/aws_service.dart';
+import '../services/save_service.dart';
 
 class DevicePopupWrapper extends StatelessWidget {
   final UsernameBloc usernameBloc;
@@ -59,7 +62,8 @@ class DevicePopup extends StatelessWidget {
     required this.deviceNameBloc,
   }) : super(key: key);
 
-  final TextEditingController _deviceNicknameController = TextEditingController();
+  final TextEditingController _deviceNicknameController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +85,23 @@ class DevicePopup extends StatelessWidget {
       ),
       actions: <Widget>[
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.of(context).pop();
 
             String deviceName = _deviceNicknameController.text;
-
-            final awsService = AwsService(token, username, deviceName);
-            awsService.getCreds();
-
             deviceNameBloc.addDeviceName(deviceName);
+            final awsService = AwsService(token, username, deviceName);
+            String awsCreds = await awsService.getCreds();
+            final awsCredsMap = json.decode(awsCreds);
+            final data = awsCredsMap['data'];
+            final certificatePem = data['certificatePem'];
+            final privateKey = data['privateKey'];
+            final rootCA = data['rootCA'];
+            final saveService = SaveService();
+            await saveService.saveStringToFile(
+                certificatePem, 'certificate.txt');
+            await saveService.saveStringToFile(privateKey, 'privateKey.txt');
+            await saveService.saveStringToFile(rootCA, 'rootCA.txt');
 
             _deviceNicknameController.clear();
           },
