@@ -10,8 +10,8 @@ import { useSubscribeToTopics } from 'utils/useSubscribeToTopic';
 import {useEffect}  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { userSignedIn } from '@redux/slices/amplifySlice';
-import { setUserName } from '@redux/slices/amplifySlice';
+import { userSignedIn, setUserName } from '@redux/slices/amplifySlices';
+
 export default function Home() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: RootState) => state.amplify.isAuthenticated);
