@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Device {
-  code: string
+  code: string;
 }
 
 export const deviceList = createSlice({
-  name: 'devices',
+  name: "devices",
   initialState: {
-    devices: [] as Array<Device>
+    devices: [] as Array<Device>,
   },
   reducers: {
     push: (state, dev: PayloadAction<Device>) => {
@@ -29,8 +29,8 @@ export const deviceList = createSlice({
       }
 
       delete state.devices[idx];
-    }
-  }
+    },
+  },
 });
 
 export const { push, pop } = deviceList.actions;

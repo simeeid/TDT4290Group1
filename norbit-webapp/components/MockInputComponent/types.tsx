@@ -1,6 +1,6 @@
-import {ChartData} from "@/ChartComponent/types";
+import { ChartData } from "@/ChartComponent/types";
 
 export interface MockInputProps {
   data: ChartData[];
-  setData: (data: ChartData[]) => void; 
-};
+  setData: (data: ChartData[]) => void;
+}
