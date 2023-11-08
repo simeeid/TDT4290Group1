@@ -38,7 +38,6 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
           <div>
             <span>Hello {user}</span>
           </div>
-
         )}
         <div className="sidebar-button">
           {useSidebar ? (

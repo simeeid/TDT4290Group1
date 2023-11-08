@@ -31,7 +31,6 @@ const Dashboard: React.FC = () => {
   const devices = useAppSelector((state) => state.deviceList.devices);
   const lastConnectedDevice = devices.length > 0 ? devices[devices.length - 1] : null;
 
-
   if (!lastConnectedDevice) {
     return (
       <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
