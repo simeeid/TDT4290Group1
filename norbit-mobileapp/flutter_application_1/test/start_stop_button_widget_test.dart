@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/device_name_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/lux_bloc.dart';
 import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
+import 'package:flutter_application_1/blocs/connectivity/username_bloc.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'package:flutter_application_1/services/location_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
@@ -63,7 +65,9 @@ void main() {
         noiseBloc: NoiseBloc(),
         luxBloc: LuxBloc(),
         accelerometerBloc: AccelerometerBloc(),
-        locationBloc: LocationBloc());
+        locationBloc: LocationBloc(),
+        usernameBloc: UsernameBloc(),
+        deviceNameBloc: DeviceNameBloc());
 
     await tester.pumpWidget(
       MultiProvider(
@@ -106,7 +110,9 @@ void main() {
         noiseBloc: NoiseBloc(),
         luxBloc: LuxBloc(),
         accelerometerBloc: AccelerometerBloc(),
-        locationBloc: LocationBloc());
+        locationBloc: LocationBloc(),
+        usernameBloc: UsernameBloc(),
+        deviceNameBloc: DeviceNameBloc());
 
     await tester.pumpWidget(
       MultiProvider(
