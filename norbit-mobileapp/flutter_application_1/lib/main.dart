@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:flutter_application_1/services/login_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
-import 'package:flutter_application_1/services/location_service.dart';
-import 'package:flutter_application_1/services/noise_service.dart';
-import 'package:flutter_application_1/services/lux_service.dart';
-import 'package:flutter_application_1/services/accelerometer_service.dart';
-import 'blocs/connectivity/device_name_bloc.dart';
-import 'blocs/connectivity/location_bloc.dart';
-import 'blocs/connectivity/token_bloc.dart';
-import 'blocs/connectivity/username_bloc.dart';
-import 'screens/home_screen.dart';
-import '../blocs/connectivity/noise_bloc.dart';
-import '../blocs/connectivity/lux_bloc.dart';
-import '../blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/services/sensors/location_service.dart';
+import 'package:flutter_application_1/services/sensors/noise_service.dart';
+import 'package:flutter_application_1/services/sensors/lux_service.dart';
+import 'package:flutter_application_1/services/sensors/accelerometer_service.dart';
+import 'blocs/device_name_bloc.dart';
+import 'blocs/sensors/location_bloc.dart';
+import 'blocs/token_bloc.dart';
+import 'blocs/username_bloc.dart';
+import '../blocs/sensors/noise_bloc.dart';
+import '../blocs/sensors/lux_bloc.dart';
+import '../blocs/sensors/accelerometer_bloc.dart';
 import 'blocs/start_stop_bloc.dart';
 import 'package:provider/provider.dart';
+
+/*
+This is the file responsible for running the system.
+All blocs and services are registered here, to make sure there only exists one
+instance of them in the entire system.
+The sign in screen is set as a starting view for the app.
+ */
 
 void main() {
   runApp(const MyApp());
@@ -88,7 +94,8 @@ class MyApp extends StatelessWidget {
           create: (context) {
             return MqttService(
               usernameBloc: Provider.of<UsernameBloc>(context, listen: false),
-              deviceNameBloc: Provider.of<DeviceNameBloc>(context, listen: false),
+              deviceNameBloc:
+                  Provider.of<DeviceNameBloc>(context, listen: false),
               noiseBloc: Provider.of<NoiseBloc>(context, listen: false),
               luxBloc: Provider.of<LuxBloc>(context, listen: false),
               accelerometerBloc:
@@ -114,7 +121,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Accelerometer App',
+        title: 'Norbit Mobile App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

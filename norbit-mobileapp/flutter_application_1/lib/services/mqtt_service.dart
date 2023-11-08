@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
-import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/location_bloc.dart';
 import 'package:flutter_application_1/services/save_service.dart';
-import '../blocs/connectivity/device_name_bloc.dart';
-import '../blocs/connectivity/lux_bloc.dart';
-import '../blocs/connectivity/noise_bloc.dart';
+import '../blocs/device_name_bloc.dart';
+import '../blocs/sensors/lux_bloc.dart';
+import '../blocs/sensors/noise_bloc.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -13,8 +13,13 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
-import 'package:flutter/services.dart' show ByteData, rootBundle;
-import '../blocs/connectivity/username_bloc.dart';
+import '../blocs/username_bloc.dart';
+
+/*
+  Manages MQTT communication and data publishing for various sensors.
+  This class interacts with the MQTT broker to send data from sensors such as Lux, Noise, Accelerometer, and Location.
+  It also handles the connection to AWS IoT Core.
+*/
 
 class MqttService {
   final UsernameBloc usernameBloc;
@@ -41,6 +46,8 @@ class MqttService {
   final MqttServerClient client =
       MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
+  // DO NOT REMOVE
+  // This code is not unused, if removed, log in bug will occur
   final _amplifyInstance = Amplify;
 
   Future<void> _configureAmplify() async {
@@ -119,20 +126,20 @@ class MqttService {
 
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
 
-    final String? deviceCertData = await saveService.readStringFromFile('certificate.txt');
+    final String? deviceCertData =
+        await saveService.readStringFromFile('certificate.txt');
     if (deviceCertData != null) {
       List<int> certList = utf8.encode(deviceCertData);
       deviceCert = ByteData.sublistView(Uint8List.fromList(certList));
-    }
-    else {
+    } else {
       return false;
     }
-    final String? privateKeyData = await saveService.readStringFromFile('privateKey.txt');
+    final String? privateKeyData =
+        await saveService.readStringFromFile('privateKey.txt');
     if (privateKeyData != null) {
       List<int> keyList = utf8.encode(privateKeyData);
       privateKey = ByteData.sublistView(Uint8List.fromList(keyList));
-    }
-    else {
+    } else {
       return false;
     }
     SecurityContext context = SecurityContext.defaultContext;
@@ -162,6 +169,7 @@ class MqttService {
     return true;
   }
 
+  // Gets the topic which is needed for web to receive sensor data
   Future<String> getTopic() async {
     String usernameValue = '';
     String deviceNameValue = '';
@@ -170,8 +178,6 @@ class MqttService {
     final deviceNameData =
         await deviceNameBloc.deviceNameController.stream.first;
     deviceNameValue = deviceNameData;
-    safePrint('THIS IS USER AND DEVIVE NAME $usernameValue $deviceNameValue');
-    safePrint('THIS IS IT $usernameValue/$deviceNameValue');
     return "$usernameValue/$deviceNameValue";
   }
 
@@ -182,15 +188,11 @@ class MqttService {
     }
     String topic = await getTopic();
     final luxTopic = '$topic/lux';
-    safePrint('THIS IS LUX TOPIC: $luxTopic');
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
-      safePrint('LISTENING WORKS');
       if (!luxEnable) {
-        safePrint('LYX NOT ENABLED');
         return;
       }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-      safePrint('BUILDER WORKS');
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -198,9 +200,7 @@ class MqttService {
           'lux': luxData,
         }
       }));
-      safePrint('JSON WORKS');
       client.publishMessage(luxTopic, MqttQos.atLeastOnce, builder.payload!);
-      safePrint('PUBLISH WORKS');
     });
   }
 
@@ -218,8 +218,7 @@ class MqttService {
         'payload': {
           'volume': noiseData,
         }
-      })); // Encode the data as a JSON string
-      //client.subscribe(noiseTopic, MqttQos.atMostOnce);
+      }));
       client.publishMessage(noiseTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
@@ -245,8 +244,7 @@ class MqttService {
           'y': accelerometerData.y,
           'z': accelerometerData.z,
         }
-      })); // Encode the data as a JSON string
-      //client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
+      }));
       client.publishMessage(
           accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
@@ -267,8 +265,7 @@ class MqttService {
           'latitude': locationData.latitude,
           'longitude': locationData.longitude,
         }
-      })); // Encode the data as a JSON string
-      //client.subscribe(locationTopic, MqttQos.atMostOnce);
+      }));
       client.publishMessage(
           locationTopic, MqttQos.atLeastOnce, builder.payload!);
     });

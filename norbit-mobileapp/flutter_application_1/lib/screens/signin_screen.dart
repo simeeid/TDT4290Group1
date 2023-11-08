@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/signin_button_widget.dart';
 
+/*
+This is the sign in screen. Contains one button: sign in with AWS.
+ */
+
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 

@@ -2,9 +2,14 @@ import 'dart:async';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import '../blocs/token_bloc.dart';
+import '../blocs/username_bloc.dart';
 
-import '../blocs/connectivity/token_bloc.dart';
-import '../blocs/connectivity/username_bloc.dart';
+/*
+LogInService, manages user authentication and login operations using the Amplify library.
+It provides methods for configuring Amplify, signing in with a web-based user interface, and signing out.
+It interacts with the Amplify Auth category and communicates with the TokenBloc and UsernameBloc to manage user data.
+*/
 
 class LogInService {
   String? idToken;

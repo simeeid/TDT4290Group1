@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_application_1/widgets/sensors/noise_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/noise_bloc.dart';
 
 void main() {
   group('NoiseWidget', () {

@@ -1,6 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/device_name_bloc.dart';
+import 'package:flutter_application_1/blocs/device_name_bloc.dart';
+
+/*
+DeviceData displays basic data about the device.
+Per now it is only device name, however other important device data shouls be added here.
+ */
 
 class DeviceData extends StatelessWidget {
   final DeviceNameBloc deviceNameBloc;

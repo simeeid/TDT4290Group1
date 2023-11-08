@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
 import 'package:flutter_application_1/widgets/sensors/accelerometer_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';

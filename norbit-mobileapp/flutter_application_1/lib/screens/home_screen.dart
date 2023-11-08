@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
-import 'package:flutter_application_1/services/noise_service.dart';
-import 'package:flutter_application_1/services/lux_service.dart';
-import 'package:flutter_application_1/services/accelerometer_service.dart';
+import 'package:flutter_application_1/blocs/sensors/location_bloc.dart';
+import 'package:flutter_application_1/services/sensors/noise_service.dart';
+import 'package:flutter_application_1/services/sensors/lux_service.dart';
+import 'package:flutter_application_1/services/sensors/accelerometer_service.dart';
 import 'package:provider/provider.dart';
-import '../blocs/connectivity/noise_bloc.dart';
-import '../blocs/connectivity/lux_bloc.dart';
-import '../blocs/connectivity/accelerometer_bloc.dart';
+import '../blocs/sensors/noise_bloc.dart';
+import '../blocs/sensors/lux_bloc.dart';
+import '../blocs/sensors/accelerometer_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
-import '../services/location_service.dart';
+import '../services/sensors/location_service.dart';
 import '../widgets/sensors/accelerometer_widget.dart';
 import '../widgets/sensors/location_widget.dart';
 import '../widgets/sensors/lux_widget.dart';
@@ -16,6 +16,12 @@ import '../widgets/sensors/noise_widget.dart';
 import '../widgets/sidebar_widget.dart';
 import '../widgets/sensor_widget.dart';
 import '../widgets/start_stop_button_widget.dart';
+
+/*
+This is the homescreen. The homescreen has a start/stop button, determining when to send data.
+If the button is pressed to start, all the sensor data is displayed on the homescreen as well.
+The homescreen has a sidebar with additional functionality.
+ */
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,11 +32,16 @@ class HomeScreen extends StatelessWidget {
     final luxBloc = Provider.of<LuxBloc>(context);
     final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
     final locationBloc = Provider.of<LocationBloc>(context);
-    final locationService = Provider.of<LocationService>(context, listen: false);
+    final startStopBloc = Provider.of<StartStopBloc>(context);
+
+    // DO NOT REMOVE
+    // The code crashes if these are removed, even though they are unused
+    final locationService =
+        Provider.of<LocationService>(context, listen: false);
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
-    final accelerometerService = Provider.of<AccelerometerService>(context, listen: false);
-    final startStopBloc = Provider.of<StartStopBloc>(context);
+    final accelerometerService =
+        Provider.of<AccelerometerService>(context, listen: false);
 
     return StreamBuilder<bool>(
       stream: startStopBloc.startStopController,
@@ -70,7 +81,8 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           SensorWidget(
                             title: 'Accelerometer',
-                            child: AccelerometerWidget(accelerometerBloc: accelerometerBloc),
+                            child: AccelerometerWidget(
+                                accelerometerBloc: accelerometerBloc),
                           ),
                           const SizedBox(height: 16.0),
                           SensorWidget(
@@ -100,6 +112,5 @@ class HomeScreen extends StatelessWidget {
         return const CircularProgressIndicator();
       },
     );
-
   }
 }

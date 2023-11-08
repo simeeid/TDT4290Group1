@@ -1,13 +1,18 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../blocs/connectivity/device_name_bloc.dart';
-import '../blocs/connectivity/token_bloc.dart';
-import '../blocs/connectivity/username_bloc.dart';
+import '../blocs/device_name_bloc.dart';
+import '../blocs/token_bloc.dart';
+import '../blocs/username_bloc.dart';
 import '../screens/home_screen.dart';
 import '../services/login_service.dart';
-import '../services/mqtt_service.dart';
-import 'device_popup.dart';
+import 'register_device_popup.dart';
+
+/*
+This is the sign in button displayed on the sign in screen.
+If sign in is successfull, it redirects the user to the home screen.
+If the device has not been registered before, it displays the popup for registering a device.
+ */
 
 class SignInButton extends StatelessWidget {
   const SignInButton({super.key});
@@ -15,7 +20,6 @@ class SignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final logInService = Provider.of<LogInService>(context, listen: false);
-    final mqttService = Provider.of<MqttService>(context, listen: false);
     return ElevatedButton(
       onPressed: () async {
         Map<String, dynamic> loginResult = await logInService.signInWithWebUI();
@@ -26,10 +30,10 @@ class SignInButton extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
           );
-          final deviceNickname = DeviceNickname(
+          final deviceNickname = DeviceName(
               deviceNameBloc:
-              Provider.of<DeviceNameBloc>(context, listen: false));
-          if (await deviceNickname.getNickname() == false) {
+                  Provider.of<DeviceNameBloc>(context, listen: false));
+          if (await deviceNickname.getDeviceName() == false) {
             _showDevicePopup(context);
           }
         } else {
@@ -49,11 +53,12 @@ class SignInButton extends StatelessWidget {
       ),
     );
   }
+
   void _showDevicePopup(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DevicePopupWrapper(
+        return RegisterDevicePopupWrapper(
           usernameBloc: Provider.of<UsernameBloc>(context),
           tokenBloc: Provider.of<TokenBloc>(context),
           deviceNameBloc: Provider.of<DeviceNameBloc>(context),
