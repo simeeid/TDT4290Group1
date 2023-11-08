@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChartComponent } from "@/ChartComponent/ChartComponent";
-import { ChartData, ChartProps } from "@/ChartComponent/types";
+import { ChartData } from "@/ChartComponent/types";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TAccelerometerData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
