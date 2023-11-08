@@ -5,6 +5,7 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TLightIntensityData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 import { SensorProps } from "@/types";
+import { PerformanceComponent } from "@/PerformanceComponent/PerformanceComponent";
 
 export const LightIntensityComponent: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
@@ -67,12 +68,15 @@ export const LightIntensityComponent: React.FC<SensorProps> = ({ amplifyInstance
 
   return (
     <div className="sensorContainer" id="light-container">
-      <h2>Light sensor</h2>
-      <ChartComponent
-        data={data}
-        onPauseStateChange={onPauseStateChange}
-        chartLabel="Brightness (lux)"
-      />
+      <div className="chart-wrapper">
+        <h2>Light sensor</h2>
+        <ChartComponent
+          data={data}
+          onPauseStateChange={onPauseStateChange}
+          chartLabel="Brightness (lux)"
+        />
+      </div>
+      <PerformanceComponent data={lightIntensityData} pauseOverride={isPaused} />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );

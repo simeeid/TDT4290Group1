@@ -1,9 +1,12 @@
-import {ChartComponent} from "@/ChartComponent/ChartComponent";
+import { ChartComponent } from "@/ChartComponent/ChartComponent";
 import { ChartData } from "@/ChartComponent/types";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { PerformanceProps } from "./types";
 
-export const PerformanceComponent: React.FC<PerformanceProps> = ({ data }) => {
+export const PerformanceComponent: React.FC<PerformanceProps & { pauseOverride: boolean }> = ({
+  data,
+  pauseOverride,
+}) => {
   let [chartData, setChartData] = useState<ChartData[]>([]);
   let [lastExactDate, setLastExactDate] = useState<number>(0);
 
@@ -18,28 +21,24 @@ export const PerformanceComponent: React.FC<PerformanceProps> = ({ data }) => {
     }
 
     setChartData((prevData) => {
-        let tmp = [...prevData, 
-          {
-            timestamp: data.timestamp,
-            datapoint: now - sentAt
-          }
-        ];
-        if (tmp.length > 100) {
-          tmp = tmp.slice(-100);
-        }
-        return tmp;
+      let tmp = [
+        ...prevData,
+        {
+          timestamp: new Date(data.timestamp).toLocaleTimeString(),
+          datapoint: now - sentAt,
+        },
+      ];
+      if (tmp.length > 100) {
+        tmp = tmp.slice(-100);
       }
-    );
-  }, [ data, chartData, lastExactDate ]);
-
+      return tmp;
+    });
+  }, [data, chartData, lastExactDate]);
 
   return (
-    <div className="performance-container">
-      <h2>Sensor performance</h2>
-      <ChartComponent
-        data={chartData}
-        chartLabel="Ping (ms)"
-/>
+    <div className="performance-container chart-wrapper">
+      <h3>Sensor performance</h3>
+      <ChartComponent data={chartData} chartLabel="Ping (ms)" externalPauseValue={pauseOverride} />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TAccelerometerData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 import { SensorProps } from "@/types";
-import {PerformanceComponent} from "@/PerformanceComponent/PerformanceComponent";
+import { PerformanceComponent } from "@/PerformanceComponent/PerformanceComponent";
 
 const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
@@ -15,7 +15,7 @@ const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) =
 
   const onPauseStateChange = (paused: boolean) => {
     setIsPaused(paused);
-  }
+  };
 
   const transformToChartData = (iotData: TAccelerometerData): ChartData => {
     return {
@@ -73,13 +73,15 @@ const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) =
 
   return (
     <div className="sensorContainer" id="acceleration-container">
-      <h2>Accelerometer</h2>
-      <ChartComponent
-        data={data}
-        onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration (m/s^2)"
-      />
-      <PerformanceComponent data={accelerometerData} />
+      <div className="chart-wrapper">
+        <h2>Accelerometer</h2>
+        <ChartComponent
+          data={data}
+          onPauseStateChange={onPauseStateChange}
+          chartLabel="Acceleration (m/s^2)"
+        />
+      </div>
+      <PerformanceComponent data={accelerometerData} pauseOverride={isPaused} />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );

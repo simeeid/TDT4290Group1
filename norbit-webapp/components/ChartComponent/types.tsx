@@ -16,4 +16,5 @@ export interface ChartProps {
    */
   onPauseStateChange?: (paused: boolean) => void;
   resolution?: number;
+  externalPauseValue?: boolean;
 }

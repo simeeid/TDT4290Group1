@@ -5,6 +5,7 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TSoundLevelData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 import { SensorProps } from "@/types";
+import { PerformanceComponent } from "@/PerformanceComponent/PerformanceComponent";
 
 export const SoundLevelComponent: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
@@ -65,8 +66,15 @@ export const SoundLevelComponent: React.FC<SensorProps> = ({ amplifyInstance, to
 
   return (
     <div className="sensorContainer" id="sound-container">
-      <h2>Noise meter</h2>
-      <ChartComponent data={data} onPauseStateChange={onPauseStateChange} chartLabel="Noise (dB)" />
+      <div className="chart-wrapper">
+        <h2>Noise meter</h2>
+        <ChartComponent
+          data={data}
+          onPauseStateChange={onPauseStateChange}
+          chartLabel="Noise (dB)"
+        />
+      </div>
+      <PerformanceComponent data={soundLevelData} pauseOverride={isPaused} />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );
