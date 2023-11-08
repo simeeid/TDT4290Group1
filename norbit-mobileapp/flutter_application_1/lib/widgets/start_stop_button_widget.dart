@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/device_popup.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/services/noise_service.dart';
 import 'package:flutter_application_1/services/lux_service.dart';
 import 'package:flutter_application_1/services/accelerometer_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
+import '../blocs/connectivity/device_name_bloc.dart';
+import '../blocs/connectivity/token_bloc.dart';
+import '../blocs/connectivity/username_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/location_service.dart';
 
@@ -15,7 +19,7 @@ class StartStopButton extends StatelessWidget {
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
     final accelerometerService =
-    Provider.of<AccelerometerService>(context, listen: false);
+        Provider.of<AccelerometerService>(context, listen: false);
     final startStopBloc = Provider.of<StartStopBloc>(context);
     final mqttService = Provider.of<MqttService>(context, listen: false);
     final locationService = Provider.of<LocationService>(context);
@@ -29,14 +33,14 @@ class StartStopButton extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () async {
                 if (snapshot.data == false) {
-                  luxService.start();
-                  accelerometerService.start();
-                  await noiseService.start();
-                  await locationService.determinePosition();
-                  locationService.start();
-                  startStopBloc.switchState(true);
-                  mqttService.connect();
-                  mqttService.publishController();
+                    luxService.start();
+                    accelerometerService.start();
+                    await noiseService.start();
+                    await locationService.determinePosition();
+                    locationService.start();
+                    startStopBloc.switchState(true);
+                    await mqttService.connect();
+                    mqttService.publishController();
                 } else if (snapshot.data == true) {
                   luxService.stop();
                   accelerometerService.stop();

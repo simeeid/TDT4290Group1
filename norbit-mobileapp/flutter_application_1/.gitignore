@@ -1,6 +1,6 @@
 assets/certificates/*.crt 
-assets/certificates/*.key 
-assets/certificates/*.pem 
+assets/certificates/*.key
+asserts/certificates/*.pem
 assets/certificates/awsCredentials.json 
 
 # Miscellaneous
