@@ -1,13 +1,68 @@
+import 'dart:convert';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../blocs/connectivity/device_name_bloc.dart';
+import '../blocs/connectivity/token_bloc.dart';
+import '../blocs/connectivity/username_bloc.dart';
+import '../services/aws_service.dart';
+import '../services/save_service.dart';
 
-import '../services/mqtt_service.dart';
+class DevicePopupWrapper extends StatelessWidget {
+  final UsernameBloc usernameBloc;
+  final TokenBloc tokenBloc;
+  final DeviceNameBloc deviceNameBloc;
+
+  const DevicePopupWrapper({
+    super.key,
+    required this.usernameBloc,
+    required this.tokenBloc,
+    required this.deviceNameBloc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<String>(
+      stream: usernameBloc.usernameController,
+      builder: (context, snapshotUsername) {
+        return StreamBuilder<String>(
+          stream: tokenBloc.tokenController,
+          builder: (context, snapshotToken) {
+            return StreamBuilder<String>(
+              stream: deviceNameBloc.deviceNameStream,
+              builder: (context, snapshotDeviceName) {
+                return DevicePopup(
+                  username: snapshotUsername.data!,
+                  token: snapshotToken.data!,
+                  deviceName: snapshotDeviceName.data,
+                  deviceNameBloc: deviceNameBloc,
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
 
 class DevicePopup extends StatelessWidget {
-  DevicePopup({super.key});
-  final TextEditingController _deviceNicknameController = TextEditingController();
+  final String username;
+  final String token;
+  final String? deviceName;
+  final DeviceNameBloc deviceNameBloc;
 
+  DevicePopup({
+    Key? key,
+    required this.username,
+    required this.token,
+    this.deviceName,
+    required this.deviceNameBloc,
+  }) : super(key: key);
+
+  final TextEditingController _deviceNicknameController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +84,22 @@ class DevicePopup extends StatelessWidget {
       ),
       actions: <Widget>[
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.of(context).pop();
-            final mqttService = Provider.of<MqttService>(context, listen: false);
 
-            // You can use the `deviceNickname` variable to access the user's input.
-            String deviceNickname = _deviceNicknameController.text;
-
-            // Add code here for registering the device
+            String deviceName = _deviceNicknameController.text;
+            deviceNameBloc.addDeviceName(deviceName);
+            final awsService = AwsService(token, username, deviceName);
+            String awsCreds = await awsService.getCreds();
+            final awsCredsMap = json.decode(awsCreds);
+            final data = awsCredsMap['data'];
+            final certificatePem = data['certificatePem'];
+            final privateKey = data['privateKey'];
+            final saveService = SaveService();
+            await saveService.saveStringToFile(
+                certificatePem, 'certificate.txt');
+            await saveService.saveStringToFile(privateKey, 'privateKey.txt');
+            await saveService.saveStringToFile(deviceName, 'deviceName.txt');
 
             _deviceNicknameController.clear();
           },
@@ -45,4 +108,27 @@ class DevicePopup extends StatelessWidget {
       ],
     );
   }
+}
+
+class DeviceNickname {
+  final DeviceNameBloc deviceNameBloc;
+
+  DeviceNickname({required this.deviceNameBloc});
+
+  Future<bool> getNickname() async {
+    try {
+      final saveService = SaveService();
+      final String? deviceName = await saveService.readStringFromFile('deviceName.txt');
+      if (deviceName != null) {
+        deviceNameBloc.addDeviceName(deviceName);
+        safePrint('DEVICE NAME IS $deviceName');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
 }
