@@ -6,8 +6,9 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TAccelerometerData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 
-const AccelerometerChart: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
+const AccelerometerChart: React.FC<{ amplifyInstance: TamplifyInstance | null; topic: string }> = ({
   amplifyInstance,
+  topic,
 }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
@@ -67,7 +68,7 @@ const AccelerometerChart: React.FC<{ amplifyInstance: TamplifyInstance | null }>
     }
   }, [accelerometerData, isPaused, buffer]);
 
-  useSubscribeToTopics("accelerometer/topic", amplifyInstance, setAccelerometerData);
+  useSubscribeToTopics(topic, amplifyInstance, setAccelerometerData);
 
   return (
     <div className="sensorContainer" id="acceleration-container">

@@ -3,27 +3,33 @@ header {
   margin: 0;
   padding: 15px;
   box-sizing: border-box;
-
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-}
-
-header > * {
-  flex: 1 1 auto;
+  align-items: center; /* Center align the items vertically */
+  justify-content: space-between;
 }
 
 .logo {
   font-size: 2rem;
-  width: auto;
-}
-
-.sidebar-button {
-  align-self: center;
-  display: flex;
-  justify-content: flex-end;
+  flex: 0 0 auto; /* Logo should not grow or shrink */
 }
 
 header p {
   margin: 0 !important;
+}
+
+/* Additional styles for the sign-out button */
+.signout-button button {
+  padding: 0.5rem 1rem;
+}
+
+.signout-button button:hover {
+  background-color: #dbdbdb;
+}
+
+.user-and-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }

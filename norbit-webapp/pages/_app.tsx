@@ -7,13 +7,16 @@ import "@styles/SidebarComponent.css";
 import { AppProps } from "next/app";
 import { Providers } from "redux/provider";
 import RootLayout from "components/RootLayout/RootLayout";
+import AmplifyInitializer from "components/AmplifyInitializer/AmplifyInitializer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Providers>
-      <RootLayout>
-        <Component {...pageProps} />
-      </RootLayout>
+      <AmplifyInitializer>
+        <RootLayout>
+          <Component {...pageProps} />
+        </RootLayout>
+      </AmplifyInitializer>
     </Providers>
   );
 }

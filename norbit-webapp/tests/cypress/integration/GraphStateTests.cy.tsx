@@ -1,7 +1,19 @@
 describe("Graph config", () => {
+  beforeEach(() => {
+    cy.visit("/").wait(300);
+    cy.get("#signin").click({ force: true });
+    cy.get("#expand-sidebar").click();
+    cy.get("#device-id").type("a", { force: true });
+    cy.get("#submit-device-id").click({ force: true });
+    cy.get("#close-sidebar").click();
+    //cy.find("#signin").click();
+  });
+
+  afterEach(() => {
+    cy.get("#signout").click({ force: true });
+  });
   //Cypress.config('defaultCommandTimeout', 10000);
   it("Should allow charts to be hidden", () => {
-    cy.visit("/");
     let ids = ["enable-accelerometer", "enable-light", "enable-sound", "enable-location"];
     cy.get("#expand-sidebar").click();
 

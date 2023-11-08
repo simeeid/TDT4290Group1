@@ -1,6 +1,14 @@
 describe("Device management", () => {
+  beforeEach(() => {
+    cy.visit("/").wait(300);
+    cy.get("#signin").click({ force: true });
+  });
+
+  afterEach(() => {
+    cy.get("#signout").click({ force: true });
+  });
+
   it("Should allow connections", () => {
-    cy.visit("/");
     cy.get("button.hamburger-button").click();
     cy.get(".device-list").should("not.exist");
 

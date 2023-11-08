@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
 import AccelerometerChart from "@/AccelerometerChart/AccelerometerChart";
 import dashboardStyles from "./Dashboard.module.css";
 import { SoundLevelComponent } from "@/SoundLevelComponent/SoundLevelComponent";
 import { LightIntensityComponent } from "@/LightIntensityComponent/LightIntensityComponent";
 import { Amplify } from "aws-amplify";
+import React from "react";
 
-import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers";
 import { useAppSelector } from "@redux/hook";
 import { SensorConfig } from "@redux/slices/SensorConfig";
 import dynamic from "next/dynamic";
@@ -27,56 +26,46 @@ export const MapComponent = dynamic(
 
 const Dashboard: React.FC = () => {
   let sensorConfig = useAppSelector((state) => state.sensorConfig) as SensorConfig;
-  let [amplifyEnabled, setAmplifyEnabled] = useState(false);
+  const mockAmplify = useAppSelector((state) => state.amplify.isMock);
+  const user = useAppSelector((state) => state.amplify.userName);
+  const devices = useAppSelector((state) => state.deviceList.devices);
+  const lastConnectedDevice = devices[devices.length - 1];
 
-  const config = useMemo(() => {
-    return {
-      identityPoolId: process.env.NEXT_PUBLIC_IDENTITY_POOL_ID,
-      region: process.env.NEXT_PUBLIC_REGION,
-      userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID,
-      userPoolWebClientId: process.env.NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID,
-    };
-  }, []);
+  if (!lastConnectedDevice) {
+    return (
+      <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
+        <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
+          <h1>Connect a device to see data</h1>
+        </div>
+      </div>
+    );
+  }
+  const accelerometerTopic = `${user}/${lastConnectedDevice.code}/accelerometer`;
+  const lightTopic = `${user}/${lastConnectedDevice.code}/lux`;
+  const soundTopic = `${user}/${lastConnectedDevice.code}/noise`;
+  const locationTopic = `${user}/${lastConnectedDevice.code}/location`;
 
-  // Used to control whether or not AWS should be mocked.
-  // Note that thiss variable should ONLY be set to yes for integration testing purposes.
-  const mockAmplify = process.env["NEXT_PUBLIC_MOCK_AMPLIFY"] == "yes";
-
-  // This is not optimal, but it ensures amplify is only run once. If addPluggable is run
-  // multiple times, this causes the client to receive and send duplicate messages.
-  // This previously being used is likely the reason why we completely burned through the
-  // AWS quota for October.
-  useEffect(() => {
-    if (!amplifyEnabled) {
-      if (!mockAmplify) {
-        console.log("Running Amplify in live mode");
-
-        Amplify.configure(config);
-        Amplify.addPluggable(
-          new AWSIoTProvider({
-            aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
-            aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
-          })
-        );
-      } else {
-        console.log("Mocking Amplify");
-      }
-      setAmplifyEnabled(true);
-    }
-  }, [amplifyEnabled, mockAmplify, config]);
   return (
     <div className={dashboardStyles.dashboardContainer} id="dashboard-root">
       <div className={dashboardStyles.chartsContainer} id="dashboard-chart-container">
         {sensorConfig.accelerometer && (
-          <AccelerometerChart amplifyInstance={mockAmplify ? null : Amplify} />
+          <AccelerometerChart
+            topic={accelerometerTopic}
+            amplifyInstance={mockAmplify ? null : Amplify}
+          />
         )}
         {sensorConfig.light && (
-          <LightIntensityComponent amplifyInstance={mockAmplify ? null : Amplify} />
+          <LightIntensityComponent
+            topic={lightTopic}
+            amplifyInstance={mockAmplify ? null : Amplify}
+          />
         )}
         {sensorConfig.sound && (
-          <SoundLevelComponent amplifyInstance={mockAmplify ? null : Amplify} />
+          <SoundLevelComponent topic={soundTopic} amplifyInstance={mockAmplify ? null : Amplify} />
         )}
-        {sensorConfig.location && <MapComponent amplifyInstance={mockAmplify ? null : Amplify} />}
+        {sensorConfig.location && (
+          <MapComponent topic={locationTopic} amplifyInstance={mockAmplify ? null : Amplify} />
+        )}
       </div>
     </div>
   );

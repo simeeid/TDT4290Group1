@@ -22,9 +22,10 @@ const Recenter = ({ lat, lng }: { lat: number; lng: number }) => {
   return null;
 };
 
-export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
-  amplifyInstance,
-}) => {
+export const MapComponent: React.FC<{
+  amplifyInstance: TamplifyInstance | null;
+  topic: string;
+}> = ({ amplifyInstance, topic }) => {
   const mapRef = useRef(null);
   const [payload, setPayload] = useState<any>(null);
   const [mapData, setMapData] = useState<MapData>({ latitude: 0, longitude: 0 });
@@ -34,9 +35,10 @@ export const MapComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }
     setMapData(payload.payload);
   }, [mapData, payload]);
 
-  useSubscribeToTopics("location/topic", amplifyInstance, setPayload);
+  useSubscribeToTopics(topic, amplifyInstance, setPayload);
 
   let currPosition: LatLngTuple = [mapData.latitude, mapData.longitude];
+
   return (
     <div className="sensorContainer" id="location-container">
       <h2>Location</h2>

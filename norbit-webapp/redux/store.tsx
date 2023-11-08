@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { deviceList } from "./slices/DeviceList";
+import { amplifySlice } from "./slices/amplifySlice";
 import { sensorConfig } from "./slices/SensorConfig";
 
 export const store = configureStore({
@@ -7,6 +8,7 @@ export const store = configureStore({
     // Active slices go here
     deviceList: deviceList.reducer,
     sensorConfig: sensorConfig.reducer,
+    amplify: amplifySlice.reducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

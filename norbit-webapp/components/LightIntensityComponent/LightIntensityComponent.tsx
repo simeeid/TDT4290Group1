@@ -6,9 +6,10 @@ import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TLightIntensityData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 
-export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstance | null }> = ({
-  amplifyInstance,
-}) => {
+export const LightIntensityComponent: React.FC<{
+  amplifyInstance: TamplifyInstance | null;
+  topic: string;
+}> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -65,7 +66,7 @@ export const LightIntensityComponent: React.FC<{ amplifyInstance: TamplifyInstan
     }
   }, [lightIntensityData, isPaused, buffer]);
 
-  useSubscribeToTopics("lux/topic", amplifyInstance, setLightIntensityData);
+  useSubscribeToTopics(topic, amplifyInstance, setLightIntensityData);
 
   return (
     <div className="sensorContainer" id="light-container">

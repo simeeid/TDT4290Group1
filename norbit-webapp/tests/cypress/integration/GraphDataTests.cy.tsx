@@ -16,7 +16,16 @@ describe("Numeric graphs", () => {
   };
 
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/").wait(300);
+    cy.get("#signin").click({ force: true });
+    cy.get("#expand-sidebar").click();
+    cy.get("#device-id").type("a", { force: true });
+    cy.get("#submit-device-id").click({ force: true });
+    cy.get("#close-sidebar").click();
+  });
+
+  afterEach(() => {
+    cy.get("#signout").click({ force: true });
   });
 
   // Note: if this test fails, you've failed to, or incorrectly set, the
