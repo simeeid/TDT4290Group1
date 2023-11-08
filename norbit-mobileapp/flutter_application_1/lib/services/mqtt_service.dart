@@ -105,9 +105,9 @@ class MqttService {
       accelerometerEnable = sensorStates['accelerometer'];
       gpsEnable = sensorStates['location'];
     });
-    //getTopic().then((topic) => {
-      //client.subscribe("$topic/config/sensor-states", MqttQos.atMostOnce)
-    //});
+    getTopic().then((topic) => {
+      client.subscribe("$topic/config/sensor-states", MqttQos.atMostOnce)
+    });
   }
 
   Future<bool> mqttConnect() async {
