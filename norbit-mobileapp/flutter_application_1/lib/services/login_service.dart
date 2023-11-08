@@ -2,9 +2,8 @@ import 'dart:async';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-
-import '../blocs/connectivity/token_bloc.dart';
-import '../blocs/connectivity/username_bloc.dart';
+import '../blocs/token_bloc.dart';
+import '../blocs/username_bloc.dart';
 
 class LogInService {
   String? idToken;
