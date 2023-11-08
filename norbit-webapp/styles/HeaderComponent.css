@@ -14,8 +14,11 @@ header {
   flex: 0 0 auto; /* Logo should not grow or shrink */
 }
 
-header p {
-  margin: 0 !important;
+.user-and-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Additional styles for the sign-out button */
@@ -25,11 +28,4 @@ header p {
 
 .signout-button button:hover {
   background-color: #dbdbdb;
-}
-
-.user-and-menu {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 }

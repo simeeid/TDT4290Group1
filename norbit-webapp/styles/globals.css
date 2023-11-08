@@ -4,6 +4,8 @@
 
 :root {
   --color-primary: #02222f;
+  --norbit-primary: #2196f3;
+  --norbit-primary-dark: #1f88db;
 }
 
 /* Not sure where these are overridden, but they make the sidebar headers
@@ -47,14 +49,20 @@ button {
   color: #000000;
   transition: background-color 0.3s;
   box-sizing: border-box;
+  font-size: 1em;
 }
 
 button:hover {
   background-color: #dbdbdb;
 }
 
-button#signin {
-  width: 50vw;
+button.norbit-primary {
+  background-color: var(--norbit-primary);
+  color: white;
+}
+
+button.norbit-primary:hover {
+  background-color: var(--norbit-primary-dark);
 }
 
 button.light {
@@ -83,6 +91,11 @@ button.green {
 button.green:hover {
   background-color: #1d9c29;
   color: black;
+}
+
+button#signin {
+  width: 50vw;
+  padding: 10px 10px !important;
 }
 
 .chart-component {
