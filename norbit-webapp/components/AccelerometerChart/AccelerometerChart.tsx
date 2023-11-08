@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ChartComponent } from "@/ChartComponent/ChartComponent";
-import { ChartData } from "@/ChartComponent/types";
+import { ChartData, ChartProps } from "@/ChartComponent/types";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TAccelerometerData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
 import { SensorProps } from "@/types";
+import {PerformanceComponent} from "@/PerformanceComponent/PerformanceComponent";
 
 const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
@@ -12,9 +13,9 @@ const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) =
   const [isPaused, setIsPaused] = useState(false);
   const [accelerometerData, setAccelerometerData] = useState<TAccelerometerData | null>(null);
 
-  const onPauseStateChange = (newState: boolean) => {
-    setIsPaused(newState);
-  };
+  const onPauseStateChange = (paused: boolean) => {
+    setIsPaused(paused);
+  }
 
   const transformToChartData = (iotData: TAccelerometerData): ChartData => {
     return {
@@ -78,6 +79,7 @@ const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) =
         onPauseStateChange={onPauseStateChange}
         chartLabel="Acceleration (m/s^2)"
       />
+      <PerformanceComponent data={accelerometerData} />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );
