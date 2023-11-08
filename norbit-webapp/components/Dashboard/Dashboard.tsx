@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
   }
   const accelerometerTopic = `${user}/${lastConnectedDevice.code}/accelerometer`;
   const lightTopic = `${user}/${lastConnectedDevice.code}/lux`;
-  const soundTopic = `${user}/${lastConnectedDevice.code}/volume`;
+  const soundTopic = `${user}/${lastConnectedDevice.code}/noise`;
   const locationTopic = `${user}/${lastConnectedDevice.code}/location`;
 
   return (
