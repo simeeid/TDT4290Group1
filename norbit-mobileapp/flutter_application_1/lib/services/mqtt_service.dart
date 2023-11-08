@@ -40,8 +40,9 @@ class MqttService {
   final MqttServerClient client =
       MqttServerClient('a3rrql8lkbz9rt-ats.iot.eu-north-1.amazonaws.com', '');
 
+  // DO NOT REMOVE
+  // This code is not unused, if removed, log in bug will occur
   final _amplifyInstance = Amplify;
-
   Future<void> _configureAmplify() async {
     try {
       final auth = AmplifyAuthCognito();

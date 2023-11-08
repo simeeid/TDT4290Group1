@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../blocs/device_name_bloc.dart';
@@ -83,6 +82,7 @@ class RegisterDevicePopup extends StatelessWidget {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () async {
+            Navigator.of(context).pop();
             String deviceName = _deviceNameController.text;
             deviceNameBloc.addDeviceName(deviceName);
             final awsService = AwsService(token, username, deviceName);
@@ -97,7 +97,6 @@ class RegisterDevicePopup extends StatelessWidget {
             await saveService.saveStringToFile(privateKey, 'privateKey.txt');
             await saveService.saveStringToFile(deviceName, 'deviceName.txt');
             _deviceNameController.clear();
-            Navigator.of(context).pop();
           },
           child: const Text('Save'),
         ),

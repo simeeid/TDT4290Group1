@@ -6,7 +6,7 @@ import '../blocs/token_bloc.dart';
 import '../blocs/username_bloc.dart';
 import '../screens/home_screen.dart';
 import '../services/login_service.dart';
-import 'device_popup.dart';
+import 'register_device_popup.dart';
 
 class SignInButton extends StatelessWidget {
   const SignInButton({super.key});
