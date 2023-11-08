@@ -14,14 +14,15 @@ class NoiseWidget extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('Noise level: ${snapshot.data!.toStringAsFixed(2)} dB',
-                style: const TextStyle(fontSize: 20),),
+              Text(
+                'Noise level: ${snapshot.data!.toStringAsFixed(2)} dB',
+                style: const TextStyle(fontSize: 20),
+              ),
             ],
           );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
-        // By default, show a loading spinner.
         return const CircularProgressIndicator();
       },
     );

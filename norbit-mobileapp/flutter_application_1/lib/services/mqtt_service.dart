@@ -115,20 +115,20 @@ class MqttService {
 
     ByteData rootCA = await rootBundle.load('assets/certificates/RootCA.pem');
 
-    final String? deviceCertData = await saveService.readStringFromFile('certificate.txt');
+    final String? deviceCertData =
+        await saveService.readStringFromFile('certificate.txt');
     if (deviceCertData != null) {
       List<int> certList = utf8.encode(deviceCertData);
       deviceCert = ByteData.sublistView(Uint8List.fromList(certList));
-    }
-    else {
+    } else {
       return false;
     }
-    final String? privateKeyData = await saveService.readStringFromFile('privateKey.txt');
+    final String? privateKeyData =
+        await saveService.readStringFromFile('privateKey.txt');
     if (privateKeyData != null) {
       List<int> keyList = utf8.encode(privateKeyData);
       privateKey = ByteData.sublistView(Uint8List.fromList(keyList));
-    }
-    else {
+    } else {
       return false;
     }
     SecurityContext context = SecurityContext.defaultContext;
@@ -166,8 +166,6 @@ class MqttService {
     final deviceNameData =
         await deviceNameBloc.deviceNameController.stream.first;
     deviceNameValue = deviceNameData;
-    safePrint('THIS IS USER AND DEVIVE NAME $usernameValue $deviceNameValue');
-    safePrint('THIS IS IT $usernameValue/$deviceNameValue');
     return "$usernameValue/$deviceNameValue";
   }
 
@@ -178,15 +176,11 @@ class MqttService {
     }
     String topic = await getTopic();
     final luxTopic = '$topic/lux';
-    safePrint('THIS IS LUX TOPIC: $luxTopic');
     luxSubscription = luxBloc.luxController.stream.listen((luxData) {
-      safePrint('LISTENING WORKS');
       if (!luxEnable) {
-        safePrint('LYX NOT ENABLED');
         return;
       }
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-      safePrint('BUILDER WORKS');
       builder.addString(jsonEncode({
         'sensorName': 'Lux Sensor',
         'timestamp': DateTime.now().toIso8601String(),
@@ -194,9 +188,7 @@ class MqttService {
           'lux': luxData,
         }
       }));
-      safePrint('JSON WORKS');
       client.publishMessage(luxTopic, MqttQos.atLeastOnce, builder.payload!);
-      safePrint('PUBLISH WORKS');
     });
   }
 
@@ -214,8 +206,7 @@ class MqttService {
         'payload': {
           'volume': noiseData,
         }
-      })); // Encode the data as a JSON string
-      //client.subscribe(noiseTopic, MqttQos.atMostOnce);
+      }));
       client.publishMessage(noiseTopic, MqttQos.atLeastOnce, builder.payload!);
     });
   }
@@ -241,8 +232,7 @@ class MqttService {
           'y': accelerometerData.y,
           'z': accelerometerData.z,
         }
-      })); // Encode the data as a JSON string
-      //client.subscribe(accelerometerTopic, MqttQos.atMostOnce);
+      }));
       client.publishMessage(
           accelerometerTopic, MqttQos.atLeastOnce, builder.payload!);
     });
@@ -263,8 +253,7 @@ class MqttService {
           'latitude': locationData.latitude,
           'longitude': locationData.longitude,
         }
-      })); // Encode the data as a JSON string
-      //client.subscribe(locationTopic, MqttQos.atMostOnce);
+      }));
       client.publishMessage(
           locationTopic, MqttQos.atLeastOnce, builder.payload!);
     });

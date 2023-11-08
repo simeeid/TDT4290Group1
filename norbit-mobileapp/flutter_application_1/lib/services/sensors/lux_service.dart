@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter_application_1/blocs/sensors/lux_bloc.dart';
 import 'package:light/light.dart';
 
@@ -22,7 +23,7 @@ class LuxService {
     try {
       _subscription = _light?.lightSensorStream.listen(onData);
     } on LightException catch (exception) {
-      print(exception);
+      safePrint(exception);
     }
   }
 }

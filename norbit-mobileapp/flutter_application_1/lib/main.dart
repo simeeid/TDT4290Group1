@@ -87,7 +87,8 @@ class MyApp extends StatelessWidget {
           create: (context) {
             return MqttService(
               usernameBloc: Provider.of<UsernameBloc>(context, listen: false),
-              deviceNameBloc: Provider.of<DeviceNameBloc>(context, listen: false),
+              deviceNameBloc:
+                  Provider.of<DeviceNameBloc>(context, listen: false),
               noiseBloc: Provider.of<NoiseBloc>(context, listen: false),
               luxBloc: Provider.of<LuxBloc>(context, listen: false),
               accelerometerBloc:
@@ -113,7 +114,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Accelerometer App',
+        title: 'Norbit Mobile App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

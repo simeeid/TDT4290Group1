@@ -14,8 +14,10 @@ class LuxWidget extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('Lux level: ${snapshot.data!.toStringAsFixed(2)} Lx',
-                style: const TextStyle(fontSize: 20),),
+              Text(
+                'Lux level: ${snapshot.data!.toStringAsFixed(2)} Lx',
+                style: const TextStyle(fontSize: 20),
+              ),
             ],
           );
         } else if (snapshot.hasError) {

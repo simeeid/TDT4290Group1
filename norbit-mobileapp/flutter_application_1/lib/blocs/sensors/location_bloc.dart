@@ -5,6 +5,7 @@ class LocationBloc {
   final locationController = BehaviorSubject<Position>();
 
   Stream<Position> get accelerometerStream => locationController.stream;
+
   Sink<Position> get accelerometerSink => locationController.sink;
 
   void addLocation(Position loc) {

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/device_name_bloc.dart';
-import 'package:flutter_application_1/blocs/username_bloc.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
-import '../blocs/token_bloc.dart';
 import '../services/login_service.dart';
 import 'device_data.dart';
-import 'device_popup.dart';
 
 class SidebarWidget extends StatelessWidget {
   const SidebarWidget({super.key});

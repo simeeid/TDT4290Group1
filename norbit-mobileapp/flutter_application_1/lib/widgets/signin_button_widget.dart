@@ -6,7 +6,6 @@ import '../blocs/token_bloc.dart';
 import '../blocs/username_bloc.dart';
 import '../screens/home_screen.dart';
 import '../services/login_service.dart';
-import '../services/mqtt_service.dart';
 import 'device_popup.dart';
 
 class SignInButton extends StatelessWidget {
@@ -15,7 +14,6 @@ class SignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final logInService = Provider.of<LogInService>(context, listen: false);
-    final mqttService = Provider.of<MqttService>(context, listen: false);
     return ElevatedButton(
       onPressed: () async {
         Map<String, dynamic> loginResult = await logInService.signInWithWebUI();
@@ -26,10 +24,10 @@ class SignInButton extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
           );
-          final deviceNickname = DeviceNickname(
+          final deviceNickname = DeviceName(
               deviceNameBloc:
-              Provider.of<DeviceNameBloc>(context, listen: false));
-          if (await deviceNickname.getNickname() == false) {
+                  Provider.of<DeviceNameBloc>(context, listen: false));
+          if (await deviceNickname.getDeviceName() == false) {
             _showDevicePopup(context);
           }
         } else {
@@ -49,11 +47,12 @@ class SignInButton extends StatelessWidget {
       ),
     );
   }
+
   void _showDevicePopup(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DevicePopupWrapper(
+        return RegisterDevicePopupWrapper(
           usernameBloc: Provider.of<UsernameBloc>(context),
           tokenBloc: Provider.of<TokenBloc>(context),
           deviceNameBloc: Provider.of<DeviceNameBloc>(context),

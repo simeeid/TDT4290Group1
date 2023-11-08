@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:geolocator/geolocator.dart';
 import '../../blocs/sensors/location_bloc.dart';
 
@@ -32,7 +31,6 @@ class LocationService {
       }
       Position currentLocation = await Geolocator.getCurrentPosition();
       locationBloc.addLocation(currentLocation);
-
     } catch (e) {
       throw Exception('Error in determining position: $e');
     }
@@ -41,7 +39,7 @@ class LocationService {
   void start() {
     const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 5, // Set your desired distance filter
+      distanceFilter: 5,
     );
     positionStream = Geolocator.getPositionStream(
       locationSettings: locationSettings,

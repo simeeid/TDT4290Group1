@@ -26,11 +26,16 @@ class HomeScreen extends StatelessWidget {
     final luxBloc = Provider.of<LuxBloc>(context);
     final accelerometerBloc = Provider.of<AccelerometerBloc>(context);
     final locationBloc = Provider.of<LocationBloc>(context);
-    final locationService = Provider.of<LocationService>(context, listen: false);
+    final startStopBloc = Provider.of<StartStopBloc>(context);
+
+    // DO NOT REMOVE
+    // The code crashes if these are removed, even though they are unused
+    final locationService =
+        Provider.of<LocationService>(context, listen: false);
     final noiseService = Provider.of<NoiseService>(context, listen: false);
     final luxService = Provider.of<LuxService>(context, listen: false);
-    final accelerometerService = Provider.of<AccelerometerService>(context, listen: false);
-    final startStopBloc = Provider.of<StartStopBloc>(context);
+    final accelerometerService =
+        Provider.of<AccelerometerService>(context, listen: false);
 
     return StreamBuilder<bool>(
       stream: startStopBloc.startStopController,
@@ -70,7 +75,8 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           SensorWidget(
                             title: 'Accelerometer',
-                            child: AccelerometerWidget(accelerometerBloc: accelerometerBloc),
+                            child: AccelerometerWidget(
+                                accelerometerBloc: accelerometerBloc),
                           ),
                           const SizedBox(height: 16.0),
                           SensorWidget(
@@ -100,6 +106,5 @@ class HomeScreen extends StatelessWidget {
         return const CircularProgressIndicator();
       },
     );
-
   }
 }

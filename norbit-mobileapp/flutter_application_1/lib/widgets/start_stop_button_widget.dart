@@ -29,14 +29,14 @@ class StartStopButton extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () async {
                 if (snapshot.data == false) {
-                    luxService.start();
-                    accelerometerService.start();
-                    await noiseService.start();
-                    await locationService.determinePosition();
-                    locationService.start();
-                    startStopBloc.switchState(true);
-                    await mqttService.connect();
-                    mqttService.publishController();
+                  luxService.start();
+                  accelerometerService.start();
+                  await noiseService.start();
+                  await locationService.determinePosition();
+                  locationService.start();
+                  startStopBloc.switchState(true);
+                  await mqttService.connect();
+                  mqttService.publishController();
                 } else if (snapshot.data == true) {
                   luxService.stop();
                   accelerometerService.stop();

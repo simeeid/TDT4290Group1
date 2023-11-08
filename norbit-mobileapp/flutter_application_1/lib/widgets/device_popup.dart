@@ -8,12 +8,12 @@ import '../blocs/username_bloc.dart';
 import '../services/aws_service.dart';
 import '../services/save_service.dart';
 
-class DevicePopupWrapper extends StatelessWidget {
+class RegisterDevicePopupWrapper extends StatelessWidget {
   final UsernameBloc usernameBloc;
   final TokenBloc tokenBloc;
   final DeviceNameBloc deviceNameBloc;
 
-  const DevicePopupWrapper({
+  const RegisterDevicePopupWrapper({
     super.key,
     required this.usernameBloc,
     required this.tokenBloc,
@@ -31,7 +31,7 @@ class DevicePopupWrapper extends StatelessWidget {
             return StreamBuilder<String>(
               stream: deviceNameBloc.deviceNameStream,
               builder: (context, snapshotDeviceName) {
-                return DevicePopup(
+                return RegisterDevicePopup(
                   username: snapshotUsername.data!,
                   token: snapshotToken.data!,
                   deviceName: snapshotDeviceName.data,
@@ -46,13 +46,13 @@ class DevicePopupWrapper extends StatelessWidget {
   }
 }
 
-class DevicePopup extends StatelessWidget {
+class RegisterDevicePopup extends StatelessWidget {
   final String username;
   final String token;
   final String? deviceName;
   final DeviceNameBloc deviceNameBloc;
 
-  DevicePopup({
+  RegisterDevicePopup({
     Key? key,
     required this.username,
     required this.token,
@@ -60,23 +60,22 @@ class DevicePopup extends StatelessWidget {
     required this.deviceNameBloc,
   }) : super(key: key);
 
-  final TextEditingController _deviceNicknameController =
-      TextEditingController();
+  final TextEditingController _deviceNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Device settings'),
+      title: const Text('Register Device'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text('Enter a nickname for your device:'),
+          const Text('Enter a name for your device:'),
           const SizedBox(height: 10),
           TextField(
-            controller: _deviceNicknameController,
-            decoration: const InputDecoration(labelText: 'Device Nickname'),
+            controller: _deviceNameController,
+            decoration: const InputDecoration(labelText: 'Device Name'),
             inputFormatters: [
-              LengthLimitingTextInputFormatter(20),
+              LengthLimitingTextInputFormatter(10),
             ],
           ),
         ],
@@ -84,9 +83,7 @@ class DevicePopup extends StatelessWidget {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () async {
-            Navigator.of(context).pop();
-
-            String deviceName = _deviceNicknameController.text;
+            String deviceName = _deviceNameController.text;
             deviceNameBloc.addDeviceName(deviceName);
             final awsService = AwsService(token, username, deviceName);
             String awsCreds = await awsService.getCreds();
@@ -99,8 +96,8 @@ class DevicePopup extends StatelessWidget {
                 certificatePem, 'certificate.txt');
             await saveService.saveStringToFile(privateKey, 'privateKey.txt');
             await saveService.saveStringToFile(deviceName, 'deviceName.txt');
-
-            _deviceNicknameController.clear();
+            _deviceNameController.clear();
+            Navigator.of(context).pop();
           },
           child: const Text('Save'),
         ),
@@ -109,18 +106,18 @@ class DevicePopup extends StatelessWidget {
   }
 }
 
-class DeviceNickname {
+class DeviceName {
   final DeviceNameBloc deviceNameBloc;
 
-  DeviceNickname({required this.deviceNameBloc});
+  DeviceName({required this.deviceNameBloc});
 
-  Future<bool> getNickname() async {
+  Future<bool> getDeviceName() async {
     try {
       final saveService = SaveService();
-      final String? deviceName = await saveService.readStringFromFile('deviceName.txt');
+      final String? deviceName =
+          await saveService.readStringFromFile('deviceName.txt');
       if (deviceName != null) {
         deviceNameBloc.addDeviceName(deviceName);
-        safePrint('DEVICE NAME IS $deviceName');
         return true;
       } else {
         return false;
@@ -129,5 +126,4 @@ class DeviceNickname {
       return false;
     }
   }
-
 }

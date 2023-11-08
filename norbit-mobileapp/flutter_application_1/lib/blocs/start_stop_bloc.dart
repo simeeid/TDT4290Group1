@@ -4,6 +4,7 @@ class StartStopBloc {
   final startStopController = BehaviorSubject<bool>.seeded(false);
 
   Stream<bool> get startStopStream => startStopController.stream;
+
   Sink<bool> get startStopSink => startStopController.sink;
 
   void switchState(bool b) {

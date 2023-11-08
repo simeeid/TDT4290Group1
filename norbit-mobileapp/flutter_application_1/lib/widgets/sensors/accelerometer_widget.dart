@@ -20,10 +20,14 @@ class AccelerometerWidget extends StatelessWidget {
                 'X: ${snapshot.data!.x.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 20),
               ),
-              Text('Y: ${snapshot.data!.y.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 20),),
-              Text('Z: ${snapshot.data!.z.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 20),),
+              Text(
+                'Y: ${snapshot.data!.y.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Z: ${snapshot.data!.z.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),
+              ),
             ],
           );
         } else if (snapshot.hasError) {
