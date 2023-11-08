@@ -8,6 +8,12 @@ import '../screens/home_screen.dart';
 import '../services/login_service.dart';
 import 'register_device_popup.dart';
 
+/*
+This is the sign in button displayed on the sign in screen.
+If sign in is successfull, it redirects the user to the home screen.
+If the device has not been registered before, it displays the popup for registering a device.
+ */
+
 class SignInButton extends StatelessWidget {
   const SignInButton({super.key});
 

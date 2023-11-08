@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
+/*
+AccelerometerWidget uses the data in the stream of the accelerometer bloc.
+It updates the accelerometer data on the users screen based on this data.
+It displays x, y and z in m/s^2
+ */
+
 class AccelerometerWidget extends StatelessWidget {
   final AccelerometerBloc accelerometerBloc;
 

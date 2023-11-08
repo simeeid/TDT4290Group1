@@ -7,6 +7,11 @@ import '../blocs/username_bloc.dart';
 import '../services/aws_service.dart';
 import '../services/save_service.dart';
 
+/*
+RegisterDevicePopupWrapper is a wrapper widget for RegisterDevicePopup.
+The wrapper is responsible for handling the streams the RegisterDevicePopup needs.
+ */
+
 class RegisterDevicePopupWrapper extends StatelessWidget {
   final UsernameBloc usernameBloc;
   final TokenBloc tokenBloc;
@@ -44,6 +49,12 @@ class RegisterDevicePopupWrapper extends StatelessWidget {
     );
   }
 }
+
+/*
+RegisterDevicePopup is responsible registering new devices.
+It uses the wrapper, AwsService and SaveService to receive necessary device data
+and then save it locally on the users phone.
+ */
 
 class RegisterDevicePopup extends StatelessWidget {
   final String username;
@@ -104,6 +115,10 @@ class RegisterDevicePopup extends StatelessWidget {
     );
   }
 }
+
+/*
+DeviceName is a class for reading the devicename from the users phone.
+ */
 
 class DeviceName {
   final DeviceNameBloc deviceNameBloc;

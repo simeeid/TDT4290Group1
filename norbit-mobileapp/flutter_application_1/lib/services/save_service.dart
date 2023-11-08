@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:path_provider/path_provider.dart';
 
+/*
+SaveService has to methods, reading and writing to file in the users phone.
+This is used to write and read necessary credentials and device name.
+ */
+
 class SaveService {
   Future<void> saveStringToFile(String text, String filename) async {
     final directory = await getApplicationDocumentsDirectory();

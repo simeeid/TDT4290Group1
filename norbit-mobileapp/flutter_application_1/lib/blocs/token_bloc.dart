@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
+/*
+  Flutter Bloc for token management.
+  Uses the `rxdart` package to create `TokenBloc` class.
+  Provides stream and sink for token handling.
+*/
+
 class TokenBloc {
   final tokenController = BehaviorSubject<String>();
 

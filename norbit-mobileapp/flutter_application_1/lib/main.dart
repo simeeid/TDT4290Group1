@@ -16,6 +16,13 @@ import '../blocs/sensors/accelerometer_bloc.dart';
 import 'blocs/start_stop_bloc.dart';
 import 'package:provider/provider.dart';
 
+/*
+This is the file responsible for running the system.
+All blocs and services are registered here, to make sure there only exists one
+instance of them in the entire system.
+The sign in screen is set as a starting view for the app.
+ */
+
 void main() {
   runApp(const MyApp());
 }

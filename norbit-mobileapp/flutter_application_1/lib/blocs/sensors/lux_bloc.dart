@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
+/*
+  Flutter Bloc for lux data management.
+  Uses the `rxdart` package to create `LuxBloc` class.
+  Provides stream and sink for lux data handling.
+*/
+
 class LuxBloc {
   final luxController = BehaviorSubject<double>();
 

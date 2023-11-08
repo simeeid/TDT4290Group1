@@ -5,6 +5,11 @@ import 'package:provider/provider.dart';
 import '../services/login_service.dart';
 import 'device_data.dart';
 
+/*
+The sidebar is present on the homescreen.
+It has available items to view device data and sign out.
+ */
+
 class SidebarWidget extends StatelessWidget {
   const SidebarWidget({super.key});
 

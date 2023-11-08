@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/sensors/location_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 
+/*
+LocationWidget uses the data in the stream of the location bloc.
+It updates the location data on the users screen based on this data.
+It displays latitude and longitude.
+ */
+
 class LocationWidget extends StatelessWidget {
   final LocationBloc locationBloc;
 

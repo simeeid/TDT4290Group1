@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/sensors/lux_bloc.dart';
 
+/*
+LuxWidget uses the data in the stream of the lux bloc.
+It updates the lux data on the users screen based on this data.
+It displays the light value in Lx.
+ */
+
 class LuxWidget extends StatelessWidget {
   final LuxBloc luxBloc;
 

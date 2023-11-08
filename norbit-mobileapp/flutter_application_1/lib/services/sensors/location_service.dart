@@ -2,6 +2,12 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import '../../blocs/sensors/location_bloc.dart';
 
+/*
+The location service first checks that the user has allowed for the app to have access to location data.
+Location service then determines the position of the user, and detects if the user moves.
+When the position is determined, or whenever the user moves, the new position is added to the location bloc.
+ */
+
 class LocationService {
   final LocationBloc locationBloc;
   late StreamSubscription<Position> positionStream;

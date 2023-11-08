@@ -15,6 +15,12 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
 import '../blocs/username_bloc.dart';
 
+/*
+  Manages MQTT communication and data publishing for various sensors.
+  This class interacts with the MQTT broker to send data from sensors such as Lux, Noise, Accelerometer, and Location.
+  It also handles the connection to AWS IoT Core.
+*/
+
 class MqttService {
   final UsernameBloc usernameBloc;
   final DeviceNameBloc deviceNameBloc;
@@ -43,6 +49,7 @@ class MqttService {
   // DO NOT REMOVE
   // This code is not unused, if removed, log in bug will occur
   final _amplifyInstance = Amplify;
+
   Future<void> _configureAmplify() async {
     try {
       final auth = AmplifyAuthCognito();
@@ -159,6 +166,7 @@ class MqttService {
     return true;
   }
 
+  // Gets the topic which is needed for web to receive sensor data
   Future<String> getTopic() async {
     String usernameValue = '';
     String deviceNameValue = '';

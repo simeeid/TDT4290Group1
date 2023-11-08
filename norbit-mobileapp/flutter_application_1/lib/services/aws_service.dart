@@ -2,6 +2,10 @@ import 'package:amplify_core/amplify_core.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+/*
+AWS service gets the necessary credentials from the AWS cloud
+ */
+
 class AwsService {
   final String token;
   final String username;

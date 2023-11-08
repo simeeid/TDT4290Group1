@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/*
+SensorWidget is a box for displaying the sensor widgets,
+making sure all sensor data is displayed in the same format.
+ */
+
 class SensorWidget extends StatelessWidget {
   final Widget child;
   final String title;

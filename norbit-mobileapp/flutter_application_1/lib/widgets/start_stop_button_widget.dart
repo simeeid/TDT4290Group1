@@ -7,6 +7,12 @@ import 'package:flutter_application_1/services/mqtt_service.dart';
 import '../blocs/start_stop_bloc.dart';
 import '../services/sensors/location_service.dart';
 
+/*
+This is the start/stop button located on the home screen.
+When the button is pressed, data is collected from the users device.
+When it is pressed for the second time, the collection of data stops.
+ */
+
 class StartStopButton extends StatelessWidget {
   const StartStopButton({super.key});
 

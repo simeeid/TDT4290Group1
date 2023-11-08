@@ -17,6 +17,12 @@ import '../widgets/sidebar_widget.dart';
 import '../widgets/sensor_widget.dart';
 import '../widgets/start_stop_button_widget.dart';
 
+/*
+This is the homescreen. The homescreen has a start/stop button, determining when to send data.
+If the button is pressed to start, all the sensor data is displayed on the homescreen as well.
+The homescreen has a sidebar with additional functionality.
+ */
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
