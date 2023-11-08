@@ -1,7 +1,7 @@
 import { Amplify } from "aws-amplify";
 import React from "react";
-import { SidebarComponent } from "../SidebarComponent/SidebarComponent";
-import { SidebarProps } from "../SidebarComponent/types";
+import { SidebarComponent } from "@/SidebarComponent/SidebarComponent";
+import { SidebarProps } from "@/SidebarComponent/types";
 import { HeaderProps } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
@@ -41,9 +41,11 @@ export const HeaderComponent: React.FC<HeaderProps & SidebarProps> = ({ useSideb
         )}
       </div>
       <div className="user-and-menu">
-        <div>
-          <p>Hello {user}</p>
-        </div>
+        { isAuthenticated &&
+          <div>
+            <p>Hello {user}</p>
+          </div>
+        }
         <div className="sidebar-button">
           {useSidebar ? (
             <SidebarComponent {...props} amplifyInstance={mockAmplify ? null : Amplify} />

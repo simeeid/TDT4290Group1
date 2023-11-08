@@ -53,10 +53,6 @@ button:hover {
   background-color: #dbdbdb;
 }
 
-button#signin {
-  width: 50vw;
-}
-
 button.light {
   background-color: var(--color-primary);
   color: white;
@@ -83,6 +79,18 @@ button.green {
 button.green:hover {
   background-color: #1d9c29;
   color: black;
+}
+
+button#signin {
+  width: 50vw;
+  font-size: 1.5em;
+  padding: 10px 10px !important;
+  background-color: #2196F3;
+  color: white;
+}
+
+button#signin:hover {
+  background-color: #1f88db;
 }
 
 .chart-component {
