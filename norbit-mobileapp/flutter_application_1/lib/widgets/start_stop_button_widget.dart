@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/device_popup.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/services/noise_service.dart';
-import 'package:flutter_application_1/services/lux_service.dart';
-import 'package:flutter_application_1/services/accelerometer_service.dart';
+import 'package:flutter_application_1/services/sensors/noise_service.dart';
+import 'package:flutter_application_1/services/sensors/lux_service.dart';
+import 'package:flutter_application_1/services/sensors/accelerometer_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
-import '../blocs/connectivity/device_name_bloc.dart';
-import '../blocs/connectivity/token_bloc.dart';
-import '../blocs/connectivity/username_bloc.dart';
 import '../blocs/start_stop_bloc.dart';
-import '../services/location_service.dart';
+import '../services/sensors/location_service.dart';
 
 class StartStopButton extends StatelessWidget {
   const StartStopButton({super.key});

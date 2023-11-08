@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
-import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/location_bloc.dart';
 import 'package:flutter_application_1/services/save_service.dart';
-import '../blocs/connectivity/device_name_bloc.dart';
-import '../blocs/connectivity/lux_bloc.dart';
-import '../blocs/connectivity/noise_bloc.dart';
+import '../blocs/device_name_bloc.dart';
+import '../blocs/sensors/lux_bloc.dart';
+import '../blocs/sensors/noise_bloc.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -13,8 +13,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../amplifyconfiguration.dart';
-import 'package:flutter/services.dart' show ByteData, rootBundle;
-import '../blocs/connectivity/username_bloc.dart';
+import '../blocs/username_bloc.dart';
 
 class MqttService {
   final UsernameBloc usernameBloc;

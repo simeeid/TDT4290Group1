@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter_application_1/blocs/connectivity/lux_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/lux_bloc.dart';
 import 'package:light/light.dart';
 
 class LuxService {

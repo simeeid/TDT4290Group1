@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
-import '../blocs/connectivity/location_bloc.dart';
+import '../../blocs/sensors/location_bloc.dart';
 
 class LocationService {
   final LocationBloc locationBloc;

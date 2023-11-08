@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/noise_bloc.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'package:permission_handler/permission_handler.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/location_bloc.dart';
 
 void main() {
   late LocationBloc locationBloc;

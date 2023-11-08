@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class AccelerometerService {

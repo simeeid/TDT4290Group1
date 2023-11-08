@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/location_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/location_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationWidget extends StatelessWidget {

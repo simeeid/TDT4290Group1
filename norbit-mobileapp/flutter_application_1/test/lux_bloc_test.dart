@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_application_1/blocs/connectivity/lux_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/lux_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:async/async.dart';
 

@@ -1,9 +1,9 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../blocs/connectivity/device_name_bloc.dart';
-import '../blocs/connectivity/token_bloc.dart';
-import '../blocs/connectivity/username_bloc.dart';
+import '../blocs/device_name_bloc.dart';
+import '../blocs/token_bloc.dart';
+import '../blocs/username_bloc.dart';
 import '../screens/home_screen.dart';
 import '../services/login_service.dart';
 import '../services/mqtt_service.dart';

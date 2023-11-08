@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/noise_bloc.dart';
 
 class NoiseWidget extends StatelessWidget {
   final NoiseBloc noiseBloc;
