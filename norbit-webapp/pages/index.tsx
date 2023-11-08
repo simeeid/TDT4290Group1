@@ -56,7 +56,7 @@ export default function Home() {
         {isAuthenticated ? (
           <Dashboard />
         ) : (
-          <button id="signin" name="sign-in" onClick={handleSignIn}>
+          <button id="signin" name="sign-in" className="norbit-primary" onClick={handleSignIn}>
             Sign in with AWS
           </button>
         )}

@@ -14,19 +14,6 @@ header {
   flex: 0 0 auto; /* Logo should not grow or shrink */
 }
 
-header p {
-  margin: 0 !important;
-}
-
-/* Additional styles for the sign-out button */
-.signout-button button {
-  padding: 0.5rem 1rem;
-}
-
-.signout-button button:hover {
-  background-color: #dbdbdb;
-}
-
 .user-and-menu {
   display: flex;
   flex-direction: row;

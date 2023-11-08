@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
   const mockAmplify = useAppSelector((state) => state.amplify.isMock);
   const user = useAppSelector((state) => state.amplify.userName);
   const devices = useAppSelector((state) => state.deviceList.devices);
-  const lastConnectedDevice = devices[devices.length - 1];
+  const lastConnectedDevice = devices.length > 0 ? devices[devices.length - 1] : null;
 
   if (!lastConnectedDevice) {
     return (
