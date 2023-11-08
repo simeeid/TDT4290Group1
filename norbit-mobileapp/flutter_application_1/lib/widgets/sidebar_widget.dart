@@ -5,6 +5,7 @@ import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
 import '../blocs/connectivity/token_bloc.dart';
 import '../services/login_service.dart';
+import 'device_data.dart';
 import 'device_popup.dart';
 
 class SidebarWidget extends StatelessWidget {
@@ -27,7 +28,7 @@ class SidebarWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('Register Device'),
+            title: const Text('Device Data'),
             onTap: () {
               _showDevicePopup(context);
             },
@@ -52,9 +53,7 @@ class SidebarWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DevicePopupWrapper(
-          usernameBloc: Provider.of<UsernameBloc>(context),
-          tokenBloc: Provider.of<TokenBloc>(context),
+        return DeviceData(
           deviceNameBloc: Provider.of<DeviceNameBloc>(context),
         );
       },

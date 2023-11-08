@@ -33,20 +33,14 @@ class StartStopButton extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () async {
                 if (snapshot.data == false) {
-                  final deviceNickname = DeviceNickname(
-                      deviceNameBloc:
-                          Provider.of<DeviceNameBloc>(context, listen: false));
-                  if (await deviceNickname.getNickname() == false) {
-                    _showDevicePopup(context);
-                  }
-                  luxService.start();
-                  accelerometerService.start();
-                  await noiseService.start();
-                  await locationService.determinePosition();
-                  locationService.start();
-                  startStopBloc.switchState(true);
-                  await mqttService.connect();
-                  mqttService.publishController();
+                    luxService.start();
+                    accelerometerService.start();
+                    await noiseService.start();
+                    await locationService.determinePosition();
+                    locationService.start();
+                    startStopBloc.switchState(true);
+                    await mqttService.connect();
+                    mqttService.publishController();
                 } else if (snapshot.data == true) {
                   luxService.stop();
                   accelerometerService.stop();
@@ -69,18 +63,4 @@ class StartStopButton extends StatelessWidget {
       },
     );
   }
-
-  void _showDevicePopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return DevicePopupWrapper(
-          usernameBloc: Provider.of<UsernameBloc>(context),
-          tokenBloc: Provider.of<TokenBloc>(context),
-          deviceNameBloc: Provider.of<DeviceNameBloc>(context),
-        );
-      },
-    );
-  }
-
 }
