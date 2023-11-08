@@ -10,12 +10,12 @@ import 'package:rxdart/rxdart.dart';
 class LocationBloc {
   final locationController = BehaviorSubject<Position>();
 
-  Stream<Position> get accelerometerStream => locationController.stream;
+  Stream<Position> get locationStream => locationController.stream;
 
-  Sink<Position> get accelerometerSink => locationController.sink;
+  Sink<Position> get locationSink => locationController.sink;
 
   void addLocation(Position loc) {
-    accelerometerSink.add(loc);
+    locationSink.add(loc);
   }
 
   void dispose() {

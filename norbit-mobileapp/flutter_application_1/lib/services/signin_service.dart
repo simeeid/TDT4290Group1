@@ -6,18 +6,18 @@ import '../blocs/token_bloc.dart';
 import '../blocs/username_bloc.dart';
 
 /*
-LogInService, manages user authentication and login operations using the Amplify library.
+SignInService, manages user authentication and login operations using the Amplify library.
 It provides methods for configuring Amplify, signing in with a web-based user interface, and signing out.
 It interacts with the Amplify Auth category and communicates with the TokenBloc and UsernameBloc to manage user data.
 */
 
-class LogInService {
+class SignInService {
   String? idToken;
   String? username;
   final UsernameBloc usernameBloc;
   final TokenBloc tokenBloc;
 
-  LogInService({required this.usernameBloc, required this.tokenBloc}) {
+  SignInService({required this.usernameBloc, required this.tokenBloc}) {
     _configureAmplify();
   }
 
