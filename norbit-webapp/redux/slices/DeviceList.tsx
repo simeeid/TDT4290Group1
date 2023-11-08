@@ -30,9 +30,12 @@ export const deviceList = createSlice({
 
       delete state.devices[idx];
     },
+    clear: (state) => {
+      state.devices = [];
+    },
   },
 });
 
-export const { push, pop } = deviceList.actions;
+export const { push, pop, clear } = deviceList.actions;
 
 export default deviceList.reducer;

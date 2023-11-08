@@ -32,7 +32,7 @@ const SensorConfigurationPanel: React.FC<ConfigProps> = ({ amplifyInstance }) =>
     );
 
     if (amplifyInstance != null) {
-      amplifyInstance.PubSub.publish("config/sensor-states", {
+      amplifyInstance.PubSub.publish(topic, {
         ...newState,
         // Required to ensure the client can differentiate between message types.
         // The subscription function in flutter isn't for specific topics, so it just
