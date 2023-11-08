@@ -11,13 +11,35 @@ on:
   workflow_dispatch:
 
 jobs:
+  linting:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 21
+          cache: 'npm'
+      - name: Install packages
+        working-directory: norbit-webapp
+        run: |
+          npm i
+      - name: Run prettier
+        working-directory: norbit-webapp
+        run: |
+          npx prettier . --check
+      - name: Run eslint
+        working-directory: norbit-webapp
+        run: |
+          npx eslint .
   build:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x, 20.x, 21.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:

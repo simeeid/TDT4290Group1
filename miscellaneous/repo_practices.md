@@ -78,3 +78,18 @@ And once again similarly to commit messages, the footer contains applicable issu
 Closes #17
 Co-Authored-By: Simen <simeeid@stud.ntnu.no>
 ```
+
+## Before committing changes to the webapp
+
+Before you commit changes to the webapp, it's required that you run prettier and ESLint before committing. You can do this by running:
+```bash
+# Only required if you aren't already in the norbit-webapp folder
+cd norbit-webapp
+# First, run the formatter
+npx prettier . --write
+# Second, run ESlint. You can also pass --fix if there's any errors
+# that ESLint can fix on its own
+npx eslint .
+```
+
+Failing to do this prior to committing will result in a CI failure, at which point you'll have to run one or both of these to fix the problems.

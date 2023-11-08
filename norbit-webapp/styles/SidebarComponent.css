@@ -1,17 +1,14 @@
 :root {
-
   /* TODO: figure out how to outsource variables to globals.css,
    * and pick a better color
    */
   --color-active: #f1f1f1;
 }
 
-
 .hamburger-button {
   font-size: 2rem;
   background: none;
   border: none;
-
 }
 
 .hamburger-button:hover {
@@ -28,7 +25,7 @@
 }
 
 .close-button:hover {
-  background: #13333F;
+  background: #13333f;
   cursor: pointer;
 }
 
@@ -39,7 +36,7 @@
   height: 100vh;
   top: 0;
   left: calc(100% - 30%);
-  background: #02222F;
+  background: #02222f;
   padding: 8px;
   box-sizing: border-box;
   overflow-y: scroll;
@@ -64,7 +61,6 @@
 input {
   color: black !important;
 }
-
 
 .hidden {
   /* Rather than using display: none, these are used
@@ -92,7 +88,8 @@ form {
   box-sizing: border-box;
 }
 
-form > button, form > input {
+form > button,
+form > input {
   padding: 5px;
 }
 

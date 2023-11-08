@@ -1,4 +1,4 @@
-import { expect, test } from '@jest/globals';
+import { expect, test } from "@jest/globals";
 
 // required for `npm run unit-test` to work
 test("Placeholder", () => {
