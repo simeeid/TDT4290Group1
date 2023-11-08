@@ -2,9 +2,9 @@ name: Flutter CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -16,88 +16,88 @@ jobs:
     # GitHub Actions doesn't have hardware acceleration in the ubuntu runner, because reasons
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Install flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-        cache: true
-    - name: Install Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'liberica'
-        java-version: "17.x"
-        cache: 'gradle'
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-    - name: Accept Android SDK licenses
-      run: |
-        yes | flutter doctor --android-licenses > /dev/null
-    - name: Show available platforms
-      run: |
-        sdkmanager --list
-    - name: Install flutter deps
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter pub get
-    - name: Make mock certificates
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        touch ./assets/certificates/DeviceCertificate.crt
-        touch ./assets/certificates/Private.key
-        touch ./assets/certificates/RootCA.pem
-    - name: Build APK
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter build apk
-    - name: Run tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: ${{matrix.android_version}}
-        target: google_apis
-        profile: pixel_xl
-        arch: x86_64
-        script: |
-          flutter test -d test
+      - uses: actions/checkout@v3
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "liberica"
+          java-version: "17.x"
+          cache: "gradle"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK licenses
+        run: |
+          yes | flutter doctor --android-licenses > /dev/null
+      - name: Show available platforms
+        run: |
+          sdkmanager --list
+      - name: Install flutter deps
         working-directory: norbit-mobileapp/flutter_application_1
-    - name: Flutter information
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter doctor && flutter devices
+        run: |
+          flutter pub get
+      - name: Make mock certificates
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          touch ./assets/certificates/DeviceCertificate.crt
+          touch ./assets/certificates/Private.key
+          touch ./assets/certificates/RootCA.pem
+      - name: Build APK
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter build apk
+      - name: Run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{matrix.android_version}}
+          target: google_apis
+          profile: pixel_xl
+          arch: x86_64
+          script: |
+            flutter test -d test
+          working-directory: norbit-mobileapp/flutter_application_1
+      - name: Flutter information
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter doctor && flutter devices
 
   build-ios:
     runs-on: macos-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Install flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-        cache: true
-    - name: Install flutter deps
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        gem install cocoapods
-        flutter pub get
-    - name: Make mock certificates
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        touch ./assets/certificates/DeviceCertificate.crt
-        touch ./assets/certificates/Private.key
-        touch ./assets/certificates/RootCA.pem
-    - uses: futureware-tech/simulator-action@v2
-      with:
-        model: 'iPhone 13'
-    - name: Flutter information
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter doctor && flutter devices
-    - name: Build
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter build ios --no-codesign
-    - name: Run tests
-      working-directory: norbit-mobileapp/flutter_application_1
-      run: |
-        flutter test -d "iPhone 13"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+      - name: Install flutter deps
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          gem install cocoapods
+          flutter pub get
+      - name: Make mock certificates
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          touch ./assets/certificates/DeviceCertificate.crt
+          touch ./assets/certificates/Private.key
+          touch ./assets/certificates/RootCA.pem
+      - uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 13"
+      - name: Flutter information
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter doctor && flutter devices
+      - name: Build
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter build ios --no-codesign
+      - name: Run tests
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter test -d "iPhone 13"

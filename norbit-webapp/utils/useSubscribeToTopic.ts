@@ -1,9 +1,9 @@
-import { TamplifyInstance } from "@/Dashboard/Dashboard";
+import { TAmplifyInstance } from "@/types";
 import React, { useEffect } from "react";
 
 export const useSubscribeToTopics = (
   topic: string,
-  amplifyInstance: TamplifyInstance | null,
+  amplifyInstance: TAmplifyInstance | null,
   setState: React.Dispatch<React.SetStateAction<any>>
 ) => {
   useEffect(() => {

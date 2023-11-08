@@ -9,8 +9,6 @@ import { useAppSelector } from "@redux/hook";
 import { SensorConfig } from "@redux/slices/SensorConfig";
 import dynamic from "next/dynamic";
 
-export type TamplifyInstance = typeof Amplify;
-
 /**
  * Dynamic wrapper around MapComponent to allow for fully client-sided rendering of the MapComponent.
  * This is required because Leaflet is a client-sided libarry, but next.js is server-sided.

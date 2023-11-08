@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ChartComponent } from "@/ChartComponent/ChartComponent";
 import { ChartData } from "@/ChartComponent/types";
-import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TSoundLevelData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
+import { SensorProps } from "@/types";
 
-export const SoundLevelComponent: React.FC<{
-  amplifyInstance: TamplifyInstance | null;
-  topic: string;
-}> = ({ amplifyInstance, topic }) => {
+export const SoundLevelComponent: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -19,7 +16,7 @@ export const SoundLevelComponent: React.FC<{
     setIsPaused(newState);
   };
 
-  const transformToChartData = (iotData: any): ChartData => {
+  const transformToChartData = (iotData: TSoundLevelData): ChartData => {
     return {
       timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
       datapoint: iotData.payload.volume,

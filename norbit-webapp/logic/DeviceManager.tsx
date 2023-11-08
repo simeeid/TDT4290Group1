@@ -1,5 +1,3 @@
-"use client";
-
 import { Device } from "@redux/slices/DeviceList";
 
 export async function connectDevice(

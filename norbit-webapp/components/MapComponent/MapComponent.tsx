@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
-import { MapData } from "./types";
+import { MapData, TLocationData } from "./types";
 import { LatLngTuple } from "leaflet";
 import { MapContainer, useMap, Marker, TileLayer } from "react-leaflet";
+import { SensorProps } from "@/types";
 
 let L: typeof import("leaflet") | null;
 if (typeof window !== "undefined") {
@@ -22,12 +22,9 @@ const Recenter = ({ lat, lng }: { lat: number; lng: number }) => {
   return null;
 };
 
-export const MapComponent: React.FC<{
-  amplifyInstance: TamplifyInstance | null;
-  topic: string;
-}> = ({ amplifyInstance, topic }) => {
+export const MapComponent: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const mapRef = useRef(null);
-  const [payload, setPayload] = useState<any>(null);
+  const [payload, setPayload] = useState<TLocationData | null>(null);
   const [mapData, setMapData] = useState<MapData>({ latitude: 0, longitude: 0 });
 
   useEffect(() => {
