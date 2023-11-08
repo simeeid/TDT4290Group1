@@ -124,7 +124,11 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ amplifyInstance }) =>
           <hr />
           <h2>Device list</h2>
 
-          {deviceHtml.length == 0 ? <p>No devices connected :(</p> : <ul>{deviceHtml}</ul>}
+          {deviceHtml.length == 0 ? (
+            <p>No devices connected :(</p>
+          ) : (
+            <ul className="device-list">{deviceHtml}</ul>
+          )}
         </div>
         <div className="configurationPanel">
           <SensorConfigurationPanel amplifyInstance={amplifyInstance} />
