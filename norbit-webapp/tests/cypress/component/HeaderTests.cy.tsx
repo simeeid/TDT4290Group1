@@ -22,11 +22,15 @@ describe("Header", () => {
     cy.get("button.hamburger-button").click();
     cy.get("div.sidebar").should("be.visible");
   });
-  it("Should contain sensor config", () => {
+  it("Should contain sensor config (when a device is connected)", () => {
     cy.mount(<HeaderComponent useSidebar={true} />);
     cy.get("div.sidebar").should("not.be.visible");
     cy.get("button.hamburger-button").click();
     cy.get("div.sidebar").should("be.visible");
+    cy.get("#sensor-panel").should("not.exist");
+
+    cy.get("#device-id").type("potato");
+    cy.get("#submit-device-id").click();
     cy.get("#sensor-panel").should("exist").and("be.visible");
   });
   it("Should have scroll when overflowing", () => {

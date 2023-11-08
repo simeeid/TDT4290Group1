@@ -2,10 +2,28 @@ import SensorConfigurationPanel from "@/SensorConfigurationPanel/SensorConfigura
 import React from "react";
 import { store } from "@redux/store";
 import { sensorConfig, SensorConfig } from "@redux/slices/SensorConfig";
+import { push, clear } from "@redux/slices/DeviceList";
 
 describe("Header", () => {
   beforeEach(() => {
     cy.mount(<SensorConfigurationPanel />);
+
+    cy.wrap(store).invoke("dispatch", push({ code: "copium" }));
+
+    cy.wrap(store)
+      .invoke("getState")
+      .should("deep.contain", {
+        deviceList: {
+          devices: [
+            {
+              code: "copium",
+            },
+          ],
+        },
+      });
+  });
+  afterEach(() => {
+    cy.wrap(store).invoke("dispatch", clear());
   });
 
   const validateStore = (conf: SensorConfig) => {
