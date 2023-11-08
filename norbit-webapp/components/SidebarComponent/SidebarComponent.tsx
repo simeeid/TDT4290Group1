@@ -113,7 +113,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({ amplifyInstance }) =>
               }
             }}
           >
-            <label htmlFor="device-id">Enter device ID</label>
+            <label htmlFor="device-id">Enter device name</label>
             <input id="device-id" name="device-id" placeholder="ABCD1234" />
 
             <button id="submit-device-id" className="norbit-primary" type="submit">
