@@ -77,7 +77,7 @@ void main() {
     locationBloc.addLocation(testPosition2);
 
     // Wait for a short delay to ensure that all positions are added
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
 
     // Close the stream
     await subscription.cancel();
