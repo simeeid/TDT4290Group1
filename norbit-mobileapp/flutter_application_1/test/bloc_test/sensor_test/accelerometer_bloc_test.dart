@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:async/async.dart';
 
