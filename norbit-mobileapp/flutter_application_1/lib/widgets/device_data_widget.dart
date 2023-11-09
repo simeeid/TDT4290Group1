@@ -6,10 +6,10 @@ DeviceData displays basic data about the device.
 Per now it is only device name, however other important device data shouls be added here.
  */
 
-class DeviceData extends StatelessWidget {
+class DeviceDataWidget extends StatelessWidget {
   final DeviceNameBloc deviceNameBloc;
 
-  const DeviceData({
+  const DeviceDataWidget({
     super.key,
     required this.deviceNameBloc,
   });

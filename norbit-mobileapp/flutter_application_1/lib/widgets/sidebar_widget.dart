@@ -3,7 +3,7 @@ import 'package:flutter_application_1/blocs/device_name_bloc.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
 import '../services/signin_service.dart';
-import 'device_data.dart';
+import 'device_data_widget.dart';
 
 /*
 The sidebar is present on the homescreen.
@@ -55,7 +55,7 @@ class SidebarWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DeviceData(
+        return DeviceDataWidget(
           deviceNameBloc: Provider.of<DeviceNameBloc>(context),
         );
       },
