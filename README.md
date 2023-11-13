@@ -10,5 +10,7 @@ The mobile app is located in the norbit-mobileapp/flutter_application1 folder.
 ### Web app
 The webapp is located in the norbit-webapp folder.
 
+### AWS Cloud Service
+
 ## How to run the system
 Please follow this guide to run the system:
