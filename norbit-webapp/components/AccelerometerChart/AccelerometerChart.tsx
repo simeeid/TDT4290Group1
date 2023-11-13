@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { ChartComponent } from "@/ChartComponent/ChartComponent";
 import { ChartData } from "@/ChartComponent/types";
-import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TAccelerometerData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
+import { SensorProps } from "@/types";
+import { PerformanceComponent } from "@/PerformanceComponent/PerformanceComponent";
 
-const AccelerometerChart: React.FC<{ amplifyInstance: TamplifyInstance | null; topic: string }> = ({
-  amplifyInstance,
-  topic,
-}) => {
+const AccelerometerChart: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
   const [accelerometerData, setAccelerometerData] = useState<TAccelerometerData | null>(null);
 
-  const onPauseStateChange = (newState: boolean) => {
-    setIsPaused(newState);
+  const onPauseStateChange = (paused: boolean) => {
+    setIsPaused(paused);
   };
 
-  const transformToChartData = (iotData: any): ChartData => {
+  const transformToChartData = (iotData: TAccelerometerData): ChartData => {
     return {
       timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
+      // This converts the input values to a single, combined acceleration value.
+      // Note that by default, this will resolve to 9.81m/s^2, as the accelerometer
+      // includes gravity acceleration while standing still, tech.
       datapoint: Math.sqrt(
         iotData.payload.x * iotData.payload.x +
           iotData.payload.y * iotData.payload.y +
@@ -72,12 +73,15 @@ const AccelerometerChart: React.FC<{ amplifyInstance: TamplifyInstance | null; t
 
   return (
     <div className="sensorContainer" id="acceleration-container">
-      <h2>Accelerometer</h2>
-      <ChartComponent
-        data={data}
-        onPauseStateChange={onPauseStateChange}
-        chartLabel="Acceleration (m/s^2)"
-      />
+      <div className="chart-wrapper">
+        <h2>Accelerometer</h2>
+        <ChartComponent
+          data={data}
+          onPauseStateChange={onPauseStateChange}
+          chartLabel="Acceleration (m/s^2)"
+        />
+      </div>
+      <PerformanceComponent data={accelerometerData} pauseOverride={isPaused} />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );

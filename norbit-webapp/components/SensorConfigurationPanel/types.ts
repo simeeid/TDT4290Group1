@@ -1,5 +1,5 @@
-import { TamplifyInstance } from "@/Dashboard/Dashboard";
+import { TAmplifyInstance } from "@/types";
 
 export interface ConfigProps {
-  amplifyInstance?: TamplifyInstance | null;
+  amplifyInstance?: TAmplifyInstance | null;
 }

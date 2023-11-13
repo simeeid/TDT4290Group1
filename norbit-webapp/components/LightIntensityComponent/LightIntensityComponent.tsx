@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ChartComponent } from "@/ChartComponent/ChartComponent";
 import { ChartData } from "@/ChartComponent/types";
-import { TamplifyInstance } from "@/Dashboard/Dashboard";
 import { useSubscribeToTopics } from "utils/useSubscribeToTopic";
 import { TLightIntensityData } from "./types";
 import { MockInputComponent } from "@/MockInputComponent/MockInputComponent";
+import { SensorProps } from "@/types";
+import { PerformanceComponent } from "@/PerformanceComponent/PerformanceComponent";
 
-export const LightIntensityComponent: React.FC<{
-  amplifyInstance: TamplifyInstance | null;
-  topic: string;
-}> = ({ amplifyInstance, topic }) => {
+export const LightIntensityComponent: React.FC<SensorProps> = ({ amplifyInstance, topic }) => {
   const [data, setData] = useState<ChartData[]>([]);
   const [buffer, setBuffer] = useState<ChartData[]>([]);
   const [isPaused, setIsPaused] = useState(false);
@@ -19,7 +17,7 @@ export const LightIntensityComponent: React.FC<{
     setIsPaused(newState);
   };
 
-  const transformToChartData = (iotData: any): ChartData => {
+  const transformToChartData = (iotData: TLightIntensityData): ChartData => {
     return {
       timestamp: new Date(Date.parse(iotData.timestamp)).toLocaleTimeString(),
       datapoint: iotData.payload.lux,
@@ -70,12 +68,15 @@ export const LightIntensityComponent: React.FC<{
 
   return (
     <div className="sensorContainer" id="light-container">
-      <h2>Light sensor</h2>
-      <ChartComponent
-        data={data}
-        onPauseStateChange={onPauseStateChange}
-        chartLabel="Brightness (lux)"
-      />
+      <div className="chart-wrapper">
+        <h2>Light sensor</h2>
+        <ChartComponent
+          data={data}
+          onPauseStateChange={onPauseStateChange}
+          chartLabel="Brightness (lux)"
+        />
+      </div>
+      <PerformanceComponent data={lightIntensityData} pauseOverride={isPaused} />
       {amplifyInstance == null && <MockInputComponent data={data} setData={setData} />}
     </div>
   );

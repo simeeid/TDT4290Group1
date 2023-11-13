@@ -102,3 +102,19 @@ button#signin {
   box-sizing: content-box;
   padding: 5px;
 }
+
+.sensorContainer {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+}
+
+.chart-wrapper {
+  width: 100%;
+}
+
+@media (min-width: 1000px) {
+  .chart-wrapper {
+    width: 45%;
+  }
+}
