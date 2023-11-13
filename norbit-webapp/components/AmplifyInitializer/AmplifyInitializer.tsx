@@ -30,8 +30,7 @@ const AmplifyInitializer: React.FC<AmplifyInitializerProps> = ({ children }) => 
         console.log("Mocking Amplify");
       }
       dispatch(setInitialized(true));
-      // eslint-disable-line react-hooks/exhaustive-deps
-      initialized = true;
+      initialized = true; // eslint-disable-line react-hooks/exhaustive-deps
     }
   }, [dispatch, initialized, isMock]);
 
