@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
         Provider.of<AccelerometerService>(context, listen: false);
 
     return StreamBuilder<bool>(
-      stream: startStopBloc.startStopController,
+      stream: startStopBloc.startStopStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(

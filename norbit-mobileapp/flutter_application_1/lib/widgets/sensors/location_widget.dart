@@ -17,7 +17,7 @@ class LocationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Position>(
-      stream: locationBloc.locationController,
+      stream: locationBloc.locationStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(

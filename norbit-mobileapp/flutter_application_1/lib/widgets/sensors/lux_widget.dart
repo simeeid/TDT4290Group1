@@ -15,7 +15,7 @@ class LuxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<double>(
-      stream: luxBloc.luxController,
+      stream: luxBloc.luxStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(

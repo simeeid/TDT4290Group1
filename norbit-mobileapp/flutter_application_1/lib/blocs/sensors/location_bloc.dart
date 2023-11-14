@@ -8,17 +8,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class LocationBloc {
-  final locationController = BehaviorSubject<Position>();
+  final _locationController = BehaviorSubject<Position>();
 
-  Stream<Position> get locationStream => locationController.stream;
+  Stream<Position> get locationStream => _locationController.stream;
 
-  Sink<Position> get locationSink => locationController.sink;
+  Sink<Position> get locationSink => _locationController.sink;
 
   void addLocation(Position loc) {
     locationSink.add(loc);
   }
 
   void dispose() {
-    locationController.close();
+    _locationController.close();
   }
 }

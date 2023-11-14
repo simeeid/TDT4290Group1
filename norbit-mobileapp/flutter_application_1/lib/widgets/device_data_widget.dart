@@ -17,7 +17,7 @@ class DeviceDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<String>(
-      stream: deviceNameBloc.deviceNameController,
+      stream: deviceNameBloc.deviceNameStream,
       builder: (context, snapshotDeviceName) {
         String deviceName = snapshotDeviceName.data ?? "N/A";
         return Dialog(

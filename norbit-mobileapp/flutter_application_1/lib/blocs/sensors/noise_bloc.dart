@@ -8,17 +8,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class NoiseBloc {
-  final noiseController = BehaviorSubject<double>();
+  final _noiseController = BehaviorSubject<double>();
 
-  Stream<double> get noiseStream => noiseController.stream;
+  Stream<double> get noiseStream => _noiseController.stream;
 
-  Sink<double> get noiseSink => noiseController.sink;
+  Sink<double> get noiseSink => _noiseController.sink;
 
   void addNoise(double noise) {
     noiseSink.add(noise);
   }
 
   void dispose() {
-    noiseController.close();
+    _noiseController.close();
   }
 }

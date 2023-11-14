@@ -8,17 +8,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class DeviceNameBloc {
-  final deviceNameController = BehaviorSubject<String>();
+  final _deviceNameController = BehaviorSubject<String>();
 
-  Stream<String> get deviceNameStream => deviceNameController.stream;
+  Stream<String> get deviceNameStream => _deviceNameController.stream;
 
-  Sink<String> get deviceNameSink => deviceNameController.sink;
+  Sink<String> get deviceNameSink => _deviceNameController.sink;
 
   void addDeviceName(String deviceName) {
     deviceNameSink.add(deviceName);
   }
 
   void dispose() {
-    deviceNameController.close();
+    _deviceNameController.close();
   }
 }

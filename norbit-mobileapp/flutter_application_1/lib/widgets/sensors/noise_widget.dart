@@ -15,7 +15,7 @@ class NoiseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<double>(
-      stream: noiseBloc.noiseController,
+      stream: noiseBloc.noiseStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(

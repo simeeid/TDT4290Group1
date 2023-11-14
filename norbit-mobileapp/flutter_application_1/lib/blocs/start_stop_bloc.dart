@@ -7,17 +7,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class StartStopBloc {
-  final startStopController = BehaviorSubject<bool>.seeded(false);
+  final _startStopController = BehaviorSubject<bool>.seeded(false);
 
-  Stream<bool> get startStopStream => startStopController.stream;
+  Stream<bool> get startStopStream => _startStopController.stream;
 
-  Sink<bool> get startStopSink => startStopController.sink;
+  Sink<bool> get startStopSink => _startStopController.sink;
 
   void switchState(bool b) {
     startStopSink.add(b);
   }
 
   void dispose() {
-    startStopController.close();
+    _startStopController.close();
   }
 }

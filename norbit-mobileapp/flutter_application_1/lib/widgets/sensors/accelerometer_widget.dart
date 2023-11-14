@@ -17,7 +17,7 @@ class AccelerometerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<AccelerometerEvent>(
-      stream: accelerometerBloc.accelerometerController,
+      stream: accelerometerBloc.accelerometerStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(

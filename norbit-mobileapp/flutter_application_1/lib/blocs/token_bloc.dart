@@ -8,17 +8,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class TokenBloc {
-  final tokenController = BehaviorSubject<String>();
+  final _tokenController = BehaviorSubject<String>();
 
-  Stream<String> get tokenStream => tokenController.stream;
+  Stream<String> get tokenStream => _tokenController.stream;
 
-  Sink<String> get tokenSink => tokenController.sink;
+  Sink<String> get tokenSink => _tokenController.sink;
 
   void addToken(String token) {
     tokenSink.add(token);
   }
 
   void dispose() {
-    tokenController.close();
+    _tokenController.close();
   }
 }
