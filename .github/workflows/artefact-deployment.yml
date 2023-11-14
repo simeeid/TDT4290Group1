@@ -1,0 +1,41 @@
+name: Artefact deployment
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "liberica"
+          java-version: "17.x"
+          cache: "gradle"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK licenses
+        run: |
+          yes | flutter doctor --android-licenses > /dev/null
+      - name: Install flutter deps
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter pub get
+      - name: Build APK
+        working-directory: norbit-mobileapp/flutter_application_1
+        run: |
+          flutter build apk
+          mv build/app/outputs/flutter-apk/app-release.apk ../../norbit-iot-simulator-${{ github.ref_name }}.apk
+      - name: Upload binaries to release
+        uses: softprops/action-gh-release@master
+        with:
+          files: norbit-iot-simulator-${{ github.ref_name }}.apk
