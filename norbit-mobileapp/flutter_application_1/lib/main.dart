@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
-import 'package:flutter_application_1/services/login_service.dart';
+import 'package:flutter_application_1/services/signin_service.dart';
 import 'package:flutter_application_1/services/mqtt_service.dart';
 import 'package:flutter_application_1/services/sensors/location_service.dart';
 import 'package:flutter_application_1/services/sensors/noise_service.dart';
@@ -111,9 +111,9 @@ class MyApp extends StatelessWidget {
             );
           },
         ),
-        Provider<LogInService>(
+        Provider<SignInService>(
           create: (context) {
-            return LogInService(
+            return SignInService(
               usernameBloc: Provider.of<UsernameBloc>(context, listen: false),
               tokenBloc: Provider.of<TokenBloc>(context, listen: false),
             );

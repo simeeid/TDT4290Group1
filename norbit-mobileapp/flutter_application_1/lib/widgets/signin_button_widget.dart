@@ -5,7 +5,7 @@ import '../blocs/device_name_bloc.dart';
 import '../blocs/token_bloc.dart';
 import '../blocs/username_bloc.dart';
 import '../screens/home_screen.dart';
-import '../services/login_service.dart';
+import '../services/signin_service.dart';
 import 'register_device_popup.dart';
 
 /*
@@ -19,7 +19,7 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logInService = Provider.of<LogInService>(context, listen: false);
+    final logInService = Provider.of<SignInService>(context, listen: false);
     return ElevatedButton(
       onPressed: () async {
         Map<String, dynamic> loginResult = await logInService.signInWithWebUI();

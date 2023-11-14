@@ -8,17 +8,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class LuxBloc {
-  final luxController = BehaviorSubject<double>();
+  final _luxController = BehaviorSubject<double>();
 
-  Stream<double> get luxStream => luxController.stream;
+  Stream<double> get luxStream => _luxController.stream;
 
-  Sink<double> get luxSink => luxController.sink;
+  Sink<double> get luxSink => _luxController.sink;
 
   void addLux(double lux) {
     luxSink.add(lux);
   }
 
   void dispose() {
-    luxController.close();
+    _luxController.close();
   }
 }

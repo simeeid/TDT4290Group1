@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/device_data.dart';
+import 'package:flutter_application_1/widgets/device_data_widget.dart';
 import 'package:flutter_application_1/blocs/device_name_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -7,7 +7,7 @@ void main() {
   testWidgets('DeviceData widget displays device name', (WidgetTester tester) async {
     final deviceNameBloc = DeviceNameBloc();
     await tester.pumpWidget(MaterialApp(
-      home: DeviceData(deviceNameBloc: deviceNameBloc),
+      home: DeviceDataWidget(deviceNameBloc: deviceNameBloc),
     ));
 
     // Verify that the initial text in the widget is "N/A".

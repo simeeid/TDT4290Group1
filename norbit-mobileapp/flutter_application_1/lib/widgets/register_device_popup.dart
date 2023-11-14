@@ -27,10 +27,10 @@ class RegisterDevicePopupWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<String>(
-      stream: usernameBloc.usernameController,
+      stream: usernameBloc.usernameStream,
       builder: (context, snapshotUsername) {
         return StreamBuilder<String>(
-          stream: tokenBloc.tokenController,
+          stream: tokenBloc.tokenStream,
           builder: (context, snapshotToken) {
             return StreamBuilder<String>(
               stream: deviceNameBloc.deviceNameStream,

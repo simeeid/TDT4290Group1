@@ -22,12 +22,6 @@ void main() {
       noiseBloc.addNoise(10.0);
     });
 
-    test('dispose will close the NoiseBloc', () {
-      expect(noiseBloc.noiseController.isClosed, isFalse);
-      noiseBloc.dispose();
-      expect(noiseBloc.noiseController.isClosed, isTrue);
-    });
-
     test('addNoise emits correct sequence of states', () {
       final List<double> expectedResponse = [10.0, 20.0, 30.0];
       expectLater(

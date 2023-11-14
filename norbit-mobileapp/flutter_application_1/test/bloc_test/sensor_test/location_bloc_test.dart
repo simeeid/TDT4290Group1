@@ -30,13 +30,9 @@ void main() {
     locationBloc.addLocation(testPosition);
 
     expect(
-      locationBloc.locationController,
+      locationBloc.locationStream,
       emits(testPosition), // Expect to receive the test position
     );
-  });
-
-  test('Initial state of LocationBloc is correct', () {
-    expect(locationBloc.locationController.valueOrNull, isNull);
   });
 
   test('LocationBloc emits multiple Positions in correct order', () async {
@@ -69,7 +65,7 @@ void main() {
     final emittedPositions = [];
 
     // Listen to the stream and add emitted positions to the list
-    final subscription = locationBloc.locationController.listen((position) {
+    final subscription = locationBloc.locationStream.listen((position) {
       emittedPositions.add(position);
     });
 

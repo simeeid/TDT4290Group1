@@ -26,7 +26,7 @@ class StartStopButton extends StatelessWidget {
     final mqttService = Provider.of<MqttService>(context, listen: false);
     final locationService = Provider.of<LocationService>(context);
     return StreamBuilder<bool>(
-      stream: startStopBloc.startStopController,
+      stream: startStopBloc.startStopStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return SizedBox(

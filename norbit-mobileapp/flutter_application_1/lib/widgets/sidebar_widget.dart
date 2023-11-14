@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/blocs/device_name_bloc.dart';
 import 'package:flutter_application_1/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
-import '../services/login_service.dart';
-import 'device_data.dart';
+import '../services/signin_service.dart';
+import 'device_data_widget.dart';
 
 /*
 The sidebar is present on the homescreen.
@@ -15,7 +15,7 @@ class SidebarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logInService = Provider.of<LogInService>(context, listen: false);
+    final logInService = Provider.of<SignInService>(context, listen: false);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -55,7 +55,7 @@ class SidebarWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DeviceData(
+        return DeviceDataWidget(
           deviceNameBloc: Provider.of<DeviceNameBloc>(context),
         );
       },

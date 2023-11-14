@@ -155,7 +155,7 @@ class MqttService {
     client.secure = true;
     client.onConnected = onConnected;
 
-    final usernameData = await usernameBloc.usernameController.stream.first;
+    final usernameData = await usernameBloc.usernameStream.first;
     final MqttConnectMessage connMess =
         MqttConnectMessage().withClientIdentifier(usernameData).startClean();
     client.connectionMessage = connMess;
@@ -173,10 +173,10 @@ class MqttService {
   Future<String> getTopic() async {
     String usernameValue = '';
     String deviceNameValue = '';
-    final usernameData = await usernameBloc.usernameController.stream.first;
+    final usernameData = await usernameBloc.usernameStream.first;
     usernameValue = usernameData;
     final deviceNameData =
-        await deviceNameBloc.deviceNameController.stream.first;
+        await deviceNameBloc.deviceNameStream.first;
     deviceNameValue = deviceNameData;
     return "$usernameValue/$deviceNameValue";
   }
@@ -188,7 +188,7 @@ class MqttService {
     }
     String topic = await getTopic();
     final luxTopic = '$topic/lux';
-    luxSubscription = luxBloc.luxController.stream.listen((luxData) {
+    luxSubscription = luxBloc.luxStream.listen((luxData) {
       if (!luxEnable) {
         return;
       }
@@ -207,7 +207,7 @@ class MqttService {
   Future<void> publishNoiseData() async {
     String topic = await getTopic();
     final noiseTopic = '$topic/noise';
-    noiseSubscription = noiseBloc.noiseController.stream.listen((noiseData) {
+    noiseSubscription = noiseBloc.noiseStream.listen((noiseData) {
       if (!soundEnable) {
         return;
       }
@@ -227,7 +227,7 @@ class MqttService {
     List<String> accelerometerList = [];
     String topic = await getTopic();
     final accelerometerTopic = '$topic/accelerometer';
-    accelerometerSubscription = accelerometerBloc.accelerometerController.stream
+    accelerometerSubscription = accelerometerBloc.accelerometerStream
         .listen((accelerometerData) {
       if (!accelerometerEnable) {
         return;
@@ -253,7 +253,7 @@ class MqttService {
   Future<void> publishLocationData() async {
     String topic = await getTopic();
     final locationTopic = '$topic/location';
-    locationBloc.locationController.stream.listen((locationData) {
+    locationBloc.locationStream.listen((locationData) {
       if (!gpsEnable) {
         return;
       }

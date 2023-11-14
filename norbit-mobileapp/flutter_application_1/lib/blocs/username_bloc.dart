@@ -8,17 +8,17 @@ import 'package:rxdart/rxdart.dart';
 */
 
 class UsernameBloc {
-  final usernameController = BehaviorSubject<String>();
+  final _usernameController = BehaviorSubject<String>();
 
-  Stream<String> get usernameStream => usernameController.stream;
+  Stream<String> get usernameStream => _usernameController.stream;
 
-  Sink<String> get usernameSink => usernameController.sink;
+  Sink<String> get usernameSink => _usernameController.sink;
 
   void addUsername(String username) {
     usernameSink.add(username);
   }
 
   void dispose() {
-    usernameController.close();
+    _usernameController.close();
   }
 }
