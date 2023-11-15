@@ -12,11 +12,20 @@ describe("Numeric graphs", () => {
       .first()
       .should("exist")
       // force: true is required, as the field is invisible (which itself is a nasty hack)
-      .type(data + "{enter}", {force: true});
+      .type(data + "{enter}", { force: true });
   };
 
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/").wait(300);
+    cy.get("#signin").click({ force: true });
+    cy.get("#expand-sidebar").click();
+    cy.get("#device-id").type("a", { force: true });
+    cy.get("#submit-device-id").click({ force: true });
+    cy.get("#close-sidebar").click();
+  });
+
+  afterEach(() => {
+    cy.get("#signout").click({ force: true });
   });
 
   // Note: if this test fails, you've failed to, or incorrectly set, the
@@ -26,8 +35,7 @@ describe("Numeric graphs", () => {
   it("should contain, but not show the hidden mock input element", () => {
     for (const id of graphIds) {
       const htmlId = "#" + id;
-      cy.get(htmlId)
-        .should("exist");
+      cy.get(htmlId).should("exist");
       cy.get(htmlId + " > input")
         .first()
         .should("exist")
@@ -37,12 +45,8 @@ describe("Numeric graphs", () => {
   it("should render the graph on the page", () => {
     for (const id of graphIds) {
       const htmlId = "#" + id;
-      cy.get(htmlId)
-        .should("exist");
-      cy.get(htmlId)
-        .find(".recharts-wrapper")
-        .should("exist")
-        .and("be.visible");
+      cy.get(htmlId).should("exist");
+      cy.get(htmlId).find(".recharts-wrapper").should("exist").and("be.visible");
     }
   });
   it("should render the data", () => {
@@ -77,14 +81,11 @@ describe("Numeric graphs", () => {
         cy.get(htmlId + " .recharts-line-dots")
           .children()
           .eq(i)
-          .trigger("mousemove", {force: true})
+          .trigger("mousemove", { force: true })
           .wait(200);
 
-        cy.get(htmlId + " .recharts-tooltip-label")
-          .should("have.text", `${i + 1}`);
-        cy.get(htmlId + " .recharts-tooltip-item-value")
-          .should("have.text", `${datapoint}`);
-
+        cy.get(htmlId + " .recharts-tooltip-label").should("have.text", `${i + 1}`);
+        cy.get(htmlId + " .recharts-tooltip-item-value").should("have.text", `${datapoint}`);
       }
 
       ++chartIdx;

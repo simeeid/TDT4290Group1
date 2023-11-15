@@ -5,54 +5,76 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
+  linting:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 21
+          cache: "npm"
+      - name: Install packages
+        working-directory: norbit-webapp
+        run: |
+          npm i
+      - name: Run prettier
+        working-directory: norbit-webapp
+        run: |
+          npx prettier . --check
+      - name: Run eslint
+        working-directory: norbit-webapp
+        run: |
+          npx eslint .
   build:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x, 20.x, 21.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Export env variables
-      run: |
-        echo "NEXT_PUBLIC_MOCK_AMPLIFY=yes" >> $GITHUB_ENV
-    - name: Run npm CI
-      working-directory: norbit-webapp
-      run: |
-        npm ci
-    - name: Run build
-      working-directory: norbit-webapp
-      run: |
-        echo $NEXT_PUBLIC_MOCK_AMPLIFY
-        npm run build --if-present
-    - name: Run Jest
-      working-directory: norbit-webapp
-      run: |
-        npm run unit-test
-    - name: Run cypress E2E tests
-      uses: cypress-io/github-action@v6
-      with:
-        start: npm run start
-        browser: chrome
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Export env variables
+        run: |
+          echo "NEXT_PUBLIC_MOCK_AMPLIFY=yes" >> $GITHUB_ENV
+      - name: Run npm CI
         working-directory: norbit-webapp
-    - name: Run cypress component tests
-      uses: cypress-io/github-action@v6
-      with:
-        install: false
-        component: true
-        browser: chrome
+        run: |
+          npm ci
+      - name: Run build
         working-directory: norbit-webapp
+        run: |
+          echo $NEXT_PUBLIC_MOCK_AMPLIFY
+          npm run build --if-present
+      - name: Run Jest
+        working-directory: norbit-webapp
+        run: |
+          npm run unit-test
+      - name: Run cypress E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run start
+          browser: chrome
+          working-directory: norbit-webapp
+      - name: Run cypress component tests
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          component: true
+          browser: chrome
+          working-directory: norbit-webapp

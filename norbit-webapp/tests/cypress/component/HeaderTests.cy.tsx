@@ -1,10 +1,10 @@
-import React from 'react';
-import { HeaderComponent } from '@/HeaderComponent/HeaderComponent'
+import React from "react";
+import { HeaderComponent } from "@/HeaderComponent/HeaderComponent";
 
-describe('Header', () => {
+describe("Header", () => {
   it("Should render", () => {
     cy.mount(<HeaderComponent useSidebar={false} />);
-    cy.get("header").should('exist');
+    cy.get("header").should("exist");
     // Make sure both the navbar integration and the entire sidebar component is excluded
     cy.get("button.hamburger-buttom").should("not.exist");
     cy.get("div.sidebar").should("not.exist");
@@ -22,14 +22,16 @@ describe('Header', () => {
     cy.get("button.hamburger-button").click();
     cy.get("div.sidebar").should("be.visible");
   });
-  it("Should contain sensor config", () => {
+  it("Should contain sensor config (when a device is connected)", () => {
     cy.mount(<HeaderComponent useSidebar={true} />);
     cy.get("div.sidebar").should("not.be.visible");
     cy.get("button.hamburger-button").click();
     cy.get("div.sidebar").should("be.visible");
-    cy.get("#sensor-panel")
-      .should("exist")
-      .and("be.visible");
+    cy.get("#sensor-panel").should("not.exist");
+
+    cy.get("#device-id").type("potato");
+    cy.get("#submit-device-id").click();
+    cy.get("#sensor-panel").should("exist").and("be.visible");
   });
   it("Should have scroll when overflowing", () => {
     cy.mount(<HeaderComponent useSidebar={true} />);
@@ -39,26 +41,15 @@ describe('Header', () => {
 
     // Sufficiently large (well, excesssively in this test) viewport: no overflow
     cy.viewport(600, 8000);
-    cy.get("div.sidebar")
-      .invoke("outerHeight")
-      .should("eq", 8000);
-    cy.get("div.sidebar")
-      .invoke("prop", "scrollHeight")
-      .should("eq", 8000);
-    cy.get("div.sidebar")
-      .invoke("outerHeight")
-      .should("eq", 8000);
+    cy.get("div.sidebar").invoke("outerHeight").should("eq", 8000);
+    cy.get("div.sidebar").invoke("prop", "scrollHeight").should("eq", 8000);
+    cy.get("div.sidebar").invoke("outerHeight").should("eq", 8000);
 
     // Tiny viewport: div should overflow
     cy.viewport(600, 80);
-    cy.get("div.sidebar")
-      .invoke("outerHeight")
-      .should("eq", 80);
-    cy.get("div.sidebar")
-      .invoke("prop", "scrollHeight")
-      .should("be.greaterThan", 80);
-
-  })
+    cy.get("div.sidebar").invoke("outerHeight").should("eq", 80);
+    cy.get("div.sidebar").invoke("prop", "scrollHeight").should("be.greaterThan", 80);
+  });
 });
 
 export {};

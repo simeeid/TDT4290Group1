@@ -1,1 +1,5 @@
-export type TLightIntensityData = { sensorName: string, timestamp: string, payload: { lux: number } }
+import { SensorDataFramework } from "@/types";
+
+export type TLightIntensityData = {
+  payload: { lux: number };
+} & SensorDataFramework;

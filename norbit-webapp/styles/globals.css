@@ -4,6 +4,8 @@
 
 :root {
   --color-primary: #02222f;
+  --norbit-primary: #2196f3;
+  --norbit-primary-dark: #1f88db;
 }
 
 /* Not sure where these are overridden, but they make the sidebar headers
@@ -13,21 +15,26 @@
 
 @import "~leaflet/dist/leaflet.css";
 
- h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-size: revert;
   font-weight: revert;
 }
 
 html {
   font-family:
-    -apple-system,BlinkMacSystemFont,
+    -apple-system,
+    BlinkMacSystemFont,
     Ubuntu,
     "Segoe UI",
     Roboto,
     Helvetica,
     Arial,
-    /*Fallback*/
-    sans-serif;
+    /*Fallback*/ sans-serif;
 }
 
 .center-text {
@@ -37,6 +44,25 @@ html {
 button {
   border-radius: 12px;
   cursor: pointer;
+  border: none;
+  background-color: #f4f2f0;
+  color: #000000;
+  transition: background-color 0.3s;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #dbdbdb;
+}
+
+button.norbit-primary {
+  background-color: var(--norbit-primary);
+  color: white;
+}
+
+button.norbit-primary:hover {
+  background-color: var(--norbit-primary-dark);
 }
 
 button.light {
@@ -45,7 +71,6 @@ button.light {
   border-style: none;
   border-radius: 5px;
   padding: 5px 10px;
-  box-sizing: border-box;
 }
 
 button.dark {
@@ -61,13 +86,35 @@ button.green {
   background-color: #22c632;
   border: 2px solid #1d9c29;
   color: black;
+  padding: 5px;
 }
 button.green:hover {
   background-color: #1d9c29;
   color: black;
 }
 
+button#signin {
+  width: 50vw;
+  padding: 10px 10px !important;
+}
+
 .chart-component {
-    box-sizing: content-box;
-    padding: 5px;
+  box-sizing: content-box;
+  padding: 5px;
+}
+
+.sensorContainer {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+}
+
+.chart-wrapper {
+  width: 100%;
+}
+
+@media (min-width: 1000px) {
+  .chart-wrapper {
+    width: 45%;
+  }
 }

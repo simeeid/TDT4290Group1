@@ -1,17 +1,14 @@
 :root {
-
   /* TODO: figure out how to outsource variables to globals.css,
    * and pick a better color
    */
   --color-active: #f1f1f1;
 }
 
-
 .hamburger-button {
   font-size: 2rem;
   background: none;
   border: none;
-
 }
 
 .hamburger-button:hover {
@@ -28,7 +25,7 @@
 }
 
 .close-button:hover {
-  background: #13333F;
+  background: #13333f;
   cursor: pointer;
 }
 
@@ -39,12 +36,12 @@
   height: 100vh;
   top: 0;
   left: calc(100% - 30%);
-  background: #02222F;
+  background: #02222f;
   padding: 8px;
   box-sizing: border-box;
   overflow-y: scroll;
 
-  transition: all 1s ease-in;
+  transition: all 0.5s ease-in;
   color: white;
 }
 
@@ -65,7 +62,6 @@ input {
   color: black !important;
 }
 
-
 .hidden {
   /* Rather than using display: none, these are used
    * to make the transition look like it's sliding in from the right.
@@ -79,21 +75,20 @@ input {
   justify-content: right;
 }
 
-/* For some reason, the close button displays even when it should be collapsed.
- * It isn't the flexbox's fault. The problem persists with float: right,
- * so not sure why this is necessary.
- */
-.hidden > .right {
-  display: none;
-}
-
 form {
   padding: 8px;
   box-sizing: border-box;
 }
 
-form > button, form > input {
+form > button,
+form > input {
   padding: 5px;
+}
+
+#signout {
+  width: 100%;
+  padding: 7px;
+  box-sizing: border-box;
 }
 
 form > * {

@@ -1,16 +1,11 @@
-import React from 'react';
-import { HeaderComponent } from 'components/HeaderComponent/HeaderComponent';
+import React from "react";
+
 interface Props {
   children: React.ReactNode;
 }
 
 const RootLayout: React.FC<Props> = ({ children }) => {
-  return (
-    <div>
-      <HeaderComponent useSidebar={true} />
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 };
 
 export default RootLayout;

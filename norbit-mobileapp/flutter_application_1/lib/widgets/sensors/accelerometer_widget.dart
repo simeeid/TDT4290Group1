@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/accelerometer_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/accelerometer_bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+
+/*
+AccelerometerWidget uses the data in the stream of the accelerometer bloc.
+It updates the accelerometer data on the users screen based on this data.
+It displays x, y and z in m/s^2
+ */
 
 class AccelerometerWidget extends StatelessWidget {
   final AccelerometerBloc accelerometerBloc;
@@ -11,7 +17,7 @@ class AccelerometerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<AccelerometerEvent>(
-      stream: accelerometerBloc.accelerometerController,
+      stream: accelerometerBloc.accelerometerStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
@@ -20,10 +26,14 @@ class AccelerometerWidget extends StatelessWidget {
                 'X: ${snapshot.data!.x.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 20),
               ),
-              Text('Y: ${snapshot.data!.y.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 20),),
-              Text('Z: ${snapshot.data!.z.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 20),),
+              Text(
+                'Y: ${snapshot.data!.y.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Z: ${snapshot.data!.z.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20),
+              ),
             ],
           );
         } else if (snapshot.hasError) {

@@ -1,0 +1,20 @@
+/* Dashboard.module.css */
+.dashboardContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chartsContainer {
+  flex: 2;
+  margin-right: 5px;
+}
+
+.chartsContainer > div {
+  padding: 10px 20px;
+}
+
+.chartsContainer > div:nth-of-type(even) {
+  background-color: #f4f2f0;
+  border-radius: 5px;
+}

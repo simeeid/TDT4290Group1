@@ -1,5 +1,5 @@
-import {TamplifyInstance} from "@/dashboard/Dashboard";
+import { TAmplifyInstance } from "@/types";
 
 export interface SidebarProps {
-  amplifyInstance?: TamplifyInstance | null;
+  amplifyInstance?: TAmplifyInstance | null;
 }

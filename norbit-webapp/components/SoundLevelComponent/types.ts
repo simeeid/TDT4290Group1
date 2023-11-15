@@ -1,1 +1,5 @@
-export type TSoundLevelData = { sensorName: string, timestamp: string, payload: { volume: number } }
+import { SensorDataFramework } from "@/types";
+
+export type TSoundLevelData = {
+  payload: { volume: number };
+} & SensorDataFramework;

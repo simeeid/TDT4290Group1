@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/noise_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/noise_bloc.dart';
+
+/*
+NoiseWidget uses the data in the stream of the noise bloc.
+It updates the noise data on the users screen based on this data.
+It displays noise data in dB.
+ */
 
 class NoiseWidget extends StatelessWidget {
   final NoiseBloc noiseBloc;
@@ -9,19 +15,20 @@ class NoiseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<double>(
-      stream: noiseBloc.noiseController,
+      stream: noiseBloc.noiseStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('Noise level: ${snapshot.data!.toStringAsFixed(2)} dB',
-                style: const TextStyle(fontSize: 20),),
+              Text(
+                'Noise level: ${snapshot.data!.toStringAsFixed(2)} dB',
+                style: const TextStyle(fontSize: 20),
+              ),
             ],
           );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
-        // By default, show a loading spinner.
         return const CircularProgressIndicator();
       },
     );

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/blocs/connectivity/lux_bloc.dart';
+import 'package:flutter_application_1/blocs/sensors/lux_bloc.dart';
+
+/*
+LuxWidget uses the data in the stream of the lux bloc.
+It updates the lux data on the users screen based on this data.
+It displays the light value in Lx.
+ */
 
 class LuxWidget extends StatelessWidget {
   final LuxBloc luxBloc;
@@ -9,13 +15,15 @@ class LuxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<double>(
-      stream: luxBloc.luxController,
+      stream: luxBloc.luxStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Text('Lux level: ${snapshot.data!.toStringAsFixed(2)} Lx',
-                style: const TextStyle(fontSize: 20),),
+              Text(
+                'Lux level: ${snapshot.data!.toStringAsFixed(2)} Lx',
+                style: const TextStyle(fontSize: 20),
+              ),
             ],
           );
         } else if (snapshot.hasError) {
