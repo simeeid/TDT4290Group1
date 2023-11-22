@@ -57,7 +57,7 @@ export default function Home() {
           <Dashboard />
         ) : (
           <button id="signin" name="sign-in" className="norbit-primary" onClick={handleSignIn}>
-            Sign in with AWS
+            Sign in to continue
           </button>
         )}
       </main>
