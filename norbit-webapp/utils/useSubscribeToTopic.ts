@@ -1,7 +1,6 @@
 import { TAmplifyInstance } from "@/types";
 import React, { useEffect } from "react";
 
-
 export const useSubscribeToTopics = (
   topic: string,
   amplifyInstance: TAmplifyInstance | null,
