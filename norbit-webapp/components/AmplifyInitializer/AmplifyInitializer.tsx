@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Amplify } from "aws-amplify";
+import { Amplify, PubSub } from "aws-amplify";
 import { AWSIoTProvider } from "@aws-amplify/pubsub";
 import { useDispatch, useSelector } from "react-redux";
 import { setInitialized } from "redux/slices/amplifySlice";
@@ -20,7 +20,7 @@ const AmplifyInitializer: React.FC<AmplifyInitializerProps> = ({ children }) => 
       if (!isMock) {
         console.log("Running Amplify in live mode");
         Amplify.configure(amplifyConfig);
-        Amplify.addPluggable(
+        PubSub.addPluggable(
           new AWSIoTProvider({
             aws_pubsub_region: process.env.NEXT_PUBLIC_REGION,
             aws_pubsub_endpoint: `wss://${process.env.NEXT_PUBLIC_MQTT_ID}/mqtt`,
