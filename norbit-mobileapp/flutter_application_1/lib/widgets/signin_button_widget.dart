@@ -45,7 +45,7 @@ class SignInButton extends StatelessWidget {
         minimumSize: const Size(250, 50),
       ),
       child: const Text(
-        'Sign in with AWS',
+        'Sign in to continue',
         style: TextStyle(
           fontSize: 20,
           color: Colors.white,
