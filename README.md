@@ -15,3 +15,6 @@ Please follow this guide to run the system: [Installation guide](https://github.
 
 ## How to use the system
 Please follow this guide to use the system: [User guide](https://github.com/simeeid/TDT4290Group1/blob/chore/107-write-readme/miscellaneous/UserGuide.pdf)
+
+## References
+The installation guide and the user guide is from our report in the subject TDT4290 2023.
